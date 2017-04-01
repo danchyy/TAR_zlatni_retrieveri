@@ -5,21 +5,30 @@ class ISentence:
     def __init__(self):
         raise NotImplementedError
 
+    def getWordByAddress(self, address):
+        """
+        :param int address:
+        :rtype: IWord
+        """
+        raise NotImplementedError
+
     def getWords(self):
         """
         :rtype: list of IWord
         """
         raise NotImplementedError
 
-    def getWord(self, index):
+    def getConllString(self):
         """
-        :rtype: IWord
+        :rtype: str
         """
         raise NotImplementedError
 
-    def getDependencyRelations(self):
+    @staticmethod
+    def createFromConllString(conllString):
         """
-        :rtype: (str, int, int)
+        :param str conllString:
+        :rtype: ISentence
         """
         raise NotImplementedError
 
