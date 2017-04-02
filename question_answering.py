@@ -4,21 +4,22 @@ from interfaces.i_answer_extraction import IAnswerExtraction
 
 
 class QuestionAnswering:
-    def __init__(self, preprocessing, answerRetrieval, answerExtraction, conllDirectoryPath):
+    def __init__(self, preprocessing, answerRetrieval, answerExtraction, srcFilePaths, doPreprocessing, destFilePaths):
         """
         :param IPreprocessing preprocessing:
         :param IAnswerRetrieval answerRetrieval:
         :param IAnswerExtraction answerExtraction:
-        :param str conllDirectoryPath:
+        :param list of str srcFilePaths:
+        :param lits of bool doPreprocessing:
+        :param list of str destFilePaths:
+        :param str filePaths:
         """
 
         self.preprocessing = preprocessing
         self.answerRetrieval = answerRetrieval
         self.answerExtraction = answerExtraction
-        self.conllDirectoryPath = conllDirectoryPath
-        self.sentences = self.preprocessing.conllSentencesToObjects(self.conllDirectoryPath)
-
         self.preprocessing.loadParser()
+        self.sentences = self.preprocessing.loadSentences(srcFilePaths, doPreprocessing, destFilePaths)
 
     def answerQuestion(self, question):
         """
@@ -26,7 +27,7 @@ class QuestionAnswering:
         :rtype: str
         """
 
-        questionSentence = self.preprocessing.rawSentenceToObject(question)
+        questionSentence = self.preprocessing.rawTextToSentences(question)[0]
         retrievedSentences = self.answerRetrieval.retrieve(questionSentence, self.sentences)
         extractedSentence = self.answerExtraction.extract(questionSentence, retrievedSentences)
 
