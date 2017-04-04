@@ -31,6 +31,9 @@ def open_file_write_lines(file, lines):
 
 
 def clean_sentences():
+    """
+    Clears all duplicate sentences
+    """
     lines = open_file_read_lines(ORIGINAL_SENTENCES_PATH)
     filtered_sentences = set()
 
@@ -41,6 +44,11 @@ def clean_sentences():
 
 
 def remove_special_chars():
+    """
+    Removes special characters, such as &apos, &quot and &amp. Those are replaced with their
+    real representations, `, ", &
+    :return: Nuffin
+    """
     lines = open_file_read_lines(CLEANED_SENTENCES_PATH)
 
     cleaned_lines = []
@@ -203,5 +211,5 @@ def extract_documents_per_whole_doc_tag():
 
 """ YOUR CODE HERE ;) """
 
-#clean()
-#extract_documents()
+#clean() # for cleaning the dataset with redundant sentences
+#extract_documents() # for extracting data to document_map.txt
