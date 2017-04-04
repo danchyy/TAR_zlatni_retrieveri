@@ -1,0 +1,58 @@
+There were a lot of duplicate sentences in trec9_sents file, those duplicates were removed thus making
+the dataset much more readable.
+
+Three different special characters that are tarnishing our dataset.
+&amp -> ampersand (&)
+&quot -> quotation marks, I assume that's either " or ` since they always write the later one it might be that
+        (I used the first one)
+&apos -> apostrophe, that'd be ` or ' (I used the first one)
+
+There were some missing "documents" which I removed
+
+There were some documents where only texts was "NO MATCHING LINE IN DOCUMENT" which were also removed
+
+I created another file which sorted all existing sentences by what I assume to be documents.
+Each line consisted of following parameters:
+282 AP890227-0267 Sentence...
+First number, 282 is question number
+Second number/tag is some sort of document origin. So for example, AP would be Associated Press, first tag would be
+possibly date, like 89/02/27, 0267 could be either some sort of page or tag of article, or paragraph,
+or something else that is distinguishable.
+Sentence is of course, sentence.
+
+Three files are created to follow up previous talk.
+document_map.txt shows just what was mentioned above, documents are split per that tag -> AP890227-0267, so left part is
+assumed to be a document, and right tag is part of article, or something. They are the key in displaying the data.
+When data is displayed we can see that some same sentences repeat for multiple questions, that is because
+that sentence is used in answer retrieval for multiple similar questions.
+
+question_map.txt show same thing but it's only sorted per question, just so we can see how many documents are relevant
+to the question.
+
+document_full_tag_map.txt doesn't assume that left part of that tag is document, it assumes that right part is a document.
+So everything is sorted based on whole tag, in contrast to document_map.txt there is very little repeating of
+these "documents".
+
+It's hard to distinguish what is what really, since documentation is shite.
+
+WHAT ARE NEXT STEPS:
+    - Be sure about what document tags really represent
+    - Try to lose question tags so we can eliminate duplicate sentences (easy with existing functions)
+    - If my assumptions are correct, we can form documents and then perform step one in our model plan
+    - If my assumptions are not correct, then it's even easier, since we can work with only sentences (or maybe
+    it isn't easier? :) )
+
+WHAT ARE ISSUES:
+    - as mentioned couple of times, complete knowledge about the dataset. We can't make anything specific if we
+    don't know what to work on
+    - What is Judgement set? (Perhaps this isn't clear only to me haha)
+    - What is ranked list? Top ranked sentences have nothing to do with answer for first question for example, I didn't
+    investigate further.
+
+Some of the questions have been talked about but further evaluation is definitely needed to make sure everybody is on
+right page.
+
+IF YOU WANT TO RUN DATA_CLEANING SCRIPT:
+    - simply open the clean_dataset.py file
+    - read several functions that are available
+    - I commented two functions that might be of interest to you, clean and extract_documents
