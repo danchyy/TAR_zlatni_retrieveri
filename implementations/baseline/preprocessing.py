@@ -4,6 +4,7 @@ from implementations.baseline.sentence import Sentence
 from implementations.baseline.word import Word
 from interfaces.i_preprocessing import IPreprocessing
 from nltk.stem import PorterStemmer
+import cPickle as pickle
 
 
 class Preprocessing(IPreprocessing):
@@ -74,7 +75,65 @@ class Preprocessing(IPreprocessing):
 
         return sentences
 
-    def rawTextToSentences(self, rawString):
+    def dump_trec9_sentences(self, file_path, pickle_name):
+        """
+        Loads the trec9 sentences and creates appropriate Sentence objects. Those objects are then serialized
+        in the destination file which is given as an argument as name
+        :param file_path: Path of trec9 file which contains sentences and their question tag as well as article tag
+        :param pickle_name: Name of pickle file where the serialized list of sentence objects will be saved
+        :return: 
+        """
+        input_file = open(file_path, "r")
+        lines = input_file.readlines()
+        input_file.close()
+        sentences = list()
+        for line in lines:
+            line = line.strip()
+            splitted_parts = line.split(" ", 2)
+            question_ID = splitted_parts[0]
+            article_ID = splitted_parts[1]
+            text = splitted_parts[2]
+            sentence_list = self.rawTextToSentences(text, question_ID, article_ID)
+            for sentence in sentence_list:
+                sentences.append(sentence)
+
+        pickle.dump(sentences, open(pickle_name, "wb"))
+
+    def dump_qa_judgment_sentences(self, file_path, pickle_name):
+        """
+        Loads the qa_judgment sentences and parses text, tags and label for each line. That data is then serialized
+        in a pickle object.
+        :param file_path: Path of qa_judgement file which contains sentences and their question tag as well as article tag and label
+        :param pickle_name: Name of pickle file where the serialized list of sentence objects will be saved
+        :return: 
+        """
+        input_file = open(file_path, "r")
+        lines = input_file.readlines()
+        input_file.close()
+        texts = list()
+        for line in lines:
+            line = line.strip()
+            splitted_parts = line.split(" ", 3)
+            question_ID = splitted_parts[0]
+            article_ID = splitted_parts[1]
+            label = splitted_parts[2]
+            text = splitted_parts[3]
+            texts.append((question_ID, article_ID, text, label))
+
+        pickle.dump(texts, open(pickle_name, "wb"))
+
+    def load_pickle_file(self, pickle_file):
+        return pickle.load(open(pickle_file, "rb"))
+
+    def rawTextToSentences(self, rawString, question_ID=None, article_ID=None):
+        """
+        Parses the given document and store all sentences in it. Question ID and article ID can be given as well.
+        Also, only one sentence can be given which will return one sentence at a time, so list of size 1 will be returned.
+        :param rawString: Document or string given which need to be serialized
+        :param question_ID: ID of the question, optional
+        :param article_ID: ID of the article, optional
+        :return: 
+        """
         rawString = ' '.join(rawString.strip().split())
         doc = self.parser(unicode(rawString))
         sentences = list()
@@ -85,11 +144,15 @@ class Preprocessing(IPreprocessing):
             for token in sent:
                 if offset is None:
                     offset = token.i
+                try:
+                    stem = self.stemmer.stem(token.text)
+                except (Exception):
+                    print token.text
+                    stem = token.text
 
-                stem = self.stemmer.stem(token.text)
                 word = Word(token.i - offset, token.text, token.lemma_, stem, token.tag_, token.ent_type_, token.dep_, token.head.i - offset)
                 wordList.append(word)
 
-            sentences.append(Sentence(wordList))
+            sentences.append(Sentence(wordList, question_ID=question_ID, article_ID=article_ID))
 
         return sentences
