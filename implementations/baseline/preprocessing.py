@@ -5,6 +5,8 @@ from implementations.baseline.word import Word
 from interfaces.i_preprocessing import IPreprocessing
 from nltk.stem import PorterStemmer
 import cPickle as pickle
+from nltk.metrics.distance import edit_distance
+from time import time
 
 
 class Preprocessing(IPreprocessing):
@@ -86,18 +88,20 @@ class Preprocessing(IPreprocessing):
         input_file = open(file_path, "r")
         lines = input_file.readlines()
         input_file.close()
-        sentences = list()
+        question_dict = dict()
         for line in lines:
             line = line.strip()
             splitted_parts = line.split(" ", 2)
             question_ID = splitted_parts[0]
             article_ID = splitted_parts[1]
             text = splitted_parts[2]
-            sentence_list = self.rawTextToSentences(text, question_ID, article_ID)
+            sentence_list = self.rawTextToSentences(text, article_ID)
             for sentence in sentence_list:
-                sentences.append(sentence)
+                if question_ID not in question_dict:
+                    question_dict[question_ID] = list()
+                question_dict[question_ID].append(sentence)
 
-        pickle.dump(sentences, open(pickle_name, "wb"))
+        pickle.dump(question_dict, open(pickle_name, "wb"), 2)
 
     def dump_qa_judgment_sentences(self, file_path, pickle_name):
         """
@@ -110,7 +114,7 @@ class Preprocessing(IPreprocessing):
         input_file = open(file_path, "r")
         lines = input_file.readlines()
         input_file.close()
-        texts = list()
+        texts = dict()
         for line in lines:
             line = line.strip()
             splitted_parts = line.split(" ", 3)
@@ -118,14 +122,56 @@ class Preprocessing(IPreprocessing):
             article_ID = splitted_parts[1]
             label = splitted_parts[2]
             text = splitted_parts[3]
-            texts.append((question_ID, article_ID, text, label))
+            if (question_ID, article_ID) not in texts:
+                texts[(question_ID, article_ID)] = list()
+            texts[(question_ID, article_ID)].append((text, label))
 
-        pickle.dump(texts, open(pickle_name, "wb"))
+        pickle.dump(texts, open(pickle_name, "wb"), 2)
+
+    def set_labels_to_sentences(self, trec_pickle, qa_pickle):
+        """
+        Loads dictionary with trec9_sentences and qa_judgment sentences and stores label from qa_judgment
+        whoose sentence is most similar to trec9 sentence.
+        :param trec_pickle: pickle file containing dictionary with Sentence objects
+        :param qa_pickle: pickle file containing qa_judgment
+        :return: 
+        """
+        question_dict = self.load_pickle_file(trec_pickle)
+        judgment_dict = self.load_pickle_file(qa_pickle)
+        t1 = time()
+        for key_question in question_dict:
+            sentences = question_dict[key_question]
+            for sentence in sentences:
+                article_ID = sentence.get_article_ID()
+                texts = judgment_dict[(key_question, article_ID)]
+                minimal_distance, min_label = None, None
+                for curr_item in texts:
+                    text, label = curr_item[0], curr_item[1]
+                    string_sentence = sentence.__str__()
+                    distance = edit_distance(string_sentence, text)
+                    if not minimal_distance:
+                        minimal_distance, min_label = distance, label
+                    elif distance < minimal_distance:
+                        minimal_distance, min_label = distance, label
+                sentence.set_label(min_label)
+
+        t2 = time()
+        print "diff = " + str(t2-t1)
+        for key_question in question_dict:
+            print key_question + " : "
+            for sentence in question_dict[key_question]:
+                if sentence.get_label():
+                    print sentence.__str__() + " " + sentence.get_label()
+                else:
+                    continue
+                    #print sentence.__str__()
+            print ""
+        pickle.dump(question_dict, open("temp_pickle.p", "wb"))
 
     def load_pickle_file(self, pickle_file):
         return pickle.load(open(pickle_file, "rb"))
 
-    def rawTextToSentences(self, rawString, question_ID=None, article_ID=None):
+    def rawTextToSentences(self, rawString, article_ID=None):
         """
         Parses the given document and store all sentences in it. Question ID and article ID can be given as well.
         Also, only one sentence can be given which will return one sentence at a time, so list of size 1 will be returned.
@@ -153,6 +199,6 @@ class Preprocessing(IPreprocessing):
                 word = Word(token.i - offset, token.text, token.lemma_, stem, token.tag_, token.ent_type_, token.dep_, token.head.i - offset)
                 wordList.append(word)
 
-            sentences.append(Sentence(wordList, question_ID=question_ID, article_ID=article_ID))
+            sentences.append(Sentence(wordList, article_ID=article_ID))
 
         return sentences
