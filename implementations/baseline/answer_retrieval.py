@@ -2,17 +2,20 @@ from gensim.models.keyedvectors import KeyedVectors
 from interfaces.i_answer_retrieval import IAnswerRetrieval
 from scipy import spatial
 import numpy as np
+import heapq
 from operator import itemgetter
 from sentence import Sentence
 from word import Word
 from preprocessing import Preprocessing
+
+
 
 class AnswerRetrieval(IAnswerRetrieval):
 
 
     def __init__(self):
         self.word_vectors = KeyedVectors.load_word2vec_format('~/Word2Vec/googleWord2Vec.bin', binary=True)
-        self.returnK  = 20
+        self.returnK  = 2
 
     def retrieve(self, question, sentences):
         scored_sentences = []
@@ -34,9 +37,12 @@ class AnswerRetrieval(IAnswerRetrieval):
                     wordvec = np.zeros(300, )
 
                 sentence_sum += wordvec
-            scored_sentences.append((sentence, 1-spatial.distance.cosine(sentence_sum, question_sum)))
+            # scored_sentences.append((1-spatial.distance.cosine(sentence_sum, question_sum), sentence))
+            heapq.heappush(scored_sentences, (1-spatial.distance.cosine(sentence_sum, question_sum), sentence))
+            if len(scored_sentences)>self.returnK:
+                heapq.heappop(scored_sentences)
 
-        return sorted(scored_sentences, key = itemgetter(1), reverse=True)[:self.returnK]
+        return sorted(scored_sentences, key = itemgetter(0), reverse=True)
 
 model = AnswerRetrieval()
 
