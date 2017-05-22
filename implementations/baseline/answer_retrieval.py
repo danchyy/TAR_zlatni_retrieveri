@@ -7,6 +7,7 @@ from operator import itemgetter
 from sentence import Sentence
 from word import Word
 from preprocessing import Preprocessing
+from time import time
 
 
 
@@ -14,8 +15,8 @@ class AnswerRetrieval(IAnswerRetrieval):
 
 
     def __init__(self):
-        self.word_vectors = KeyedVectors.load_word2vec_format('~/Word2Vec/googleWord2Vec.bin', binary=True)
-        self.returnK  = 2
+        self.word_vectors = KeyedVectors.load_word2vec_format('../../googleWord2Vec.bin', binary=True)
+        self.returnK  = 20
 
     def retrieve(self, question, sentences):
         scored_sentences = []
@@ -38,26 +39,31 @@ class AnswerRetrieval(IAnswerRetrieval):
 
                 sentence_sum += wordvec
             # scored_sentences.append((1-spatial.distance.cosine(sentence_sum, question_sum), sentence))
-            heapq.heappush(scored_sentences, (1-spatial.distance.cosine(sentence_sum, question_sum), sentence))
+            score = 1-spatial.distance.cosine(sentence_sum, question_sum)
+            if np.isnan(score):
+                continue
+            heapq.heappush(scored_sentences, (score, sentence))
             if len(scored_sentences)>self.returnK:
                 heapq.heappop(scored_sentences)
 
         return sorted(scored_sentences, key = itemgetter(0), reverse=True)
 
-model = AnswerRetrieval()
+def sample_test():
+    model = AnswerRetrieval()
 
-question_word = ["house"]
-sentence_words = ["flower", "building", "home", "car"]
+    question_word = ["house"]
+    sentence_words = ["flower", "building", "home", "car"]
 
-question = "Who was the first president of America?"
-sentences = ["The first president of America was George Washington.", "Donald Trump is the president of America.", "Russian president came to Croatia." ,"First dog in space was Laika."]
+    question = "Who was the first president of America?"
+    sentences = ["The first president of America was George Washington.", "Donald Trump is the president of America.",
+                 "Russian president came to Croatia.", "First dog in space was Laika."]
 
-prepro = Preprocessing()
-prepro.loadParser()
+    prepro = Preprocessing()
+    prepro.loadParser()
 
-sentences = prepro.rawTextToSentences(" ".join(sentences))
+    sentences = prepro.rawTextToSentences(" ".join(sentences))
 
-question = prepro.rawTextToSentences(question)[0]
+    question = prepro.rawTextToSentences(question)[0]
 
-for sentence, score in model.retrieve(question, sentences):
-    print sentence, score
+    for sentence, score in model.retrieve(question, sentences):
+        print sentence, score

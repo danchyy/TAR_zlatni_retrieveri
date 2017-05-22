@@ -27,10 +27,10 @@ for key in objects:
         text = text.strip()
         sent_obj = Sentence2(words, label=label, question_ID=key, article_ID=article_ID)
         new_sentences.append(sent_obj)
-        str_sent = key + " | " + article_ID + " | " + text + " | " + label
+        str_sent = key + " | " + article_ID + " | " + text + " | " + label + "\n"
         string_format.append(str_sent)
     t2 = time()
     print "Diff for one key: " + str(t2-t1)
 
-pickle.dump(objects, open("pickles/sentences_serialized.p", "wb"), protocol=2)
+pickle.dump(new_sentences, open("pickles/sentences_serialized.p", "wb"), protocol=2)
 open("sentences_string.txt", "w").writelines(string_format)

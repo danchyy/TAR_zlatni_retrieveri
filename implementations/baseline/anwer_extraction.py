@@ -24,7 +24,7 @@ class BaselineAnswerExtraction(IAnswerExtraction):
         self.namedEntityTypeToQuestionClass = {
             "PERSON": "AGENT",
             "ORG": "AGENT",
-            "FACILITY": "AGENT",
+            "FAC": "AGENT",
             "NORP": "AGENT",
             "DATE": "TIME",
             "TIME": "TIME",
@@ -43,20 +43,17 @@ class BaselineAnswerExtraction(IAnswerExtraction):
 
 
     def extract(self, question, rankedRelevantSentences):
-        assert isinstance(question, Sentence)
-        assert isinstance(rankedRelevantSentences, list)
-
         questionClass = self.classifyQuestion(question)
 
         if questionClass is None:
-            return self.toString(rankedRelevantSentences[0])
+            return self.toString(rankedRelevantSentences[0][1])
 
         sameClassSentences = filter(lambda sent: self.classMatch(questionClass, self.classifySentence(sent)), rankedRelevantSentences)
 
         if len(sameClassSentences) == 0:
-            return self.toString(rankedRelevantSentences[0])
+            return self.toString(rankedRelevantSentences[0][1])
 
-        return self.extractForClass(questionClass, sameClassSentences[0])
+        return self.extractForClass(questionClass, sameClassSentences[0][1])
 
 
     def classifyQuestion(self, question):
@@ -65,21 +62,29 @@ class BaselineAnswerExtraction(IAnswerExtraction):
                 continue
 
             thisWord = word.wordText.lower()
-            wordClass = self.questionPosTagToClass.get(thisWord)
+            try:
+                wordClass = self.questionPosTagToClass.get(thisWord)
+            except:
+                print wordClass
+                wordClass = None
             if wordClass is not None:
                 return wordClass
 
             if word.wordText.lower() == "how" and i < (len(question.wordList) - 1):
                 nextWord = question.wordList[i+1].wordText.lower()
-                wordClass = self.howDict[nextWord]
+                try:
+                    wordClass= self.howDict[nextWord]
+                except:
+                    wordClass = None
                 if wordClass is not None:
                     return wordClass
 
         return None
 
-    def classifySentence(self, sentence):
+    def classifySentence(self, tup):
         neTypeSet = set()
 
+        sentence = tup[1]
         for word in sentence.wordList:
             if word.neType != "":
                 neTypeSet.add(word.neType)
@@ -88,8 +93,12 @@ class BaselineAnswerExtraction(IAnswerExtraction):
 
     def classMatch(self, questionClass, sentenceNETypeSet):
         for neType in sentenceNETypeSet:
-            if questionClass == self.namedEntityTypeToQuestionClass[neType]:
-                return True
+            try:
+                if questionClass == self.namedEntityTypeToQuestionClass[neType]:
+                    return True
+            except KeyError:
+                print neType
+                continue
 
         return False
 
@@ -116,7 +125,11 @@ class BaselineAnswerExtraction(IAnswerExtraction):
             if word.neType == "" and not started:
                 continue
 
-            if word.neType != "" and not started:
+            try:
+                found_class = self.namedEntityTypeToQuestionClass[word.neType]
+            except:
+                found_class = None
+            if word.neType != "" and questionClass == found_class and not started:
                 started = True
                 extracted.append(word)
 
@@ -124,3 +137,19 @@ class BaselineAnswerExtraction(IAnswerExtraction):
                 extracted.append(word)
 
         return " ".join([word.wordText for word in extracted])
+
+preproc = Preprocessing()
+preproc.loadParser()
+
+questionString = "Who is the Greek God of the Sea?"
+question = preproc.rawTextToSentences(questionString)[0]
+
+
+
+sentenceString = "; Officials on Friday turned on the power to this island in the Aegean Sea , where Greek mythology says the god Apollo was born ."
+sentence = preproc.rawTextToSentences(sentenceString)[0]
+
+print [(word.wordText, word.neType) for word in sentence.wordList]
+
+bae = BaselineAnswerExtraction()
+print bae.extract(question, [(1.0, sentence)])
