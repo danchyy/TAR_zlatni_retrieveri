@@ -192,11 +192,19 @@ class Preprocessing(IPreprocessing):
                     offset = token.i
                 try:
                     stem = self.stemmer.stem(token.text)
-                except (Exception):
+                except Exception:
                     print token.text
                     stem = token.text
 
-                word = Word(token.i - offset, token.text, token.lemma_, stem, token.tag_, token.ent_type_, token.dep_, token.head.i - offset)
+                word = Word(
+                    token.i - offset,
+                    str(token.text),
+                    str(token.lemma_),
+                    str(stem),
+                    str(token.tag_),
+                    str(token.ent_type_),
+                    str(token.dep_),
+                    token.head.i - offset)
                 wordList.append(word)
 
             sentences.append(Sentence(wordList, article_ID=article_ID))
