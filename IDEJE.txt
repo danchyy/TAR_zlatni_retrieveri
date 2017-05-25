@@ -1,0 +1,9 @@
+
+IDEJE:
+
+PREPROCESS:
+	- Počistit Danielov skup rečenica, maknut preduge i prekratke rečenice i duplikate
+
+	- odsječemo sve ove redundantne
+
+	- s parseron odvojit sve rečenice u qa_judgments, ako parser da više rečenica onda provrtit njih s regexon i vidit dal sadrže odgovor ili ne

@@ -181,7 +181,14 @@ class Preprocessing(IPreprocessing):
         :return: 
         """
         rawString = ' '.join(rawString.strip().split())
-        doc = self.parser(unicode(rawString))
+
+        try:
+            doc = self.parser(unicode(rawString))
+        except Exception, e:
+            print "CANT PARSE " + rawString
+            print e.message
+            return list()
+
         sentences = list()
         for sent in doc.sents:
             wordList = list()
@@ -193,7 +200,7 @@ class Preprocessing(IPreprocessing):
                 try:
                     stem = self.stemmer.stem(token.text)
                 except Exception:
-                    print token.text
+                    print "COULD NOT FIND STEM: " + token.text
                     stem = token.text
 
                 word = Word(
