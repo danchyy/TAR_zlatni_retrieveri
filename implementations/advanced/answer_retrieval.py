@@ -4,9 +4,7 @@ from scipy import spatial
 import numpy as np
 import heapq
 from operator import itemgetter
-from sentence import Sentence
-from word import Word
-from preprocessing import Preprocessing
+from implementations.baseline.preprocessing import Preprocessing
 from time import time
 
 
@@ -19,6 +17,12 @@ class AnswerRetrieval(IAnswerRetrieval):
         self.returnK  = 20
 
     def retrieve(self, question, sentences):
+        """
+        
+        :param question: 
+        :param sentences: List of 
+        :return: 
+        """
         scored_sentences = []
 
         question_sum = np.zeros(300, )
@@ -31,9 +35,13 @@ class AnswerRetrieval(IAnswerRetrieval):
 
         for sentence in sentences:
             sentence_sum = np.zeros(300, )
-            for word in sentence.getWords():
+            # Tuple of format: article_id, text, list of tuples: ('q', 'label')
+            article_id, text, question_labels = sentence[0], sentence[1], sentence[2]
+            splitted_words = text.split(" ")
+
+            for word in splitted_words:
                 try:
-                    wordvec = self.word_vectors[word.wordText]
+                    wordvec = self.word_vectors[word]
                 except KeyError:
                     wordvec = np.zeros(300, )
 
@@ -48,7 +56,7 @@ class AnswerRetrieval(IAnswerRetrieval):
 
         return sorted(scored_sentences, key = itemgetter(0), reverse=True)
 
-def sample_test():
+def method():
     model = AnswerRetrieval()
 
     question_word = ["house"]

@@ -4,15 +4,19 @@ from time import time
 import numpy as np
 import re
 
-from implementations.baseline.answer_retrieval import AnswerRetrieval
+from implementations.advanced.answer_retrieval import AnswerRetrieval
 from implementations.baseline.preprocessing import Preprocessing
-from implementations.baseline.anwer_extraction import BaselineAnswerExtraction
+from implementations.advanced.anwer_extraction import BaselineAnswerExtraction
 
 def calculateRR(questionIndex, retrievedSentences):
     rank = 1
     for score, sentence in retrievedSentences:
-        if sentence.question_ID == str(questionIndex) and str(sentence.label).strip() == "1":
-            return 1.0 / float(rank)
+        article_id, text, q_labels = sentence[0], sentence[1], sentence[2]
+        for q, l in q_labels:
+            if q == str(questionIndex) and l == "1":
+                return 1.0 / float(rank)
+        # if sentence.question_ID == str(questionIndex) and str(sentence.label).strip() == "1":
+            # return 1.0 / float(rank)
 
         rank += 1
 
@@ -63,29 +67,49 @@ RR_list = list()
 zero_one_list = list()
 for questionIndex in real_indexes:
     questionString = questionDict[questionIndex]
-    print questionString
+    print "==============================="
+    print "==============================="
+
+    print questionIndex, questionString
     question = preprocessing.rawTextToSentences(questionString)[0]
 
     t1 = time()
     retrievedSentences = answerRetrieval.retrieve(question, sentences)
     for score, sentence  in retrievedSentences:
-        print sentence.question_ID, questionIndex, sentence.label, sentence.__str__()
+        # article_id, text, questions
+        article_id, text, q_labels = sentence[0], sentence[1], sentence[2]
+        label = "-1"
+        question = "0000" #not correct
+        for q, l in q_labels:
+            if l == "1":
+                label = "1"
+                question = q
+                break
+        print article_id, sentence, label
+        # print sentence[0], sentence[1], sentence[2]
+#
 
     t2 = time()
+    rr = calculateRR(questionIndex, retrievedSentences)
+    RR_list.append(rr)
 
     print "Retrieve time = " + str(t2-t1)
+    print "RR: " + str(rr)
+    print "==============================="
+    print "==============================="
+    print "==============================="
 
-    RR_list.append(calculateRR(questionIndex, retrievedSentences))
 
-    t1 = time()
+
+    """t1 = time()
     answer = answerExtraction.extract(question, retrievedSentences)
     print 'Extracted answer: ' + answer
     t2 = time()
 
     print "Extraction time = " + str(t2-t1)
 
-    zero_one_list.append(calculateMatch(answer + "\n", patternDict[questionIndex]))
+    zero_one_list.append(calculateMatch(answer + "\n", patternDict[questionIndex]))"""
 
 print len(real_indexes)
 print "MRR: %.3f" % (np.average(RR_list))
-print "Zero one loss: %.3f" % (np.average(zero_one_list))
+#print "Zero one loss: %.3f" % (np.average(zero_one_list))
