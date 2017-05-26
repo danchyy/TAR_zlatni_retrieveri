@@ -1,0 +1,882 @@
+/usr/bin/python2.7 /home/daniel/study/TAR_zlatni_retrieveri/implementations/baseline/evaluation.py
+[(u';', u''), (u'Officials', u''), (u'on', u''), (u'Friday', u'DATE'), (u'turned', u''), (u'on', u''), (u'the', u''), (u'power', u''), (u'to', u''), (u'this', u''), (u'island', u''), (u'in', u''), (u'the', u'LOC'), (u'Aegean', u'LOC'), (u'Sea', u'LOC'), (u',', u''), (u'where', u''), (u'Greek', u'NORP'), (u'mythology', u''), (u'says', u''), (u'the', u''), (u'god', u''), (u'Apollo', u'ORG'), (u'was', u''), (u'born', u''), (u'.', u'')]
+Greek
+elapsed: 24.723
+116264
+Italy is the largest producer of what?
+/usr/lib/python2.7/site-packages/scipy/spatial/distance.py:505: RuntimeWarning: invalid value encountered in double_scalars
+  dist = 1.0 - np.dot(u, v) / (norm(u) * norm(v))
+Retrieve time = 107.091619015
+636 636 -1 Turkey is now the world`s third largest producer , after the US and Italy .
+636 636 -1 Radicci of Italy is the third - largest manufacturer .
+636 636 -1 After the US and Italy , Turkey is now the third largest producer of tomato paste .
+636 636 -1 Italy was at the bottom of the world league table , and now they`re the largest cement producer .
+706 636 -1 Currently it is the world`s largest and only U.S. producer of aspartame .
+409 636 -1 Currently it is the world`s largest and only U.S. producer of aspartame .
+705 636 -1 Currently it is the world`s largest and only U.S. producer of aspartame .
+248 636 -1 It is the largest McDonald`s in the world .
+636 636 -1 The largest European supplier is Italcementi of Italy , although Holderbank of Switzerland is bigger worldwide .
+639 636 -1 ITALY is the world`s third - largest producer of machine tools , behind Japan and Germany , but significantly it has only four companies among the 40 leading European manufacturers .
+636 636 -1 ITALY is the world`s third - largest producer of machine tools , behind Japan and Germany , but significantly it has only four companies among the 40 leading European manufacturers .
+636 636 1 Some olive oil is produced in Argentina and California but Italy , Spain , France , Greece and Tunisia - the fifth largest producer - account for the bulk of the 1.7 m tonnes produced in the world every year .
+Extracted answer: Blue Circle
+Extraction time = 0.00718998908997
+What is the population of Mexico?
+Retrieve time = 41.3720068932
+329 329 -1 `` In Mexico , half of the population is under the age of 15 .
+329 329 -1 In 1985 the urban population was 56 percent and climbing ; Mexico City`s population is 19 million .
+329 329 -1 Chiapas , on the Guatemalan border , is located 700 km south of Mexico City , and it is one of the most backward and poorest states in the country and has a predominantly Indian population .
+329 329 -1 Today , 55 per cent of the population of Mexico is mestiza .
+329 329 1 Every year , the report said , the world adds the equivalent of a nation the size of Mexico to the population -- about 80 million people .
+Extracted answer: Hispanics of the
+Extraction time = 0.000662088394165
+What city houses the U.S. headquarters of Procter and Gamble?
+Retrieve time = 15.9730761051
+725 723 -1 In the most recent incident , November 17 attacked the local offices of Procter & Gamble , a U.S .- based multinational manufacturer of household products .
+723 723 -1 While most Moscow - based companies such as Coca - Cola , IBM and 3 M have representative offices in the city , other companies , including Procter & Gamble , Phillip Morris , RJR Reynolds and Gillette , have made St Petersburg their CIS headquarters .
+726 723 -1 While most Moscow - based companies such as Coca - Cola , IBM and 3 M have representative offices in the city , other companies , including Procter & Gamble , Phillip Morris , RJR Reynolds and Gillette , have made St Petersburg their CIS headquarters .
+413 723 -1 While most Moscow - based companies such as Coca - Cola , IBM and 3 M have representative offices in the city , other companies , including Procter & Gamble , Phillip Morris , RJR Reynolds and Gillette , have made St Petersburg their CIS headquarters .
+413 723 -1 Officers will now be aligned with the P & G parent company or with one of the six new management operating units : Procter & Gamble Worldwide , Procter & Gamble International , Procter & Gamble USA , Procter & Gamble Europe , Procter & Gamble Far East and Procter & Gamble Canada and Latin America .
+723 723 -1 Officers will now be aligned with the P & G parent company or with one of the six new management operating units : Procter & Gamble Worldwide , Procter & Gamble International , Procter & Gamble USA , Procter & Gamble Europe , Procter & Gamble Far East and Procter & Gamble Canada and Latin America .
+727 723 -1 Officers will now be aligned with the P & G parent company or with one of the six new management operating units : Procter & Gamble Worldwide , Procter & Gamble International , Procter & Gamble USA , Procter & Gamble Europe , Procter & Gamble Far East and Procter & Gamble Canada and Latin America .
+726 723 -1 Officers will now be aligned with the P & G parent company or with one of the six new management operating units : Procter & Gamble Worldwide , Procter & Gamble International , Procter & Gamble USA , Procter & Gamble Europe , Procter & Gamble Far East and Procter & Gamble Canada and Latin America .
+725 723 -1 Officers will now be aligned with the P & G parent company or with one of the six new management operating units : Procter & Gamble Worldwide , Procter & Gamble International , Procter & Gamble USA , Procter & Gamble Europe , Procter & Gamble Far East and Procter & Gamble Canada and Latin America .
+724 723 -1 Officers will now be aligned with the P & G parent company or with one of the six new management operating units : Procter & Gamble Worldwide , Procter & Gamble International , Procter & Gamble USA , Procter & Gamble Europe , Procter & Gamble Far East and Procter & Gamble Canada and Latin America .
+723 723 -1 At Brooklands , in Weybridge , Surrey , both Sony and Procter & Gamble are building huge new headquarters only a few miles from their old homes .
+727 723 -1 between Procter & Gamble Co. of the U.S. and Italy`s Finaf
+413 723 -1 between Procter & Gamble Co. of the U.S. and Italy`s Finaf
+723 723 -1 Procter & Gamble Co. said today that it plans to build a combined headquarters and technical center on Japan`s Rokko Island , where a new city is being built along Osaka Bay .
+726 723 -1 Procter & Gamble Co. said today that it plans to build a combined headquarters and technical center on Japan`s Rokko Island , where a new city is being built along Osaka Bay .
+725 723 1 Procter & Gamble Co. said today that it plans to build a combined headquarters and technical center on Japan`s Rokko Island , where a new city is being built along Osaka Bay .
+724 723 -1 Procter & Gamble Co. said today that it plans to build a combined headquarters and technical center on Japan`s Rokko Island , where a new city is being built along Osaka Bay .
+413 723 -1 Procter & Gamble Co. said today that it plans to build a combined headquarters and technical center on Japan`s Rokko Island , where a new city is being built along Osaka Bay .
+413 723 -1 The soap wars between Unilever and Procter & Gamble spilled into the courts yesterday as Unilever took legal action to stop Procter making ` untruthful and misleading ` statements about its new generation of detergents .
+726 723 -1 Fighting for flag and shelf space store by store across Shanghai , Unilever and Procter & Gamble both want to win a dominant position in this important city .
+Extracted answer: In the most recent incident , November 17 attacked the local offices of Procter & Gamble , a U.S .- based multinational manufacturer of household products
+Extraction time = 0.0022759437561
+What is a film starring Jude Law?
+Retrieve time = 15.9967558384
+720 720 -1 In the action film category was " Above the Law , " a film written , produced , and starring Hollywood newcomer Steven Seagal . "
+412 720 -1 In the action film category was " Above the Law , " a film written , produced , and starring Hollywood newcomer Steven Seagal . "
+719 720 -1 In the action film category was " Above the Law , " a film written , produced , and starring Hollywood newcomer Steven Seagal . "
+722 720 -1 ; Spencer , who also appears in " Green Card , " the movie starring Gerard Depardieu , says working on " L.A. Law " is genuine heaven for an actor . "
+563 720 -1 Ryan was named 1989`s funniest film actress and Crystal funniest film actor for their lead roles in the movie .
+722 720 -1 In his other films , she portrayed a harried housewife ( `` What Have I Done to Deserve This ? `` ) , a psychiatrist ( `` Matador `` ) and a flamboyant transsexual ( `` Law of Desire `` ) .
+590 720 -1 In the 1958 movie starring Paul Newman and Elizabeth Taylor , that aspect of the story is fuzzy , at best .
+722 720 -1 He also appeared as an attorney on the hit TV show `` L.A. Law `` and had a role in `` Time Bandits , `` a 1981 British film comedy starring John Cleese and Sean Connery .
+722 720 -1 Theodore Wilson , a journeyman television and movie actor who appears in the upcoming Mel Brooks film " Life Stinks , " has died , a relative said .
+563 720 -1 The actress describes the movie as a " film noir . "
+722 720 -1 Other vintage films : " Tokyo Joe , " a 1949 drama that`s one of Humphrey Bogart`s least - known films ; " The Lady in Question , " in which Rita Hayworth and Glenn Ford made their first joint cinematic appearance ( 1940 ) ; " I Am the Law , " a 1938 film that had Edward G. Robinson -- playing against type -- as a professor fighting gangsters , and " Ten Wanted Men , " a 1955 Randolph Scott Western .
+860 720 -1 It Could Happen To You is a romantic comedy starring Nicolas Cage , nephew of Francis Coppola , and Bridget Fonda , daughter of Peter , and directed by Andrew Bergman , son of Ingmar : if only .
+449 720 1 It Could Happen To You is a romantic comedy starring Nicolas Cage , nephew of Francis Coppola , and Bridget Fonda , daughter of Peter , and directed by Andrew Bergman , son of Ingmar : if only .
+862 720 -1 It Could Happen To You is a romantic comedy starring Nicolas Cage , nephew of Francis Coppola , and Bridget Fonda , daughter of Peter , and directed by Andrew Bergman , son of Ingmar : if only .
+861 720 -1 It Could Happen To You is a romantic comedy starring Nicolas Cage , nephew of Francis Coppola , and Bridget Fonda , daughter of Peter , and directed by Andrew Bergman , son of Ingmar : if only .
+498 720 -1 The new comedies are : `` Major Dad , `` starring Gerald McRaney ( `` Simon & Simon `` ) as a newlywed and recently retired Marine ; `` The People Next Door , `` a fantasy starring Jeffrey Jones as a cartoonist whose imaginings turn real , co - starring Mary Gross as his psychologist wife ; and `` The Famous Teddy Z , `` from `` Frank ` s Place `` creator Hugh Wilson , starring Jon Cryer ( `` Pretty in Pink `` ) as a young , hotshot Hollywood agent .
+590 720 -1 CBS says it`s beginning a national search for an actor and actress to play the late comedians in a TV movie about the stars of `` I Love Lucy . ``
+307 720 1 Other pictures bound to get a lot of attention are : " Steel Magnolias , " the Herbert Ross - directed adaptation of the hit off - Broadway play set in a Southern beauty salon ; " Born on the 4th of July " ( Universal ) , Oliver Stone`s profile of paraplegic Vietnam hero Ron Kovic ; " Letters " ( MGM / UA ) , a relationship movie that teams Jane Fonda with Robert De Niro and reteams director Marty Ritt with his " Norma Rae " writers Irving Ravitch and Harriet Frank , Jr. ) ; " Family Business " ( Tri - Star ) , a three - generation family drama starring Sean Connery , Dustin Hoffman and Matthew Broderick and directed by Sidney Lumet ; " Always , " another " serious " Steven Spielberg movie , this one starring Richard Dreyfuss and Holly Hunter ; and " Dead Poet`s Society " ( Touchstone ) , which stars Robin Williams as a popular teacher in a boy`s prep school and directed by the gifted Australian Peter Weir .
+649 720 -1 Other pictures bound to get a lot of attention are : " Steel Magnolias , " the Herbert Ross - directed adaptation of the hit off - Broadway play set in a Southern beauty salon ; " Born on the 4th of July " ( Universal ) , Oliver Stone`s profile of paraplegic Vietnam hero Ron Kovic ; " Letters " ( MGM / UA ) , a relationship movie that teams Jane Fonda with Robert De Niro and reteams director Marty Ritt with his " Norma Rae " writers Irving Ravitch and Harriet Frank , Jr. ) ; " Family Business " ( Tri - Star ) , a three - generation family drama starring Sean Connery , Dustin Hoffman and Matthew Broderick and directed by Sidney Lumet ; " Always , " another " serious " Steven Spielberg movie , this one starring Richard Dreyfuss and Holly Hunter ; and " Dead Poet`s Society " ( Touchstone ) , which stars Robin Williams as a popular teacher in a boy`s prep school and directed by the gifted Australian Peter Weir .
+563 720 -1 Best actor -- miniseries / TV movie : Robert Duvall , " Lonesome Dove " ; John Gielgud , " War and Remembrance , Part VIII - XII " ; Ben Kingsley , " Murderers Among Us : The Simon Wiesenthal Story " ; Lane Smith , " Final Days " ; James Woods , " My Name Is Bill W. " Best supporting actress -- miniseries / TV movie : Anjelica Huston , " Lonesome Dove " ; Amy Madigan , " Roe vs .
+Extracted answer: Above the Law
+Extraction time = 0.000487089157104
+What type of hunting are retrievers used for?
+Retrieve time = 15.7599618435
+622 622 -1 `` These are the type of guns used for hunting large game . ``
+622 622 -1 Hunting dogs , such as golden retrievers , are normally too friendly . "
+622 622 -1 Like all good animal acts , this one is based on the dog`s natural instinct to fetch and retrieve , one of the reasons that Labs and other hunting dogs have predominated .
+622 622 -1 The Fund for Animals is particularly opposed to hunting with bow and arrow , the only type of hunting now allowed on the island . "
+537 622 -1 The Fund for Animals is particularly opposed to hunting with bow and arrow , the only type of hunting now allowed on the island . "
+622 622 -1 But now they`re using anything , as long as it`s a working or hunting - class dog .
+217 622 -1 `` He says they don`t really come for the hunting or fishing .
+622 622 -1 One man fired at Agopian , using solid shotgun slugs , the type used in Greece for boar - hunting .
+622 622 1 When they go hunting they want to be able to hunt and to find some birds .
+Extracted answer: `` These are the type of guns used for hunting large game .
+Extraction time = 0.000155925750732
+What city did the Flintstones live in?
+Retrieve time = 15.9558868408
+744 693 -1 And now he had his answer : They liked it -- the Mozart , the " Wizard of Oz " medley in which he portrayed all the characters , the " blackbird singing in the dead of night " and the " Suzy Q. " They liked it not only in Salt Lake City but in 115 other cities , and there is no indication that will change .
+693 693 -1 ; Though the unceasing nostalgia boom may be the reason why a big - screen remake of " The Fugitive " is in the works and a live - action version of " The Flintstones " TV cartoon show is planned , it`s not the only reason movie studios are turning to television for subject matter .
+247 693 -1 How did we ever land in the streets ?
+693 693 -1 It will be the first prime - time , network animated series since `` The Jetsons `` and `` The Flintstones `` in the 1960 s. `` The Simpsons `` is set in the mythical Midwestern city of Springfield , a burg replete with a nuclear power plant and a toxic waste dump .
+323 693 -1 In a sense it shows that we`re not really that far off from primitive tribes , that we live in a global village and that we still look to the equivalent of the squire on the hill . "
+518 693 -1 Who in my generation did not know the story ?
+892 693 1 `` It ` s here , and we want to all jump on the train and ride this thing for the betterment of the city of Deadwood and the state of South Dakota , `` he said .
+693 693 -1 QUESTION : Whatever became of plans to make a feature film version of " The Flintstones " ? I believe it was to star John Goodman as Fred Flintstone .
+388 693 -1 No city can dispute your historical fame ! " ; After all that puffy back - patting , it was natural the citizenry would throw up a statue or two to commemorate their self - designated place in history , and indeed , they did .
+633 693 -1 You can tell that the world of entertainment has really gone downhill when people get pleasure out of watching hermit crabs race in a bar ( " And of the Winners , Word Is That They Clawed Their Way to the Top , " Aug. 29 ) .
+693 693 -1 The whole world - apart from Ulan Bator maybe - is about to be swamped with Flintstones ` merchandising , coinciding with the release of a film based on the cartoon caveman characters .
+877 693 -1 But I think one of the reasons they want to live and work here is the surrounding area , and we have to preserve that . "
+662 693 -1 My neighborhood looked the same in 1946 as it does now .
+627 693 1 ) A recent article about Kerr in the Food section of this newspaper , noting his return to broadcasting this autumn after an absence of 15 years , began with the words " Does anyone remember the Galloping Gourmet ? " Whoa ! Better to ask , does anyone who ever saw the show not remember it ?
+473 693 -1 " I wanted to use the homeless people in the show so people could see them as human beings , and ( know they were ) not just actors , " Gibbs said in an interview .
+410 693 -1 They came in here in their moon suits , like something out of ` Ghostbusters , ` " said the 28 - year - old Blackthorne Avenue resident . "
+546 693 -1 Allison said the Crickets played in garages in Lubbock in the 1950s , but did not take their name from a cricket they heard chirping as portrayed in the movie about Holly .
+677 693 -1 And if you`ve noticed in my films and TV series in the past eight years , you`ll know that somehow I`ve worked in the name ` Sekulovich .
+560 693 2 ; " The opening scene in the movie is with this real twit , who wants to hire V.I. to investigate his rival , and he says , very suggestively , ` Why don`t you give me a taste of what you do ? ` and they had written in some stuff where I kind of go along with this at first .
+232 693 -1 The electronics for that first unit took up almost the entire back of the truck , and while the research I wanted to do was never funded , I did discover that if I put the right type of image in the right location , I could safely drive while watching television . "
+Extracted answer: The Fugitive
+Extraction time = 0.000185966491699
+What is "Nine Inch Nails"?
+Retrieve time = 15.9049701691
+439 439 -1 ; The real hit of this show -- in every way -- was Nine Inch Nails .
+439 439 -1 Nine Inch Nails bore into the Warfield .
+439 439 1 I`m into Nine Inch Nails because I`m a big Ministry fan , which does a similar kind of music . "
+Extracted answer: Pretty Hate Machine
+Extraction time = 0.000396966934204
+What did brontosauruses eat?
+Retrieve time = 15.8358941078
+571 297 -1 What to do ?
+527 297 -1 How did they do it ?
+662 297 -1 What do they want her to do ?
+203 297 -1 When you`re sick you have to eat what looks good to you . .
+570 297 -1 How do I know ?
+516 297 -1 Why not do it all ? "
+432 297 -1 But I am not allowed to eat .
+487 297 -1 ; What more do you want ?
+297 297 -1 `` People are just not in the habit of eating right , and when they do eat fruits and vegetables they eat the same things , `` Bunch said .
+657 297 -1 To visualize it , think of what a 5 year old does when he`s told to eat his spinach .
+878 297 -1 What can you do ?
+880 297 -1 What can you do ?
+882 297 -1 What can you do ?
+879 297 -1 What can you do ?
+881 297 -1 What can you do ?
+509 297 -1 So what do we do to change that ?
+455 297 -1 One is too much , and so what do you do ?
+297 297 -1 You eat and drink too much .
+879 297 -1 What can you do ? ` "
+878 297 -1 What can you do ? ` "
+Extracted answer: What to do
+Extraction time = 7.89165496826e-05
+Who coined the term "cyberspace" in his novel "Neuromancer"?
+Retrieve time = 15.6493668556
+469 469 1 A fresh perspective comes from William Gibson , the Vancouver - based author who coined the term ` cyberspace ` in the mid-1980s in his best - selling science fiction novel Neuromancer .
+Extracted answer: William Gibson
+Extraction time = 0.00441193580627
+What time of year is air travel the heaviest?
+Retrieve time = 15.9309210777
+841 841 -1 The noise problem is especially intense at Christmas time , the busiest travel period of the year at O`Hare .
+839 841 -1 The noise problem is especially intense at Christmas time , the busiest travel period of the year at O`Hare .
+842 841 -1 Well , Washington is getting ready to do it again , only this time the area of American life targeted for disintegration is air travel .
+840 841 -1 After world air travel declined last year for the first time in the history of the jet aircraft , the manufacturers are now expecting it to grow by between 4 - 5.5 per cent a year to the turn of the century .
+841 841 -1 After world air travel declined last year for the first time in the history of the jet aircraft , the manufacturers are now expecting it to grow by between 4 - 5.5 per cent a year to the turn of the century .
+841 841 1 The summer season traditionally is the time of year when each airline makes its most money .
+Extracted answer: Thanksgiving
+Extraction time = 0.0002760887146
+Who was Monet?
+Retrieve time = 15.7339410782
+347 347 -1 Not all of it was accepted , but some 40 works were finally picked out , of Cezanne , Manet , Degas , Sisley , Pissarro , Monet , Renoir . . .
+347 347 1 Why Monet painted series is not absolutely certain , he said , but the Monet specialist thinks one reason was to show the wide - ranging effects of nature .
+Extracted answer: Cezanne
+Extraction time = 0.000221014022827
+When did Princess Diana and Prince Charles get married?
+Retrieve time = 15.8635520935
+422 422 1 1981 : Lady Diana Spencer married Prince Charles .
+Extracted answer: 1981
+Extraction time = 0.00185012817383
+Who portrayed Jake in the television show, "Jake and the Fatman"?
+Retrieve time = 15.9245300293
+497 497 -1 Guy Wilson says he was a production assistant on such television shows as " Jake & the Fatman . "
+498 497 -1 Guy Wilson says he was a production assistant on such television shows as " Jake & the Fatman . "
+497 497 -1 Jake and the Fatman " CBS 10.1 ; 31 . "
+497 497 -1 Jake and the Fatman " CBS 8.2 ; 55 . "
+498 497 -1 Jake and the Fatman " CBS 10.1 ; 31 . "
+497 497 -1 Jake and the Fatman " CBS 10.5 ; 30 . "
+497 497 -1 `` Jake and the Fatman , `` CBS , 12.3 .
+498 497 -1 Jake and the Fatman " CBS 11.0 ; 47 . "
+498 497 -1 `` Jake and the Fatman , `` CBS , 12.3 .
+497 497 -1 Jake and the Fatman " CBS 11.0 ; 47 . "
+498 497 -1 Jake and the Fatman " CBS 13.4 12.3 ; 13 . "
+498 497 -1 Jake and the Fatman " CBS 13.6 ; 27 . "
+498 497 1 ; ( box ) " Jake and the Fatman , " which became just " Jake " in the 1994 - 95 season when William Conrad left to become commercial spokesman for Fatburgers , continues with Joe Penny as detective Jake Styles .
+497 497 1 ; ( box ) " Jake and the Fatman , " which became just " Jake " in the 1994 - 95 season when William Conrad left to become commercial spokesman for Fatburgers , continues with Joe Penny as detective Jake Styles .
+Extracted answer: Guy Wilson
+Extraction time = 0.000179052352905
+What is the population of Japan?
+Retrieve time = 15.7670331001
+536 219 -1 Despite the fact that 55 percent of the country is illiterate , the electorate -- which is more than twice the population of the United States -- is extraordinarily mature .
+219 219 1 Japan 41 % 31 % U.S. 27 41 Germany 17 14 How important is it for your country to try to be the world`s leading economic power ?
+Extracted answer: Despite the fact that 55 percent of the country is illiterate , the electorate -- which is more than twice the population of the United States -- is extraordinarily mature
+Extraction time = 0.000205993652344
+What are John C. Calhoun and Henry Clay known as?
+Retrieve time = 15.6741101742
+289 289 1 It would have made quite a difference to American history if such limitations had ended after 12 years the careers of such illustrious legislators as Henry Clay , Daniel Webster , John C. Calhoun , Thomas Hart Benton , Charles Sumner , James G. Blaine , Henry Cabot Lodge , Robert M. LaFollette , George W. Norris , Sam Rayburn , Robert P. Wagner , William E. Borah , Arthur Vandenberg , George Aiken , Robert A. Taft , Jacob Javits and so many others .
+Extracted answer: Dances With Wolves
+Extraction time = 0.000400066375732
+What was the alternate to VHS?
+Retrieve time = 15.996201992
+766 766 -1 ( The same can be done with VHS and VHS - C camcorders .
+766 766 -1 ; Q When will the video companies release more movies on Super VHS ? ; A There are still too few people who own Super VHS VCRs to interest the studios in the format , and the situation won`t change soon .
+768 766 1 Indeed , Matsushita`s support in the early 1980s for the VHS video - tape format was a key factor in the demise of Sony`s competing Betamax format . "
+426 766 1 Indeed , Matsushita`s support in the early 1980s for the VHS video - tape format was a key factor in the demise of Sony`s competing Betamax format . "
+767 766 1 Indeed , Matsushita`s support in the early 1980s for the VHS video - tape format was a key factor in the demise of Sony`s competing Betamax format . "
+768 766 -1 But potential buyers can be confused by the three camera formats , 8 - millimeter , VHS and VHS - C. Many people still think , wrongly , that an 8 mm tape can be played on a VHS videocassette recorder .
+426 766 -1 But potential buyers can be confused by the three camera formats , 8 - millimeter , VHS and VHS - C. Many people still think , wrongly , that an 8 mm tape can be played on a VHS videocassette recorder .
+766 766 -1 Once the VHS format got a slight edge over Sony`s Betamax , for example , video rental shops began stocking more VHS tapes .
+767 766 -1 ) Old VHS tapes look the same on Super VHS machines , but newly recorded tapes produce a picture with more than 400 horizontal lines , compared with 240 or so for VHS .
+768 766 -1 ) Old VHS tapes look the same on Super VHS machines , but newly recorded tapes produce a picture with more than 400 horizontal lines , compared with 240 or so for VHS .
+767 766 -1 Following are the main tape formats : -- VHS and Super VHS .
+766 766 -1 Following are the main tape formats : -- VHS and Super VHS .
+426 766 -1 Following are the main tape formats : -- VHS and Super VHS .
+768 766 -1 Following are the main tape formats : -- VHS and Super VHS .
+768 766 -1 That`s no surprise , considering VHS is the most popular format for home videocassette players .
+766 766 -1 That`s no surprise , considering VHS is the most popular format for home videocassette players .
+766 766 -1 ; The biggest advantage to the VHS - C tape is that , with an adapter , it can easily play back in the home VHS deck .
+426 766 -1 But for the more than 6 million owners of super - VHS ( S - VHS ) high - resolution videocassette players , it might seem as though very little has been released in this format -- and what has been released is difficult to find .
+766 766 -1 JVC says it is developing a 40 - minute VHS - C cassette and that an enhanced Super VHS version of VHC - C ( or S - VHS - C ) due this fall would be long enough to show a feature film in the extended - play mode with little detectable picture deterioration .
+768 766 -1 That is especially good news for anyone who has laid out big bucks for a Super - VHS VCR , only to find that pre - recorded material in the improved - image format is almost non - existent .
+Extracted answer: Super VHS
+Extraction time = 0.000174999237061
+How many states have a "lemon law" for new automobiles?
+Retrieve time = 15.707734108
+486 486 -1 Most states , including California , have lemon laws that give new car owners specific legal rights .
+486 486 1 Forty - four states and the District of Columbia have adopted so - called lemon laws to aid consumers with certain problems related to new vehicles .
+Extracted answer: Forty - four
+Extraction time = 0.000816106796265
+Where is Basque country located?
+Retrieve time = 15.956207037
+430 430 1 But the Basque leader`s ideal is to have an enlarged Basque country , incorporating parts of south - west France and the adjoining Spanish province of Navarre , forming a Basque nation within the European Union .
+Extracted answer: France
+Extraction time = 0.000234842300415
+Who built the first pyramid?
+Retrieve time = 15.8451459408
+256 348 -1 The tomb of the architect Imhotep at Sakkara , where more than 4,600 years ago he built for Pharaoh Zozer a step pyramid , an architectural feat that quickly evolved into the true pyramid .
+348 348 1 The tomb of the architect Imhotep at Sakkara , where more than 4,600 years ago he built for Pharaoh Zozer a step pyramid , an architectural feat that quickly evolved into the true pyramid .
+Extracted answer: Imhotep at Sakkara
+Extraction time = 0.000224113464355
+What is porphyria?
+Retrieve time = 15.9853699207
+207 374 -1 What is time ? "
+207 374 -1 What is time ? "
+608 374 -1 What is the result ?
+414 374 -1 Not What
+573 374 -1 Not What
+725 374 -1 " What is it ? " asked the mother . "
+727 374 1 " What is it ? " asked the mother . "
+571 374 -1 What to do ?
+710 374 -1 This is a
+525 374 -1 Their finding : chronic fatigue syndrome , formerly known as chronic Epstein - Barr virus syndrome , is rare if it exists at all .
+542 374 -1 What really surprised us is that the defect was exactly the kind of change that only occurs when ( genetic material ) is exposed to ultraviolet light , " said Douglas Brash , who led the research for the Yale group .
+542 374 1 It ` s very sobering , realizing being brown is not as beautiful as you think it is , `` said La Follette , who was diagnosed three years ago as having basal cell carcinoma , the most common and least dangerous form of skin cancer .
+611 374 -1 This problem of non - compliance in hypertension therapy is a major contributing factor to the reason cardiovascular disease is the No
+588 374 -1 What has happened ?
+533 374 1 What has happened ?
+670 374 -1 What has happened ?
+836 374 -1 It is simply not true . "
+455 374 1 It is simply not true . "
+868 374 -1 Which is not to say that Yiddish is quite dead yet .
+869 374 -1 Which is not to say that Yiddish is quite dead yet .
+Extracted answer: Yiddish
+Extraction time = 0.00148010253906
+What city is the Kentucky Horse Park near?
+Retrieve time = 16.2406439781
+873 876 -1 And today , while visiting Keeneland , he`ll look in on John Henry , who at 15 is a leading attraction at the Kentucky Horse Park .
+403 876 -1 And today , while visiting Keeneland , he`ll look in on John Henry , who at 15 is a leading attraction at the Kentucky Horse Park .
+875 876 -1 And today , while visiting Keeneland , he`ll look in on John Henry , who at 15 is a leading attraction at the Kentucky Horse Park .
+877 876 -1 And today , while visiting Keeneland , he`ll look in on John Henry , who at 15 is a leading attraction at the Kentucky Horse Park .
+874 876 -1 And today , while visiting Keeneland , he`ll look in on John Henry , who at 15 is a leading attraction at the Kentucky Horse Park .
+876 876 -1 And today , while visiting Keeneland , he`ll look in on John Henry , who at 15 is a leading attraction at the Kentucky Horse Park .
+874 876 1 John Henry is scheduled to arrive today from Lexington , Ky. , where he lives at the Kentucky Horse Park , to be the grand marshal for a two - day Oak Tree Racing Assn .
+875 876 1 John Henry is scheduled to arrive today from Lexington , Ky. , where he lives at the Kentucky Horse Park , to be the grand marshal for a two - day Oak Tree Racing Assn .
+873 876 1 John Henry is scheduled to arrive today from Lexington , Ky. , where he lives at the Kentucky Horse Park , to be the grand marshal for a two - day Oak Tree Racing Assn .
+877 876 1 John Henry is scheduled to arrive today from Lexington , Ky. , where he lives at the Kentucky Horse Park , to be the grand marshal for a two - day Oak Tree Racing Assn .
+876 876 1 John Henry is scheduled to arrive today from Lexington , Ky. , where he lives at the Kentucky Horse Park , to be the grand marshal for a two - day Oak Tree Racing Assn .
+Extracted answer: And today , while visiting Keeneland , he`ll look in on John Henry , who at 15 is a leading attraction at the Kentucky Horse Park
+Extraction time = 0.000248908996582
+What king was forced to agree to the Magna Carta?
+Retrieve time = 15.860462904
+441 441 1 it was King John who was forced to submit to the Magna Carta
+LAW
+LAW
+LAW
+LAW
+Extracted answer: it was King John who was forced to submit to the Magna
+Extraction time = 0.000205993652344
+What was the name of Jacques Cousteau's ship?
+Retrieve time = 15.7159349918
+668 667 -1 Simone Cousteau , who accompanied her husband , Jacques - Yves Cousteau , on hundreds of voyages aboard the marine research ship Calypso , has died at her home in Monaco , the Cousteau Foundation said Monday .
+667 667 1 Simone Cousteau , who accompanied her husband , Jacques - Yves Cousteau , on hundreds of voyages aboard the marine research ship Calypso , has died at her home in Monaco , the Cousteau Foundation said Monday .
+Extracted answer: World War I. Cousteau
+Extraction time = 0.000241994857788
+What tourist attractions are there in Reims?
+Retrieve time = 15.8009901047
+714 411 -1 So it is at most of Jordan`s rich tourist attractions .
+711 411 -1 So it is at most of Jordan`s rich tourist attractions .
+411 411 -1 So it is at most of Jordan`s rich tourist attractions .
+411 411 -1 Atlanta`s tourist attractions are almost diametrically opposed to what you might expect in the self - proclaimed capital of the south .
+711 411 -1 Atlanta`s tourist attractions are almost diametrically opposed to what you might expect in the self - proclaimed capital of the south .
+411 411 -1 There are few tourist attractions ; instead , vacationers must be satisfied with the lush beauty of tropical islands .
+411 411 -1 There are few tourist attractions ; instead , vacationers must be satisfied with the lush beauty of tropical islands .
+411 411 -1 There are forces which want to play up its mass tourist attractions , to turn it into a mini - Blackpool .
+548 411 -1 It is Denmark`s biggest tourist attraction outside Copenhagen .
+548 411 -1 The famous erotic temples at Khajuraho in central India are one of India`s main tourist attractions .
+711 411 -1 That kind of exposure is important , tourism experts said , because the state spends woefully little on out - of - state promotion , and individual tourist attractions lack the capital to heavily advertise their attractions back East .
+713 411 -1 That kind of exposure is important , tourism experts said , because the state spends woefully little on out - of - state promotion , and individual tourist attractions lack the capital to heavily advertise their attractions back East .
+411 411 -1 That kind of exposure is important , tourism experts said , because the state spends woefully little on out - of - state promotion , and individual tourist attractions lack the capital to heavily advertise their attractions back East .
+714 411 -1 That kind of exposure is important , tourism experts said , because the state spends woefully little on out - of - state promotion , and individual tourist attractions lack the capital to heavily advertise their attractions back East .
+714 411 -1 For those tourist attractions that are not qualified for the abovementioned conditions and not approved by the tourism authorities must stop accepting tourists .
+411 411 -1 For those tourist attractions that are not qualified for the abovementioned conditions and not approved by the tourism authorities must stop accepting tourists .
+711 411 -1 For those tourist attractions that are not qualified for the abovementioned conditions and not approved by the tourism authorities must stop accepting tourists .
+711 411 -1 By agreement with the leading tourist agencies the attraction will be included in all tourist excursions .
+711 411 -1 The states , locales and tourist attractions that are most successful in attracting foreign visitors are the ones who began their efforts before the dollar`s big decline , said Hawaii`s Cotter .
+714 411 -1 " What the movie did was make us a tourist attraction , " Wolff said . "
+Extracted answer: So it is at most of Jordan`s rich tourist attractions
+Extraction time = 0.000131845474243
+How long would it take to get from Earth to Mars?
+Retrieve time = 15.7459881306
+332 332 -1 Returning samples from Mars could help settle questions of whether life ever existed on Mars , and why Mars and Earth evolved so differently .
+377 332 -1 `` This is the first time we`ve had a chance to use a spacecraft designed to explore another planet to come back and look at our own Earth and moon as if we were alien observers , `` Johnson said .
+332 332 -1 You can just go to Mars . "
+332 332 -1 There is no test for Mars exploration we can`t do more cheaply or safely in Earth orbit or on the Earth itself . ``
+332 332 1 The astronauts would probably have to spend a year there , waiting for Mars to reach the right point in its orbit for them to launch themselves back toward Earth .
+Extracted answer: a year
+Extraction time = 0.000203132629395
+Who assassinated President McKinley?
+Retrieve time = 15.9289741516
+381 381 -1 President William McKinley and presidential hopeful Robert Fitzgerald Kennedy were assassinated within months of speaking here .
+381 381 -1 John Wilkes Booth , who assassinated President Lincoln , was an actor .
+381 381 -1 William McKinley , re - elected in 1900 , was assassinated in 1901 at the age of 58 .
+381 381 -1 Roosevelt became president after William McKinley was assassinated in 1901 and served until 1909 .
+381 381 -1 In 1904 , President Theodore Roosevelt - who had succeeded the assassinated William McKinley - was elected to a term in his own right as he defeated Democrat Alton B. Parker .
+387 381 1 In 1904 , President Theodore Roosevelt - who had succeeded the assassinated William McKinley - was elected to a term in his own right as he defeated Democrat Alton B. Parker .
+381 381 -1 ; ( box ) President William McKinley spoke there in 1901 , six months before he was assassinated .
+381 381 -1 In 1904 , President Theodore Roosevelt _ who had succeeded the assassinated William McKinley _ was elected to a term in his own right as he defeated Democrat Alton B. Parker .
+387 381 1 In 1904 , President Theodore Roosevelt _ who had succeeded the assassinated William McKinley _ was elected to a term in his own right as he defeated Democrat Alton B. Parker .
+629 381 -1 In 1963 , President Lyndon Johnson named a commission headed by Chief Justice Earl Warren to investigate the assassination of President Kennedy .
+381 381 -1 After being elected vice president in 1900 he was catapulted into the White House by the assassination of President William McKinley .
+381 381 -1 John F. Kennedy , elected in 1960 , was assassinated in 1963 at the age of 46 .
+389 381 1 In 1881 , Chester A. Arthur was sworn in as the 21st U.S. president , succeeding James A. Garfield , who was assassinated .
+660 381 -1 Who would become president ?
+381 381 -1 Abraham Lincoln , elected in 1860 , was assassinated in 1865 at the age of 56 .
+381 381 -1 Ever since the assassination of President William McKinley in 1901 , American financial markets have always paid tribute to the death of heads of state by shutting up shop .
+389 381 1 In 1881 , Chester A. Arthur was sworn in as the 21st president of the United States , succeeding James A. Garfield , who was assassinated .
+389 381 1 In 1881 , Chester A. Arthur was sworn in as the 21st president of the United States , succeeding James A. Garfield , who was assassinated .
+394 381 -1 President Bush and former President Reagan , whose inaugurations featured the choir , will deliver videotaped tributes .
+810 381 -1 President Bush and former President Reagan , whose inaugurations featured the choir , will deliver videotaped tributes .
+Extracted answer: William McKinley
+Extraction time = 0.000164031982422
+What was the name of Darth Vader's son?
+Retrieve time = 15.785187006
+786 785 -1 Bill was like Darth Vader .
+433 785 -1 Bill was like Darth Vader .
+785 785 -1 Bill was like Darth Vader .
+786 785 -1 They wanted a kind of Darth Vader voice .
+786 785 -1 They wanted a kind of Darth Vader voice .
+785 785 -1 They wanted a kind of Darth Vader voice .
+433 785 -1 They wanted a kind of Darth Vader voice .
+786 785 -1 Derek`s bodyguard is like having " Darth Vader as a babysitter . "
+433 785 -1 Derek`s bodyguard is like having " Darth Vader as a babysitter . "
+786 785 -1 ) " I guess , " Jones said , " I`ll always be thought of as the Darth Vader in this situation . "
+433 785 -1 ) " I guess , " Jones said , " I`ll always be thought of as the Darth Vader in this situation . "
+785 785 -1 ; And , since Rosie O`Neill is the living embodiment of " bleeding heart " legal liberalism , Asner`s character is her personal Darth Vader .
+433 785 -1 ; And , since Rosie O`Neill is the living embodiment of " bleeding heart " legal liberalism , Asner`s character is her personal Darth Vader .
+433 785 -1 At one point during " Spaceballs " the Darth Vader character -- here called Dark Helmet -- pops the videocassette of " Spaceballs " into his VCR so he can remember what`s happened so far .
+433 785 2 ; While Hale said " everything at this stage is speculative , " the next " Star Wars " trilogy is believed to be a " prequel " to the original , which would follow the early adventures of Ben " Obi - Wan " Kenobi , Darth Vader and the child Luke Skywalker .
+785 785 -1 ; While Hale said " everything at this stage is speculative , " the next " Star Wars " trilogy is believed to be a " prequel " to the original , which would follow the early adventures of Ben " Obi - Wan " Kenobi , Darth Vader and the child Luke Skywalker .
+786 785 2 ; While Hale said " everything at this stage is speculative , " the next " Star Wars " trilogy is believed to be a " prequel " to the original , which would follow the early adventures of Ben " Obi - Wan " Kenobi , Darth Vader and the child Luke Skywalker .
+786 785 -1 From Rickey Henderson of the A`s to the 14 - year - old down the street , Darth Vader - type sunglasses are in .
+785 785 -1 From Rickey Henderson of the A`s to the 14 - year - old down the street , Darth Vader - type sunglasses are in .
+433 785 -1 Then there is Mr. Tisch of CBS , described by one Auletta source as white knight turned Darth Vader .
+Extracted answer: Darth Vader as a
+Extraction time = 0.000164031982422
+Where is Ayer's rock?
+Retrieve time = 15.859292984
+644 283 -1 Where Led Zeppelin defined the terms for hard - rock bands of the ` 70s from Boston to Rush , the tight , commercial sound of Aerosmith became the model for ` 80s hard rockers from Van Halen through Guns N ` Roses and beyond .
+643 283 -1 Where Led Zeppelin defined the terms for hard - rock bands of the ` 70s from Boston to Rush , the tight , commercial sound of Aerosmith became the model for ` 80s hard rockers from Van Halen through Guns N ` Roses and beyond .
+642 283 -1 Where Led Zeppelin defined the terms for hard - rock bands of the ` 70s from Boston to Rush , the tight , commercial sound of Aerosmith became the model for ` 80s hard rockers from Van Halen through Guns N ` Roses and beyond .
+411 283 -1 In between Beatle numbers , a Madonna robot sings " Like a Virgin , " Bruce Springsteen does " Born in the U.S.A. " and Bob Dylan plays " The Times They Are A - Changin ` . " The performance begs a question : Does the existence of a guitar - strumming Bob Dylan robot as a centerpiece to a multimillion dollar tourist attraction say something good , or something bad , about the evolution of rock ` n ` roll ?
+576 283 -1 To me , rock ` n ` roll is a very sacred , spontaneous thing _ like Chuck Berry , the Rolling Stones , the Who . ``
+514 283 -1 Though Louie Louie shares his name with the quintessential grunge - guitar hit of the ` 60s , he draws little inspiration from the chaotic , anyone - can - be - a - rock - star sound it exemplifies .
+678 283 -1 Sound : Taking the stairway to arena rock heaven , Mary My Hope is a true acolyte of rock mythology ; its more thundering moments reveal the fall - out of devotional hours spent listening to the Doors , Led Zeppelin , the Beatles , AC / DC , David Bowie , Pink Floyd and even INXS .
+642 283 -1 Soundgarden`s " Louder Than Love " ( A & M ) -- From a distance , it`s to easy to dismiss this Seattle outfit as just one more hard - rock band that is trying to reap the rewards of the rock world`s continuing craving for another Led Zeppelin .
+642 283 -1 Led Zeppelin is now acknowledged to be the greatest hard - rock band in the history of the world , mostly by people too old to really appreciate Metallica .
+439 283 -1 I know where Henry Rollins is coming from because I used to watch ( Rollins ` former band ) Black Flag back in the punk and hard - core days .
+679 283 -1 This is a rehash of the comic`s HBO concerts , prefaced by a lame rock ` n ` roll number and a " How I Became the Way I Am " short , featuring Clay as an adenoidal jerk dumped on by the world -- until he finds a leather jacket that does for him what hair did for Samson .
+642 283 1 " Led Zeppelin " and " Led Zeppelin II " are in retrospect awesome British blues , as pure as anything this side of the first Stones album but with a swamp - blues intensity new to white rock ` n ` roll . " Led Zeppelin III " might have been a failed trope on the misty - heather acousticisms of Traffic and Pentangle , but led off with the extremely influential " Immigrant Song . "
+535 283 -1 This D.C .- bred country - folk - rock singer , who is doing a free show at the Bandstand in Anaheim on Sunday night , is more likely to be confused with Rosanne Cash , for whom she`s sometimes a ringer , than with Karen Carpenter .
+583 283 -1 Another song , " Rock Revolution , " deals with censorship in rock and pop music , a subject that Smith holds a hard line against . "
+642 283 -1 WHAT`S IN A NAME ? : The group is Dread Zeppelin , and if you know your Rasta lingo and your British rock , you can figure out what it does : As the band`s poster says , " Zeppelin Music , Reggae Style . "
+212 283 -1 Though the rock group Santana made a big hit out of " Oye Como Va , " the veteran bandleader is not enamored of hard - driving rock ` n ` roll .
+513 283 -1 In the educational section of the library , rock ` n ` roll fans might want to check out Paul McCartney`s film on rock legend Buddy Holly , which can be kept at no cost for a week .
+585 283 -1 And to like rock with melodic structure , or rock full of vitality and fun or , God forbid , a ballad , is an unforgivable sign of weakness .
+795 283 -1 ; From a pure pop standpoint , no other single artist can claim to have dominated the modern era as thoroughly as Simon : " Graceland " was almost certainly the best pop album of the ` 80 s. " There Goes Rhymin Simon " was possibly the best single pop album of the ` 70 s. And , to stretch a point , Simon & Garfunkel`s " Bridge over Troubled Water " was arguably one of the greatest albums of the ` 60 s. ; ( hbox ) ; A cursory look at Simon`s output over the years reveals an artist who began with the tools of classic , straightforward pop and grew to apply those tools to a much broader canvas : ; Simon began working with Art Garfunkel ( whom he`d known since sixth grade in Forest Hills , Queens ) in 1955 , at the dawn of the rock ` n ` roll era .
+642 283 -1 The best that can be said for Bonham is that it is probably more entitled to rip off Led Zeppelin than the rest of the recent - vintage metal kids who are ripping off Led Zeppelin .
+Extracted answer: Boston
+Extraction time = 0.000302076339722
+What is the highest mountain in the world?
+Retrieve time = 16.0396001339
+889 889 -1 It is the highest air route in the world which covers the Karakoram Mountains and the K-2 , the second highest mountain in the world .
+891 889 -1 Though by no means the highest , it is one of the tallest free - standing mountains in the world .
+890 889 -1 Further , each nation likes to see its own ` national record ` appearing immediately after the world record : look up the dimensions of mountains in the French edition , and the highest mountain in France appears next to the highest mountain in the world : would one bother in a Dutch edition ?
+889 889 -1 Further , each nation likes to see its own ` national record ` appearing immediately after the world record : look up the dimensions of mountains in the French edition , and the highest mountain in France appears next to the highest mountain in the world : would one bother in a Dutch edition ?
+248 889 -1 It is the largest McDonald`s in the world .
+888 889 -1 It is 26,660 ft , the ninth highest peak in the world and is getting bigger .
+888 889 -1 The peak is the highest point on Hong Kong Island and is the vantage point for one of the most dazzling views in the world .
+889 889 -1 The visitor is spoilt for choice : to climb Mt Kinabalu ( at 4,101 metres , Malaysia`s and south - east Asia`s highest mountain ) , to dive at Sipadan off the east coast ( acknowledged as offering some of the best diving in the world ) , to wander in search of the proboscis monkey , or to wonder at the Rafflescia , the largest flower in the world .
+890 889 -1 What you probably don`t know , unless you`ve made the spectacular , winding trip to the top , is that the snow - capped massif called Pikes Peak also offers the most famous vista to be seen from any American mountain .
+890 889 -1 Mount Kenya , this East African nation`s highest mountain and the second highest on the continent , is 17,156 feet high .
+340 889 -1 ; Although this ranks only as the 32nd highest summit in Colorado , the ascent is staggeringly steep .
+406 889 -1 The mountain is not one of the tallest San Gabriel Mountain peaks , but its relatively isolated position on the spine of the range makes it stand out .
+891 889 -1 The mountain is not one of the tallest San Gabriel Mountain peaks , but its relatively isolated position on the spine of the range makes it stand out .
+675 889 -1 `` But that district represents the best of what Mississippi has to offer in that it has the strongest economy , the highest per capita income , the highest technology base and the greatest population growth in the last 10 years . ``
+675 889 -1 `` But that district represents the best of what Mississippi has to offer in that it has the strongest economy , the highest per capita income , the highest technology base and the greatest population growth in the last 10 years . ``
+890 889 -1 ; Hiking up Whitney -- the highest mountain in the continental United States -- is an accomplishment anytime .
+294 889 -1 Although tops in the U.S. , Mr. Walton is the sixth - richest person in the world .
+888 889 -1 The peak ranks as the third highest mountain in the world after 29,064 - foot K 2 and 29,028 - foot Mount Everest , also in the Himalayas .
+889 889 1 The peak ranks as the third highest mountain in the world after 29,064 - foot K 2 and 29,028 - foot Mount Everest , also in the Himalayas .
+Extracted answer: K 2
+Extraction time = 0.000168800354004
+What is the name of the tallest mountain in the world?
+Retrieve time = 15.908370018
+891 891 -1 Though by no means the highest , it is one of the tallest free - standing mountains in the world .
+889 891 -1 It is the highest air route in the world which covers the Karakoram Mountains and the K-2 , the second highest mountain in the world .
+406 891 -1 The mountain is not one of the tallest San Gabriel Mountain peaks , but its relatively isolated position on the spine of the range makes it stand out .
+891 891 -1 The mountain is not one of the tallest San Gabriel Mountain peaks , but its relatively isolated position on the spine of the range makes it stand out .
+248 891 -1 It is the largest McDonald`s in the world .
+889 891 -1 Further , each nation likes to see its own ` national record ` appearing immediately after the world record : look up the dimensions of mountains in the French edition , and the highest mountain in France appears next to the highest mountain in the world : would one bother in a Dutch edition ?
+890 891 -1 Further , each nation likes to see its own ` national record ` appearing immediately after the world record : look up the dimensions of mountains in the French edition , and the highest mountain in France appears next to the highest mountain in the world : would one bother in a Dutch edition ?
+890 891 -1 No doubt you know that it bears the best - known name of any mountain in the country .
+890 891 -1 What you probably don`t know , unless you`ve made the spectacular , winding trip to the top , is that the snow - capped massif called Pikes Peak also offers the most famous vista to be seen from any American mountain .
+630 891 -1 The 1,914 - foot structure would eclipse by 400 feet the Sears Tower , the tallest building in the world .
+280 891 -1 It will still be one of the tallest buildings in the county .
+889 891 -1 The visitor is spoilt for choice : to climb Mt Kinabalu ( at 4,101 metres , Malaysia`s and south - east Asia`s highest mountain ) , to dive at Sipadan off the east coast ( acknowledged as offering some of the best diving in the world ) , to wander in search of the proboscis monkey , or to wonder at the Rafflescia , the largest flower in the world .
+891 891 -1 It was the first attempt to cross the world`s tallest mountain by balloon .
+280 891 -1 The world`s tallest building wouldn`t be just another office building ; it would be an attraction for the people of Los Angeles and tourists from around the world .
+406 891 -1 Mount McKinley still is North America`s tallest mountain , but it is not as tall as people have been saying for years .
+630 891 -1 Mount McKinley still is North America`s tallest mountain , but it is not as tall as people have been saying for years .
+891 891 -1 Mount McKinley still is North America`s tallest mountain , but it is not as tall as people have been saying for years .
+630 891 -1 The 975 - foot , 76 - story Columbia Center , now the West Coast`s tallest , has come to symbolize what some feel is runaway downtown growth at the expense of the rest of the city .
+294 891 -1 It`s a great challenge , but we`ll be ready , " he told a visitor to his office in the cobblestones - and - tourists old quarter of a city that became one of the richest in the world when it enjoyed a 16th - Century monopoly of trade with what is now Latin America .
+291 891 -1 Among the oldest parts of the castle is the keep , a place where defenders of old could always , as a last resort , barricade themselves in its highest reaches .
+Extracted answer: Though by no means the highest , it is one of the tallest free - standing mountains in the world
+Extraction time = 0.000160932540894
+When did the Dow first reach 2000?
+Retrieve time = 15.7353830338
+645 645 -1 , on what date this year did the Dow Jones Industrial Average first surpass 2000 ?
+645 645 -1 He sold some stocks when the Dow Jones Industrial Average reached 2000 earlier this year , and more when it hit 2600 . "
+645 645 -1 In the first six days of January alone the Dow Jones Industrial Average climbed more than 100 points , or almost 3 per cent , as the Dow broke through 3,800 for the first time .
+645 645 -1 The Dow Jones average of 30 industrials , which lost 25.78 points Monday in falling below 2000 for the first time since late May , gave up another 0.89 to close at 1,989.33 .
+645 645 -1 The Dow Jones industrial average reached 3,000 for the first time in a brief run early Friday afternoon , then settled back to 2,980.20 , still a new closing high .
+645 645 -1 The Dow Jones industrials bounced off the 2000 level last week , and Mr. Peroni said he expects the average to reach the vicinity of 2100 over the next five to seven sessions .
+645 645 1 The Dow Jones Industrial Average broke through 1000 in 1972 , then 2000 in January 1987 , but came back to revisit that area after the market crash later that year .
+Extracted answer: this year
+Extraction time = 0.000211954116821
+What city is Massachusetts General Hospital located in?
+Retrieve time = 15.908932209
+505 505 -1 The New England screening center is operated by Boston University Medical School , Massachusetts General Hospital and McLean Hospital .
+505 505 -1 He was trained in orthopedics at Children`s Hospital and Massachusetts General Hospital . ``
+505 505 -1 He was trained in orthopedics at Children`s Hospital and Massachusetts General Hospital .
+505 505 1 Massachusetts General Hospital of Boston , was named to the
+Extracted answer: The New England screening center is operated by Boston University Medical School , Massachusetts General Hospital and McLean Hospital
+Extraction time = 0.000226020812988
+What year did Hitler die?
+Retrieve time = 15.9848041534
+471 471 -1 Down ! `` and `` Who acts like Hitler will die like Hitler . ``
+471 471 -1 No , I don`t want to say that because my father died by order of Hitler he`s a good German and the others who did not die by order were bad Germans .
+471 471 -1 Seeing that not much could be done to save the situation , Hitler committed suicide and was burnt to death in May the next year , and then Nazi - Germany surrendered unconditionally .
+471 471 -1 That part of the exhibit has angered Germans who do not believe the soldiers deserve the same place of honor as people like Claus von Stauffenberg , who was executed for planting the 1944 bomb meant to kill Hitler .
+588 471 -1 And those who defended appeasing Hitler in the 1930s said they had learned the " lesson " of the insane slaughter of World War I : Nothing could justify going to war .
+585 471 -1 He was inspired , he confesses , by the thought that his two - year - old daughter might someday ask him , " What did you do in the Cold War , Daddy ? "
+471 471 -1 is the hope that somebody will assassinate Hitler from within ; that somebody will kill Mussolini or he will get a bad cold in the morning and die . . .
+275 471 -1 As a result , I do not forget the 6 million Jews who were murdered in the Holocaust or the 250,000 American soldiers and sailors ( young men like myself ) who died fighting the dictatorial perpetrators of these and other crimes during World War II .
+471 471 -1 Emy Bonhoeffer remembers everything about the moment in 1945 when she realized her husband , Klaus , would die for his involvement in the Christian resistance to Adolf Hitler`s fascist regime and his extermination of Jews .
+588 471 -1 This third world war would bring about what did not happen in World War I and what was about to happen in World War II : Russia would be crushed and , maybe , would cease to exist as a state .
+471 471 -1 O`Donnell was working on his second book about Hitler , to be titled `` The Hitler Court , `` when he died .
+471 471 -1 O`Donnell was working on his second book about Hitler , to be titled " The Hitler Court , " when he died .
+471 471 -1 ; For many Jews , especially concentration camp survivors , Wagner stands as an enduring and hated symbol of the Nazi Holocaust , even though he died in 1883 , 50 years before Hitler rose to power .
+471 471 -1 But Hitler was only 50 years ago .
+471 471 -1 As a 29 - year - old lawyer , Kiesinger joined the Nazi party in 1933 , the year Adolf Hitler came to power .
+595 471 -1 This is the most important decision you have to give : whether you like to die as Stalin -- tarnished like Stalin -- or you want to be the Gorbachev of Burma , " he recalled .
+471 471 -1 As a 29 - year - old lawyer , Kiesinger joined the Nazi party in 1933 , the year Hitler came to power .
+353 471 -1 When criticized -- and he was harshly attacked by well - meaning " progressives " both in Germany and in the West -- he answered : " Pre - Hitler Germany , no matter how deficient , is the only culture Germans alive today know that still worked ; we have no choice but to use it to build the new , the post - Hitler Germany . "
+518 471 -1 Who in my generation did not know the story ?
+518 471 -1 `` Don`t know much about history `` Don`t know much about geography `` Don`t know much about World War II `` Don`t know much about who fought who `` But I know it followed World War I `` If we only fought in the wars we won `` What a wonderful world this would be . ``
+Extracted answer: World War I
+Extraction time = 0.000217914581299
+What was the species of Winnie the Pooh?
+Retrieve time = 16.3922190666
+702 704 -1 It is Winnie the Pooh .
+704 704 -1 It is Winnie the Pooh .
+408 704 -1 It is Winnie the Pooh .
+703 704 -1 It is Winnie the Pooh .
+701 704 -1 It is Winnie the Pooh .
+702 704 -1 Or even Winnie the Pooh , for this is NAPTE .
+408 704 -1 Or even Winnie the Pooh , for this is NAPTE .
+704 704 -1 Or even Winnie the Pooh , for this is NAPTE .
+703 704 -1 Or even Winnie the Pooh , for this is NAPTE .
+701 704 -1 Or even Winnie the Pooh , for this is NAPTE .
+408 704 -1 ; " Winnie the Pooh . "
+701 704 -1 ; " Winnie the Pooh . "
+701 704 -1 Is Winnie the Pooh -- or Peter Pan , " the person says , " really a Disney character ? "
+703 704 -1 Is Winnie the Pooh -- or Peter Pan , " the person says , " really a Disney character ? "
+704 704 -1 Is Winnie the Pooh -- or Peter Pan , " the person says , " really a Disney character ? "
+408 704 -1 Is Winnie the Pooh -- or Peter Pan , " the person says , " really a Disney character ? "
+702 704 -1 Is Winnie the Pooh -- or Peter Pan , " the person says , " really a Disney character ? "
+701 704 -1 `` For the last 20 years , Winchell has been the voice of Tigger , the zany tiger in the animated versions of A.A. Milne`s beloved `` Winnie the Pooh . ``
+704 704 -1 `` For the last 20 years , Winchell has been the voice of Tigger , the zany tiger in the animated versions of A.A. Milne`s beloved `` Winnie the Pooh . ``
+408 704 -1 `` For the last 20 years , Winchell has been the voice of Tigger , the zany tiger in the animated versions of A.A. Milne`s beloved `` Winnie the Pooh . ``
+Extracted answer: Winnie the Pooh
+Extraction time = 0.000128030776978
+How many months does a normal human pregnancy last?
+Retrieve time = 15.8291490078
+765 425 -1 A new test reveals that most miscarriages happen during the first month of pregnancy , long before women even realize that conception has occurred .
+765 425 -1 Because the mother does not provide the egg , she is not the genetic parent of her baby , but still undergoes a normal pregnancy and delivery .
+425 425 -1 Because the mother does not provide the egg , she is not the genetic parent of her baby , but still undergoes a normal pregnancy and delivery .
+763 425 1 She said the doses are large because the gestation period of a hamster is just 60 days , so researchers use high doses to simulate what a human fetus might be exposed to over nine months when the mother smoked every day .
+764 425 1 She said the doses are large because the gestation period of a hamster is just 60 days , so researchers use high doses to simulate what a human fetus might be exposed to over nine months when the mother smoked every day .
+762 425 1 She said the doses are large because the gestation period of a hamster is just 60 days , so researchers use high doses to simulate what a human fetus might be exposed to over nine months when the mother smoked every day .
+765 425 1 HAVING just endured almost nine months of pregnancy , with weeks more to go , my wife has concluded that the decision to make human gestation this lengthy was mishandled .
+763 425 1 HAVING just endured almost nine months of pregnancy , with weeks more to go , my wife has concluded that the decision to make human gestation this lengthy was mishandled .
+762 425 1 HAVING just endured almost nine months of pregnancy , with weeks more to go , my wife has concluded that the decision to make human gestation this lengthy was mishandled .
+765 425 1 It costs about $ 600 to administer prenatal care to a woman during the nine months of a normal pregnancy .
+425 425 1 It costs about $ 600 to administer prenatal care to a woman during the nine months of a normal pregnancy .
+Extracted answer: about $ 600
+Extraction time = 0.000194787979126
+What is the most common kind of skin cancer in the U.S.?
+Retrieve time = 15.920293808
+370 542 -1 There are about 650,000 new cases of skin cancer in the U.S. every year , and about 8,500 deaths related to the disease , making it the most common of all cancers .
+542 542 -1 There are about 650,000 new cases of skin cancer in the U.S. every year , and about 8,500 deaths related to the disease , making it the most common of all cancers .
+370 542 -1 ; This is not to say breast cancer -- now the most common cancer except for skin cancer -- doesn`t deserve a higher priority .
+370 542 -1 The reverse is true for breast cancer , the most common cancer in women .
+542 542 -1 Another 8,800 people will die of skin cancer in 1990 , most of them from the most deadly form , called melanoma .
+542 542 -1 The recurrent skin problem plaguing Mr. Reagan is the most common , least dangerous form of skin cancer .
+370 542 1 The recurrent skin problem plaguing Mr. Reagan is the most common , least dangerous form of skin cancer .
+370 542 1 That is one reason why basal - cell carcinomas , the most common skin cancer found in Caucasians , form primarily on sun - exposed areas of the body , such as the face and neck .
+542 542 1 That is one reason why basal - cell carcinomas , the most common skin cancer found in Caucasians , form primarily on sun - exposed areas of the body , such as the face and neck .
+Extracted answer: There are about 650,000 new cases of skin cancer in the U.S. every year , and about 8,500 deaths related to the disease , making it the most common of all cancers
+Extraction time = 0.000171184539795
+When did Geraldine Ferraro run for vice president?
+Retrieve time = 16.0805699825
+281 281 1 He helped prepare Geraldine Ferraro for her debate with the vice president in October 1984 .
+Extracted answer: October 1984
+Extraction time = 0.000196933746338
+What are pomegranates?
+Retrieve time = 15.7805531025
+544 544 -1 To add some glitz use gilded fruits such as pomegranates , apples and oranges and nuts .
+544 544 1 The most frequently tried specialty fresh fruits , in order , were pomegranates , persimmons , kumquats , quince and guavas .
+Extracted answer: To add some glitz use gilded fruits such as pomegranates , apples and oranges and nuts
+Extraction time = 0.00015115737915
+What is the name of the Jewish alphabet?
+Retrieve time = 15.8895208836
+400 400 -1 The Liberals , as usual , still have reservations ; that , however , does not mean that they possibly might not join the SDSM [ Social Democratic Alliance of Macedonia ] , which accepts the government`s proposal that the identity card should be written in the Macedonian language and the Cyrillic alphabet , and the name of the citizen in parentheses and in the language and alphabet of the national minorities .
+867 400 -1 The Liberals , as usual , still have reservations ; that , however , does not mean that they possibly might not join the SDSM [ Social Democratic Alliance of Macedonia ] , which accepts the government`s proposal that the identity card should be written in the Macedonian language and the Cyrillic alphabet , and the name of the citizen in parentheses and in the language and alphabet of the national minorities .
+400 400 -1 The first set is the letters of the alphabet .
+868 400 -1 The notes can be in English -- that is , the Roman alphabet -- or in either Greek or Hebrew .
+810 400 -1 The notes can be in English -- that is , the Roman alphabet -- or in either Greek or Hebrew .
+867 400 -1 The notes can be in English -- that is , the Roman alphabet -- or in either Greek or Hebrew .
+869 400 -1 The notes can be in English -- that is , the Roman alphabet -- or in either Greek or Hebrew .
+810 400 -1 ; In Greek , the word has 170 letters but when transliterated into the Roman alphabet , it has 182 ( don`t bother counting them -- we didn`t ) .
+808 400 -1 ; In Greek , the word has 170 letters but when transliterated into the Roman alphabet , it has 182 ( don`t bother counting them -- we didn`t ) .
+394 400 1 ; In Greek , the word has 170 letters but when transliterated into the Roman alphabet , it has 182 ( don`t bother counting them -- we didn`t ) .
+394 400 -1 There are sign language symbols for each of the 26 characters in the English alphabet , and , when signers can not find a symbol for an English word , they may spell out the English word , then return to sign .
+808 400 -1 There are sign language symbols for each of the 26 characters in the English alphabet , and , when signers can not find a symbol for an English word , they may spell out the English word , then return to sign .
+395 400 -1 There are sign language symbols for each of the 26 characters in the English alphabet , and , when signers can not find a symbol for an English word , they may spell out the English word , then return to sign .
+809 400 -1 There are sign language symbols for each of the 26 characters in the English alphabet , and , when signers can not find a symbol for an English word , they may spell out the English word , then return to sign .
+810 400 -1 There are sign language symbols for each of the 26 characters in the English alphabet , and , when signers can not find a symbol for an English word , they may spell out the English word , then return to sign .
+400 400 -1 One trustee suggested that any new name be higher in the alphabet .
+400 400 -1 ; Using your ABCs ; And of course , alphabet , in which you each race through the alphabet by spotting road sign or billboard words that begin with the letter that comes next .
+869 400 -1 ; Using your ABCs ; And of course , alphabet , in which you each race through the alphabet by spotting road sign or billboard words that begin with the letter that comes next .
+869 400 -1 The forms would be printed in the Macedonian language and in the Cyrillic alphabet and in the languages and alphabets of the ethnic groups .
+664 400 -1 `` In the Hebrew and Greek texts the same form of the second person pronoun is used in talking to God and people , `` Metzger said .
+Extracted answer: English
+Extraction time = 0.000195980072021
+What does Nicholas Cage do for a living?
+Retrieve time = 16.4073500633
+585 449 -1 If an artist like Billy Joel does something like that , maybe people will listen to a little guy like LL Cool J. ``
+496 449 -1 Mason also is working on a musical called `` How To Bag a Billionaire , `` a look at today`s version of what used to be called golddiggers , those women who want to marry for money and not necessarily love .
+571 449 -1 What to do ?
+560 449 -1 ; " We want to show people that making your house a beautiful , comfortable place for your family is a valid and important thing to do , " said editor Isolde Motley , " and that you can do it without spending a lot of money .
+604 449 -1 ; " We want to show people that making your house a beautiful , comfortable place for your family is a valid and important thing to do , " said editor Isolde Motley , " and that you can do it without spending a lot of money .
+455 449 -1 One is too much , and so what do you do ?
+670 449 -1 ; " Sometimes I feel like that Peggy Lee song , " he says , " Is that all there is ? Where do I go now ? "
+662 449 -1 What do they want her to do ?
+471 449 -1 She related , `` He said , ` Perhaps you can preserve your life and our children , and , if you can , let them know that their father did not do nothing .
+516 449 -1 Why not do it all ? "
+324 449 -1 What more do you want , Elizabeth ? " and " 150 years of oppression ! "
+879 449 -1 What can you do ?
+882 449 -1 What can you do ?
+878 449 -1 What can you do ?
+881 449 -1 What can you do ?
+880 449 -1 What can you do ?
+487 449 -1 ; What more do you want ?
+513 449 -1 `` What you get from great actors like Newman and Hoffman is where to focus your energies and what to worry about and what not to worry about , `` Cruise said .
+243 449 -1 ; Q : Well , what sort of songs do you do in concert these days , Tiny ? ; A : What I`ve done for years .
+436 449 -1 So today when you buy one of the collections of those ABC classics -- " Georgia on My Mind , " " I Can`t Stop Loving You , " " Hit the Road Jack " and " Busted " among them -- some of your money is going to Ray Charles Enterprises Inc. " It`s not that I don`t have people doing things for me , it`s just that I control it , " he is explaining . "
+Extracted answer: Hit the Road Jack
+Extraction time = 0.000144004821777
+Procter & Gamble is headquartered in which U.S. city?
+Retrieve time = 16.1892089844
+725 726 -1 Officers will now be aligned with the P & G parent company or with one of the six new management operating units : Procter & Gamble Worldwide , Procter & Gamble International , Procter & Gamble USA , Procter & Gamble Europe , Procter & Gamble Far East and Procter & Gamble Canada and Latin America .
+726 726 -1 Officers will now be aligned with the P & G parent company or with one of the six new management operating units : Procter & Gamble Worldwide , Procter & Gamble International , Procter & Gamble USA , Procter & Gamble Europe , Procter & Gamble Far East and Procter & Gamble Canada and Latin America .
+727 726 -1 Officers will now be aligned with the P & G parent company or with one of the six new management operating units : Procter & Gamble Worldwide , Procter & Gamble International , Procter & Gamble USA , Procter & Gamble Europe , Procter & Gamble Far East and Procter & Gamble Canada and Latin America .
+724 726 -1 Officers will now be aligned with the P & G parent company or with one of the six new management operating units : Procter & Gamble Worldwide , Procter & Gamble International , Procter & Gamble USA , Procter & Gamble Europe , Procter & Gamble Far East and Procter & Gamble Canada and Latin America .
+723 726 -1 Officers will now be aligned with the P & G parent company or with one of the six new management operating units : Procter & Gamble Worldwide , Procter & Gamble International , Procter & Gamble USA , Procter & Gamble Europe , Procter & Gamble Far East and Procter & Gamble Canada and Latin America .
+413 726 -1 Officers will now be aligned with the P & G parent company or with one of the six new management operating units : Procter & Gamble Worldwide , Procter & Gamble International , Procter & Gamble USA , Procter & Gamble Europe , Procter & Gamble Far East and Procter & Gamble Canada and Latin America .
+725 726 -1 In the most recent incident , November 17 attacked the local offices of Procter & Gamble , a U.S .- based multinational manufacturer of household products .
+413 726 -1 between Procter & Gamble Co. of the U.S. and Italy`s Finaf
+727 726 -1 between Procter & Gamble Co. of the U.S. and Italy`s Finaf
+724 726 -1 Cosmetics giant Revlon Inc. is selling its Max Factor division and its Betrix subsidiary in Germany to Procter & Gamble for $ 1.14 billion in cash , Procter & Gamble announced today .
+724 726 1 Procter & Gamble , based in Cincinnati , is the industry leader , with 47 percent of the market .
+725 726 1 Procter & Gamble , based in Cincinnati , is the industry leader , with 47 percent of the market .
+727 726 1 Procter & Gamble , based in Cincinnati , is the industry leader , with 47 percent of the market .
+723 726 1 Procter & Gamble , based in Cincinnati , is the industry leader , with 47 percent of the market .
+413 726 1 Procter & Gamble , based in Cincinnati , is the industry leader , with 47 percent of the market .
+726 726 1 Procter & Gamble , based in Cincinnati , is the industry leader , with 47 percent of the market .
+Extracted answer: Officers will now be aligned with the P & G parent company or with one of the six new management operating units : Procter & Gamble Worldwide , Procter & Gamble International , Procter & Gamble USA , Procter & Gamble Europe , Procter & Gamble Far East and Procter & Gamble Canada and Latin America
+Extraction time = 0.000668048858643
+How long would it take to get from Earth to Mars?
+Retrieve time = 15.9531929493
+332 332 -1 Returning samples from Mars could help settle questions of whether life ever existed on Mars , and why Mars and Earth evolved so differently .
+377 332 -1 `` This is the first time we`ve had a chance to use a spacecraft designed to explore another planet to come back and look at our own Earth and moon as if we were alien observers , `` Johnson said .
+332 332 -1 You can just go to Mars . "
+332 332 -1 There is no test for Mars exploration we can`t do more cheaply or safely in Earth orbit or on the Earth itself . ``
+332 332 1 The astronauts would probably have to spend a year there , waiting for Mars to reach the right point in its orbit for them to launch themselves back toward Earth .
+Extracted answer: a year
+Extraction time = 0.000205039978027
+Who wrote "The Scarlet Letter"?
+Retrieve time = 15.9533770084
+620 620 1 In 1850 , Nathaniel Hawthorne`s `` The Scarlet Letter `` was published .
+Extracted answer: Nathaniel Hawthorne`s `` The Scarlet Letter
+Extraction time = 0.000554084777832
+What's the name of the Tampa newspaper?
+Retrieve time = 15.8876359463
+632 632 1 `` I don`t know anything about it , `` the home`s owner told The Tampa Tribune Sunday .
+Extracted answer: `` I don`t know anything about it , `` the home`s owner told The Tampa Tribune Sunday
+Extraction time = 0.000270128250122
+How many dogs pull a sled in the Iditarod?
+Retrieve time = 15.8911130428
+210 210 -1 In advising competitors in the grueling Iditarod sled dog races in Alaska , Rushall suggests that they think about " how their sled is running , how the dogs are doing .
+210 210 -1 dogs pull away from the starting line of the Iditarod Trail Sled Dog Race .
+210 210 -1 Soviet mushers will compete for the first time this winter in the 1,100 - mile Iditarod sled dog race and will get their training and equipment from three - time champion Susan Butcher .
+210 210 -1 The group has three goals : _ Find two Soviet mushers who would live in Manley with Butcher and her husband , Dave Monson , another winning musher , and learn the ropes about sled dog racing , Alaska - style .
+210 210 -1 Many of the drivers are women , which is consistent with the results of the world`s most famous sled dog race , the 1,049 - mile Iditarod from Anchorage to Nome , Alaska , in March .
+210 210 -1 She breeds the dogs for other dog sled racers .
+210 210 -1 In Anchorage , Alaska , 75 mushers and more than 1,400 dogs began their trek to Nome in the 19th Iditarod Trail Sled Dog Race . . . .
+210 210 -1 One musher in the Iditarod Trail Sled Dog Race and his dogs were safe today after he had to kill an attacking moose with five pistol shots .
+210 210 -1 A newspaper reporter will be first out of the chute today when competitors in the Iditarod Trail Sled Dog Race start their 1,163 - mile run from Anchorage to Nome .
+210 210 -1 Seventy dog teams and mushers were set to start the `` Last Great Race on Earth `` on Saturday , the grueling 1,100 - mile - long Iditarod Trail Sled Dog Race from Anchorage to Nome .
+210 210 -1 A record 75 mushers and more than 1,400 dogs began their trek Saturday from downtown Anchorage to Nome under sunny skies in the 19th Iditarod Trail Sled Dog Race .
+210 210 -1 While other mushers turned back in a blizzard , Rick Swenson plowed ahead through thigh - high snowdrifts to win a record fifth Iditarod Trail Sled Dog Race today .
+210 210 -1 The dog , once up for sale , pulled his musher to safety after the dog sled fell through the ice .
+210 210 -1 Throngs crowding a downtown street covered with trucked - in snow cheered Saturday as 49 mushers and hundreds of dogs charged off on the first leg of the 1,168 - mile Iditarod Trail Sled Dog Race from Anchorage to Nome .
+210 210 1 Race rules require mushers to arrive in Nome with at least five dogs in harness .
+Extracted answer: first
+Extraction time = 0.000207901000977
+What is typhoid fever?
+Retrieve time = 16.2149219513
+600 600 -1 And among them , once again we have cholera , diphtheria and typhoid fever .
+600 600 -1 Outbreaks and spreading of dangerous infectious diseases such as plague , yellow fever , typhoid fever and especially cholera have been observed in this connection .
+600 600 -1 It is a danger and really -- the plague , cholera , or typhoid fever seem minor by comparison , since it is a deadly [ word indistinct ] .
+600 600 -1 The number of typhoid fever cases has risen .
+600 600 1 Typhoid fever is caused by the fever - causing bacteria called " Salmonella typhi . "
+Extracted answer: And among them , once again we have cholera , diphtheria and typhoid fever
+Extraction time = 0.000133037567139
+Where is Melbourne?
+Retrieve time = 15.7504658699
+359 359 1 If you need to make transportation arrangements after you arrive in Australia , keep in mind that STA Travel ( formerly Student Travel Australia ) has offices in Hobart , Adelaide , Brisbane , Canberra , Melbourne , Perth , Townsville and Sydney .
+Extracted answer: Australia
+Extraction time = 0.000211000442505
+Name a symptom of mononucleosis.
+Retrieve time = 15.8957190514
+525 525 1 The symptoms include long - term fatigue , possibly caused by the Epstein - Barr virus , which causes a form of mononucleosis .
+Extracted answer: The symptoms include long - term fatigue , possibly caused by the Epstein - Barr virus , which causes a form of mononucleosis
+Extraction time = 2.09808349609e-05
+Who is Barbara Jordan?
+Retrieve time = 16.0107209682
+239 239 -1 Her name was Barbara Jordan .
+613 239 -1 Who says the only celebrated people from Indiana are Jane Pauley and David Letterman ?
+612 239 -1 Who says the only celebrated people from Indiana are Jane Pauley and David Letterman ?
+608 239 -1 `` Through Nancy , I had a direct line to the president , `` said Ms. Quigley in her memoirs , `` What Does Joan Say ? ``
+244 239 -1 Who knows ? " says Mr. Costescu . "
+562 239 -1 M magazine`s Barbara Lippert asks the question , " Is Kathie Lee the Most Dangerous Woman in America ? " ( I couldn`t quite figure out why , but you read the piece anyway .
+623 239 -1 Impressive Guest List There was a great deal to take in , notably the guests , who included Walter and Leonore Annenberg ; John L. Loeb Jr. , president of the Winston Churchill Foundation of the United States ; dinner chairman ( and Arco president and CEO ) Robert Wycoff and his wife Anne ; Pamela Harriman ; Barbara and Marvin Davis ; Tom Selleck and wife Jillie Mack ; British publishing czar Robert Maxwell ; Bob and Dolores Hope ; Betty and Bill Wilson ; Phyllis Diller ; Edie and Lew Wasserman ; British Ambassador to the United States Antony Acland and wife Jennifer ; and Timothy Wilkes , the 15 - year - old El Toro High School junior who won an essay competition on the subject of Winston Churchill .
+649 239 -1 Joked Robin Williams of Leonard : " If Laurence Olivier and James Dean had a kid , this is what it would look like . "
+207 239 -1 Also on the scene : board members Anne and Tom Key ( she in a white shirt spangled with red stars , he telling fellow picnickers that he is a distant relative of Francis Scott Key ) , Gina and Reed Royalty , Charles and Geraldine Spencer , Gene and Nadine Layton , Martin and Margie Hubbard , Charles and Pat Poss , and Louis Spisto .
+239 239 -1 The only other woman ever to have the role was former Rep. Barbara Jordan , also of Texas , who shared the job with Sen. John Glenn of Ohio .
+626 239 -1 Among those joining in the standing ovation that followed were Roger and Ellen Revelle , John and Marcia Trombold , master interior decorator Steve Chase ( who has charge of Joan Kroc`s new North County mansion ) ; weight - loss czarina Jenny Craig and her husband , Sid ; Doug and Betsy Manchester ; Frank and Lee Goldberg ; Dean and Marie Dunphy ; Cliff and Ruth Grobstein , and Joan Embery , who brought along a toucan from the San Diego Zoo .
+239 239 -1 Among the recognizable faces : Alice Walker , Sarah Vaughan , Althea Gibson , Cicely Tyson , Shirley Chisholm , Barbara Jordan and Coretta Scott King .
+535 239 -1 Who was there : A virtual who`s who of pre- " Saturday Night Live " era television comedy stars , including Bill Dana , Don Knotts , Milton Berle , Bob Hope , Alan Young , Martha Raye , Shelley Berman , Tom Poston , Don Adams , Pat Harrington , Bea Arthur and Audrey Meadows , plus Jayne Meadows , Jackie Cooper , Esther Williams , Charlton Heston , Gene Autry , Dick Clark , Steve`s son and MTM Enterprises executive Bill Allen and Zsa Zsa Gabor with her prince , Frederick von Anhalt , and daughter , Francesca Hilton .
+286 239 -1 ; In addition to being crazed , he also turns out to be lonely , which is why he grabs Peggy Ann Bradnick , sweetly played by Megan Follows of " Anne of Green Gables . "
+546 239 -1 ; In addition to being crazed , he also turns out to be lonely , which is why he grabs Peggy Ann Bradnick , sweetly played by Megan Follows of " Anne of Green Gables . "
+549 239 -1 Nevertheless , among the many hosts and hostesses giving lively parties with guests eating too much and exchanging hugs and kisses under the mistletoe were Debbie and Terry Lanni , Beverly and Larry Thrall , Cheryl and Bill Doyle , Priscilla and Curt Tamkin , Carolyn and Chuck Miller , Barbara and Chuck Schneider , Carolyn and Maury DeWald , Debby and Bill Appler , Gretchen and David Seager , Phoebe and Joe Vaccaro , Liz and Craig Black , French Consul General Gerard and Naomi Coste , Fred Nason Jr. ( celebrating his 60th birthday ) , Veva and Kingston McKee , Jess and Phyllis Marlow , Nancy and Bill Burrows and Connie and Bob Butler .
+862 239 -1 Who Was There : Schwarzenegger , with his wife , Maria Shriver , and his mother , Aurelia ; director Paul Verhoeven , co - stars Michael Ironside , Rachel Ticotin and Sharon Stone ; plus Mimi Rogers , Grace Jones , Paul Michael Glaser , Debbie Allen , Jack and Elaine LaLanne , Mr. T , Nicholas Cage , Laura Dern , Pat Riley , Tony Danza , Pierce Brosnan , Wayne Gretzky and wife Janet Jones , Michael Nouri , Ivan Reitman , Sandra Bernhard , Robert Davi , Lou Ferrigno , Julian Sands , Esai Morales , Timothy and Barbara Leary , and Sondra Locke .
+860 239 -1 Who Was There : Schwarzenegger , with his wife , Maria Shriver , and his mother , Aurelia ; director Paul Verhoeven , co - stars Michael Ironside , Rachel Ticotin and Sharon Stone ; plus Mimi Rogers , Grace Jones , Paul Michael Glaser , Debbie Allen , Jack and Elaine LaLanne , Mr. T , Nicholas Cage , Laura Dern , Pat Riley , Tony Danza , Pierce Brosnan , Wayne Gretzky and wife Janet Jones , Michael Nouri , Ivan Reitman , Sandra Bernhard , Robert Davi , Lou Ferrigno , Julian Sands , Esai Morales , Timothy and Barbara Leary , and Sondra Locke .
+861 239 -1 Who Was There : Schwarzenegger , with his wife , Maria Shriver , and his mother , Aurelia ; director Paul Verhoeven , co - stars Michael Ironside , Rachel Ticotin and Sharon Stone ; plus Mimi Rogers , Grace Jones , Paul Michael Glaser , Debbie Allen , Jack and Elaine LaLanne , Mr. T , Nicholas Cage , Laura Dern , Pat Riley , Tony Danza , Pierce Brosnan , Wayne Gretzky and wife Janet Jones , Michael Nouri , Ivan Reitman , Sandra Bernhard , Robert Davi , Lou Ferrigno , Julian Sands , Esai Morales , Timothy and Barbara Leary , and Sondra Locke .
+449 239 -1 Who Was There : Schwarzenegger , with his wife , Maria Shriver , and his mother , Aurelia ; director Paul Verhoeven , co - stars Michael Ironside , Rachel Ticotin and Sharon Stone ; plus Mimi Rogers , Grace Jones , Paul Michael Glaser , Debbie Allen , Jack and Elaine LaLanne , Mr. T , Nicholas Cage , Laura Dern , Pat Riley , Tony Danza , Pierce Brosnan , Wayne Gretzky and wife Janet Jones , Michael Nouri , Ivan Reitman , Sandra Bernhard , Robert Davi , Lou Ferrigno , Julian Sands , Esai Morales , Timothy and Barbara Leary , and Sondra Locke .
+Extracted answer: Barbara Jordan
+Extraction time = 0.00029993057251
+What wrestling star became "The Incredible Hulk"?
+Retrieve time = 15.974697113
+637 637 -1 Then the clear favorite : Hulk Hogan wrestling .
+637 637 -1 `` The Amazing Spider - Man `` and `` The Incredible Hulk `` were on the air in a period when television was enamored of comic book - type superheroes .
+637 637 -1 Bill Bixby ( star of ` The Incredible Hulk ` television series ) would really like it . "
+637 637 -1 `` The Incredible Hulk `` was a CBS series from 1978 - 82 .
+637 637 -1 The Incredible Hulk Returns " ; This was the second reunion movie for the Hulk , but it smelled like a silly excuse to introduce another character from Marvel Comics : a frozen Viking God named Thor .
+637 637 -1 `` The Incredible Hulk `` was a popular series on CBS from 1978 to 1982 .
+637 637 -1 Pro wrestling phenomenon Hulk Hogan is the main attraction of the garish , sub- " Rocky " action - satire , " No Holds Barred " ( citywide ) , and he has a peculiar Jekyll - Hyde persona during the movie .
+637 637 -1 Good had conquered evil , and The Hulk was still The Champ .
+637 637 1 Bill Bixby and Lou Ferrigno reprise their roles as David Banner and his alter ego the Hulk in a new NBC movie , `` The Death of the Incredible Hulk . `` This is the third movie based on the comic book creation by Stan Lee .
+Extracted answer: `` The Amazing Spider - Man ``
+Extraction time = 0.000225067138672
+What is Black Hills, South Dakota most famous for?
+Retrieve time = 15.882174015
+893 407 -1 Also well known are the white , Black Hills and Englemann ( especially in the West ) spruces .
+893 407 1 But their July 4 birthday bash for Mount Rushmore , in the Black Hills of South Dakota , is the whopper to end all big ones .
+892 407 2 The Rushmore is the second ship named for the Mount Rushmore National Memorial in the Black Hills of South Dakota .
+407 407 1 The Rushmore is the second ship named for the Mount Rushmore National Memorial in the Black Hills of South Dakota .
+Extracted answer: Also well known are the white , Black Hills and Englemann ( especially in the West ) spruces
+Extraction time = 0.000173807144165
+What do ladybugs eat?
+Retrieve time = 15.8972451687
+282 282 -1 OK , sounds great , but what do I do with a back yard full of praying mantises and ladybugs ( which the mantises won`t eat , by the way ) ?
+282 282 1 According to Ron , the aphids produce a sweet , sticky goop that ants either eat or use for something or other , therefore the ants keep their " goo providers " from being eaten by the ladybugs .
+Extracted answer: OK , sounds great , but what do I do with a back yard full of praying mantises and ladybugs ( which the mantises won`t eat , by the way )
+Extraction time = 0.000162124633789
+Where is the Kentucky Horse Park located?
+Retrieve time = 16.2487790585
+873 874 1 John Henry is scheduled to arrive today from Lexington , Ky. , where he lives at the Kentucky Horse Park , to be the grand marshal for a two - day Oak Tree Racing Assn .
+877 874 1 John Henry is scheduled to arrive today from Lexington , Ky. , where he lives at the Kentucky Horse Park , to be the grand marshal for a two - day Oak Tree Racing Assn .
+403 874 1 John Henry is scheduled to arrive today from Lexington , Ky. , where he lives at the Kentucky Horse Park , to be the grand marshal for a two - day Oak Tree Racing Assn .
+874 874 1 John Henry is scheduled to arrive today from Lexington , Ky. , where he lives at the Kentucky Horse Park , to be the grand marshal for a two - day Oak Tree Racing Assn .
+Extracted answer: Lexington
+Extraction time = 0.000250101089478
+Who created the character James Bond?
+Retrieve time = 16.0043461323
+559 559 -1 Four actors have played James Bond ( Sean Connery , George Lazenby , Moore , Dalton ) and each has brought a new approach to the character .
+681 559 1 Four actors have played James Bond ( Sean Connery , George Lazenby , Moore , Dalton ) and each has brought a new approach to the character .
+681 559 -1 Sean Connery , the quintessential Agent 007 in such James Bond films as `` Dr. No
+681 559 1 ; Sean Connery established the film role of Ian Fleming`s super - spy , James Bond , Agent 007 , licensed to kill .
+681 559 1 Connery was handpicked by Ian Fleming to play James Bond in `` Dr. No , `` and starred in six more of the spy films including 1983 ` s `` Never Say Never Again . ``
+559 559 1 The wealthy Engelhard Jr. , known as the `` platinum king , `` also was a friend of James Bond creator Ian Fleming , and supposedly served as an inspiration for the character of the villain Goldfinger .
+Extracted answer: James Bond
+Extraction time = 0.000231027603149
+What was the cause of Bob Marley's death?
+Retrieve time = 15.9868731499
+431 789 -1 The cause of death was not immediately known .
+611 789 -1 . 1 cause of death in this country , " Frate said .
+788 789 -1 " Every time I listen to Bob Marley , I hear Curtis Mayfield and Marvin Gaye , so he was influenced by the things that were around him at that time , " said Trevy , lead singer for Boom Shaka . " To even think about looking for a new Marley is madness .
+435 789 -1 " Every time I listen to Bob Marley , I hear Curtis Mayfield and Marvin Gaye , so he was influenced by the things that were around him at that time , " said Trevy , lead singer for Boom Shaka . " To even think about looking for a new Marley is madness .
+641 789 -1 The precise cause of Gathers ` death was not known Monday .
+787 789 -1 a Next - Big - Thing - That - Never - Was after the 1981 death of Bob Marley , the music`s greatest star , reggae is enjoying a renewed popularity .
+789 789 -1 a Next - Big - Thing - That - Never - Was after the 1981 death of Bob Marley , the music`s greatest star , reggae is enjoying a renewed popularity .
+788 789 -1 a Next - Big - Thing - That - Never - Was after the 1981 death of Bob Marley , the music`s greatest star , reggae is enjoying a renewed popularity .
+435 789 -1 a Next - Big - Thing - That - Never - Was after the 1981 death of Bob Marley , the music`s greatest star , reggae is enjoying a renewed popularity .
+435 789 -1 The four are the children of the late reggae great , Bob Marley .
+787 789 -1 The four are the children of the late reggae great , Bob Marley .
+788 789 -1 Almost eight years after his death , reggae master Bob Marley still stirs people`s emotions .
+787 789 -1 Almost eight years after his death , reggae master Bob Marley still stirs people`s emotions .
+789 789 -1 Almost eight years after his death , reggae master Bob Marley still stirs people`s emotions .
+435 789 -1 Almost eight years after his death , reggae master Bob Marley still stirs people`s emotions .
+789 789 -1 Ten years after Bob Marley`s death , reggae is still here .
+787 789 -1 Ten years after Bob Marley`s death , reggae is still here .
+788 789 -1 Ten years after Bob Marley`s death , reggae is still here .
+435 789 -1 Ten years after Bob Marley`s death , reggae is still here .
+787 789 -1 It was one of the factors that caused Chris Blackwell , whose Island Records label initially brought Marley and reggae to the world , to back away from the music during the early ` 80 s.
+Extracted answer: Gathers
+Extraction time = 0.000134944915771
+What makes Black Hills, South Dakota a tourist attraction?
+Retrieve time = 16.1424520016
+407 892 -1 This is very scary , " says William Honerkamp , who heads the Black Hills Badlands and Lakes Association , a tourism trade group .
+407 892 2 Custer State Park is adjacent to U.S. Forest Service land that surrounds Mount Rushmore in the Black Hills in western South Dakota .
+892 892 1 Mount Rushmore is the No . 1 tourist attraction in South Dakota , with more than 2 million visitors a year
+Extracted answer: This is very scary , " says William Honerkamp , who heads the Black Hills Badlands and Lakes Association , a tourism trade group
+Extraction time = 0.000247955322266
+Which U.S. President is buried in Washington, D.C.?
+Retrieve time = 15.8690459728
+697 697 -1 `` What the states need is not more programs mandated from Washington , D.C. , said the president .
+697 697 -1 ; 2:30 p.m. , attend rally , Athens County Courthouse , Athens , Ohio ; 8:00 p.m. , remarks , Pennsylvania State Democratic Dinner , Harrisburg Holiday Inn , Grand Ballroom , Harrisburg , Pa. ; overnight , Washington , D.C. Republicans : Bush _ Washington , D.C. ( down ) Quayle _ Washington , D.C. ( down ) Saturday , September 24 : Democrats : Dukakis _ Boston Bentsen _ Washington , D.C. ( down ) Republicans : Bush _ Washington , D.C. ( down )
+340 697 -1 In 1939 , 50 years ago , President Roosevelt laid the cornerstone of the Jefferson Memorial in Washington D.C.
+697 697 -1 Quayle _ Washington , D.C. ( down ) Sunday , September 25 : Democrats : Dukakis _ Boston ; Winston - Salem , N.C. Bentsen _ Washington , D.C. ( down ) Republicans : Bush _ Winston - Salem , N.C. Quayle _ Washington , D.C. ( down ) Monday , Sept. 26 : Democrats : Dukakis _ Cleveland , Ohio ; Jersey City , N.J. Bentsen _ Washington , D.C.
+697 697 -1 Cheney , U.S. District Court , Washington , D.C. , 88 - 3669 ) .
+697 697 -1 _ Fitzhugh Green and Tom C. Korologos , of Washington , D.C. , to the U.S. Advisory Commission on Public Diplomacy .
+697 697 -1 According to historical letters released Wednesday in Springfield , Ill. , Abraham Lincoln was almost buried in Washington , D.C. rather than Illinois .
+694 697 -1 President Bush , who turns 65 on Monday , is the 13th oldest president in U.S. history .
+697 697 -1 One nettling question is why BCCI so particularly wanted a bank in Washington D.C.
+615 697 -1 Capital is an investment concern in Washington , D.C.
+697 697 -1 The vice president relaxed in Washington D.C. before embarking on a West Coast trip to Oregon , Washington and the biggest electoral prize _
+697 697 -1 Sunday , August 28 : Democrats : Dukakis _ down day , Boston Bentsen _ Washington , D.C. Republicans : Bush _ Houston Quayle _ down day , Washington , D.C. Monday , August 29 : Democrats : Dukakis _ Western Massachusetts Bentsen _ open Republicans : Bush _ Houston ; St. Louis ; Nashville , Tenn. ; overnight in Washington , D.C. Quayle _ Washington , D.C. Tuesday , August 30 : Democrats : Dukakis _ Western Massachusetts Bentsen _ open Republicans : Bush _ Rocky Mount , N.C. ; Fort Campbell and Lexington , Ky. ; overnight in Washington ,
+417 697 1 Just send $ 10 to the Democratic National Committee , 430 S. Capitol St. , Washington , D.C. 20003 .
+743 697 1 Just send $ 10 to the Democratic National Committee , 430 S. Capitol St. , Washington , D.C. 20003 .
+697 697 -1 Washington D.C. ; Williamsburg ,
+697 697 -1 On this date : In 1854 , the `` king `` of American march music , John Philip Sousa , was born in Washington , D.C.
+697 697 -1 Saturday , August 27 : Democrats : Dukakis _ 11:30 a.m. , March on Washington , Washington , D.C. ; 2:00 p.m. , speech , same location ; Tyringham , Mass. Bentsen _ Austin , Texas ; Washington ,
+697 697 -1 `` Oh , how nice it is to be out where the real people are , outside of Washington , D.C. , `` the president told a Republican audience in Omaha , where he raised $ 250,000 for Gov. Kay Orr .
+697 697 -1 D.C. Quayle _ Washington , D.C. Wednesday , August 31 : Democrats : Dukakis _ open Bentsen _
+697 697 -1 open Republicans : Bush _ Washington , D.C. Robertson _ open
+Extracted answer: `` What the states need is not more programs mandated from Washington , D.C. , said the president
+Extraction time = 0.000233888626099
+What is Pittsburg's baseball team called?
+Retrieve time = 15.8511240482
+844 844 -1 Q Why are the individuals in charge of professional football , hockey and basketball teams called " coaches " while in baseball they are called " managers " ? ; Will Garner , San Jose
+244 844 -1 The find indicates that `` New York City is the cradle of baseball , `` said David Q. Voigt , a baseball historian and professor at Albright College in Reading , Pa. `` Baseball was a city game , not a rural or farm game , `` he said , adding that the find supports his theory that baseball developed in stages .
+846 844 -1 One of the things Pittsburgh -- and all of baseball -- is looking for is a winning player , a player who knows what it takes to win , " Collins said .
+442 844 -1 One of the things Pittsburgh -- and all of baseball -- is looking for is a winning player , a player who knows what it takes to win , " Collins said .
+845 844 -1 One of the things Pittsburgh -- and all of baseball -- is looking for is a winning player , a player who knows what it takes to win , " Collins said .
+844 844 -1 ; So as the onset of a new season calls to mind memories of Willie Mays and Joe DiMaggio , few people can or care to remember that Allen and his peers couldn`t play major Negro league baseball because the black leagues ` westernmost team was in Kansas City , Mo.
+844 844 -1 If you own a baseball team and would like to employ at least one player who actually enjoys playing the game of baseball , call immediately .
+442 844 -1 The lettermen liked the program last year and told the basketball and baseball teams about it . "
+846 844 -1 Pitching , of course , is 81.3 % of baseball , and Pittsburgh`s is in the heretofore capable hands of coach Ray Miller .
+442 844 -1 Pitching , of course , is 81.3 % of baseball , and Pittsburgh`s is in the heretofore capable hands of coach Ray Miller .
+844 844 -1 The American football team is pathetic this year , the basketball team can not find the basket , nobody cares about the toothless ice hockey club and we have not had a baseball team for nearly a quarter of a century ( we will not have a football team either if Jack Kent Cooke , the owner , moves the Redskins to some racetrack in Maryland ) .
+337 844 -1 ; That didn`t mean professional baseball was an entirely segregated game .
+846 844 -1 But for Pete Rose , manager of the Cincinnati Reds baseball team , it was an especially tough day .
+844 844 -1 ; But Jess Jacinto , 64 , refuses to call what he does for Washington High School`s baseball team work .
+844 844 -1 Tecolote , " incidentally , is the Spanish word for owl , which calls attention to another distinction of this franchise : It was the first team in the Mexican League to play night baseball .
+859 844 -1 The reason this is a bad proposal is that in America , if you want to play professional football or basketball , you must first play college ball .
+844 844 -1 He helped start a black baseball team called the Crawfords . "
+599 844 -1 Is that what college football is all about ?
+844 844 -1 But if major league baseball has a really good one , this ain`t it : ; " We are the Florida Marlins .
+844 844 -1 Jeff Davis , basketball coach at Canoga Park and a senior on the 1978 El Camino Real baseball team , calls the resemblance " kind of weird . "
+Extracted answer: Baseball
+Extraction time = 0.000167846679688
+Who manufactures synthroid?
+Retrieve time = 15.9637219906
+285 691 -1 Who cares ?
+330 691 -1 Today , James Industries sells millions of Slinkies around the world .
+855 691 1 It designs , manufactures , markets and services electronic products for OEM ( original equipment manufacturers ) customers in many industries including the aerospace , telecommunications , medical and banking sectors .
+691 691 -1 Synthroid , like other Boots products , has no patent protection .
+691 691 -1 Boots is to end 80 years of prescription medicine manufacture with the sale of its drugs business to BASF of Germany for ` about Pounds 850 m ` .
+464 691 1 Eli Lilly is an Indianapolis - based maker of medicine , medical instrument systems , agricultural products and cosmetics .
+727 691 1 Procter & Gamble , based in Cincinnati , makes and sells a wide range of soaps , laundry detergents , cleaning agents , personal - care products including pharmaceuticals , food and beverage items and other products for commercial use .
+705 691 1 Soon the Rockville , Md.- based company figured out how to manufacture L - phenylalanine , a crucial ingredient in Aspartame , Searle`s popular artificial sweetener .
+280 691 -1 Who would care ? "
+538 691 -1 Initially , Symbol Technologies , which designs and manufactures bar - code scanners and terminals , will supply Olympus with the products for distribution .
+652 691 -1 Who is Tesla anyway ?
+795 691 -1 The cement company , Giant Group Ltd. , bought control of Barris Industries Inc. -- famed for its " Gong Show " and " Dating Game " television shows -- and made overtures to take over companies with products ranging from vacuum cleaner bags to aerospace metals .
+793 691 -1 Seiko Instruments , best known for its watches , has diversified into industrial high technology products .
+203 691 -1 Because amino acid pills are classified as nutritional supplements , the U.S. Food and Drug Administration has no controls over their manufacture or sale .
+577 691 -1 The Windlesham , England , maker of industrial gases and health - care products said it will integrate Varian`s Vacuum Products line into BOC`s Edwards High Vacuum International unit , based in London .
+224 691 -1 Optoelectronic Devices Can Become Smaller and Less Expensive / Resolution of 0.3 Nanometer " ] [ Text ] Frankfurt -- Holographic gratings are optical microstructures that can be used in numerous ways in optical measuring systems and in laser equipment .
+434 691 -1 Optoelectronic Devices Can Become Smaller and Less Expensive / Resolution of 0.3 Nanometer " ] [ Text ] Frankfurt -- Holographic gratings are optical microstructures that can be used in numerous ways in optical measuring systems and in laser equipment .
+356 691 -1 Now , the Question Is : How Do You Get Rid of a Cow`s Pimples ?
+691 691 -1 Synthroid , like all other significant Boots products , has no patent protection .
+466 691 1 A group including Scottish Amicable Life Assurance Society , a mutual life insurance company based in Glasgow , Scotland , said it holds 5.7 % of the common outstanding of Ceradyne Inc. , a Costa Mesa , Calif .- based maker of ceramic products and parts for defense , aerospace and industrial uses .
+Extracted answer: James Industries
+Extraction time = 0.000133037567139
+When did the Carolingian period begin?
+Retrieve time = 15.8921279907
+867 291 -1 When does it begin ?
+291 291 -1 The Grossmunster also dates from the Carolingian period , and it was here that Huldrych Zwingli set off the Reformation in 1519 .
+291 291 -1 The late Sir Percival David acquired them over a 20 - year period beginning in the late 1920s .
+868 291 -1 We are beginning to end the colonization of the language that began 400 years ago , " he said .
+869 291 -1 We are beginning to end the colonization of the language that began 400 years ago , " he said .
+868 291 -1 We are beginning to end the colonization of the language that began 400 years ago , " he said .
+869 291 -1 We are beginning to end the colonization of the language that began 400 years ago , " he said .
+291 291 -1 We are facing the end of the late romantic period .
+517 291 -1 If the last period of the hockey season is anything like the first period , the Kings can go get fitted for rings .
+291 291 -1 But fighting could begin again any day .
+262 291 -1 The first 1,100 years of Dynastic Egypt during the first six Dynasties was a period of undisturbed Black rule , and was the period when most of the pyramids ( and Sphinx ) were built . .
+291 291 -1 They apply for accounting periods beginning after 31 December 1992 .
+291 291 -1 The order is for the period beginning September 1987 and running through December 1988 .
+381 291 -1 When the Navy finally does pack up and leave , it will end an American presence that began when President McKinley followed Kipling`s advice to " take up the White Man`s burden " here almost a century ago .
+291 291 -1 The Big Three`s incentive plans expired just as the mid - May period began a year ago .
+262 291 -1 The tomb and mound date from the Yamato period , which ran from early in the Christian era through 710 .
+347 291 -1 The show begins with the work of the young artists who were in Paris well before the turn of the century , where they they were able to respond directly to impressionism in its later moods and phases , and to early developments in post - impressionism .
+391 291 -1 But only half the time .
+347 291 -1 But only half the time .
+717 291 -1 " What can I say , it was just one of those nights , " said goaltender Mark Reimer , who allowed four goals before he was pulled with four minutes remaining in the second period .
+Extracted answer: 1519
+Extraction time = 0.000153064727783
+60
+MRR: 0.284
+Zero one loss: 0.083
+
+Process finished with exit code 0
