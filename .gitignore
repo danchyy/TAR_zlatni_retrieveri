@@ -6,4 +6,5 @@ __pycache__/
 test*.py
 paths.txt
 pickles/
+junk_pickles/
 googleWord2Vec.bin
