@@ -22,6 +22,10 @@ class Encoder():
         self.preprocessing.loadParser()
         self.parsed_questions = {}
         self.parsed_sentences = {}
+
+        self.train_ids = np.load("../../data/train_ids.npy")
+        self.test_ids = np.load("../../data/test_ids.npy")
+
         self.questionPosTags = { "WDT", "WP", "WP$", "WRB" }
         self.questionPosTagToClass = {
             "when": "TIME",
@@ -101,8 +105,8 @@ class Encoder():
 
         return neTypeSet
 
-    def encode(self, q_index, sent_index):
-        question_data = self.parsed_questions[q_index]
+    def encode(self, q_id, sent_index):
+        question_data = self.parsed_questions[q_id]
         sentence_data = self.parsed_sentences[sent_index]
         parsed_q = question_data[0]
         parsed_sent = sentence_data[0]
@@ -152,6 +156,7 @@ class Encoder():
     def create_structures(self):
         print 'Starting with questions'
         for key in self.questions:
+            print key
             parsed_qs = self.preprocessing.rawTextToSentences(self.questions[key])
             parsed_question = parsed_qs[0]
             question_vector = self.sentence2vector(parsed_question)
@@ -160,7 +165,7 @@ class Encoder():
                 question_class_vector = self.questionTypeToInt["THING"]
             else:
                 question_class_vector = self.questionTypeToInt[question_class]
-            self.parsed_questions[key] = (parsed_question, question_vector, question_class_vector)
+            self.parsed_questions[str(key)] = (parsed_question, question_vector, question_class_vector)
 
         print 'Starting with sentences'
         for i in range(len(self.labeled_sentences)):
@@ -178,25 +183,37 @@ class Encoder():
                 print "inputed sentence at index: " + str(i)
 
     def create_encoded_vectors(self):
-        feat_vectors = []
+        self.train_set = []
+        self.test_set = []
+        self.train_labels = []
+        self.test_labels = []
         for i in range(len(self.labeled_sentences)):
             curr_input = self.labeled_sentences[i]
             article_id, text, questions_labels = curr_input[0], curr_input[1], curr_input[2]
             for q, l in questions_labels:
-                feat_vectors.append(self.encode(q, i), l)
+                if q in self.test_ids:
+                    self.test_set.append(self.encode(q, i))
+                    self.test_labels.append(l)
+                if q in self.train_ids:
+                    self.train_set.append(self.encode(q, i))
+                    self.test_set.append(l)
             if i % 5000 == 0:
                 print "Encoded sentence ad index " + str(i)
 
-        return feat_vectors
+        np.save(open("../../data/train_data.npy", "wb"), np.array(self.train_set))
+        np.save(open("../../data/train_labels.npy", "wb"), np.array(self.train_labels))
+        np.save(open("../../data/test_data.npy", "wb"), np.array(self.test_set))
+        np.save(open("../../data/test_labels.npy", "wb"), np.array(self.test_labels))
+
 
     def encode_all(self):
         self.create_structures()
-        return self.create_encoded_vectors()
+        self.create_encoded_vectors()
 
 
 encoder = Encoder()
 print "Created encoder"
 #print "Starting to create sentences and questions structures"
 #encoder.create_structures()
-feature_vectors = encoder.encode_all()
-pickle.dump(feature_vectors, open("pickles/data_pairs.pickle", "wb"), protocol=2)
+encoder.encode_all()
+#pickle.dump(feature_vectors, open("pickles/data_pairs.pickle", "wb"), protocol=2)
