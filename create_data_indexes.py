@@ -1,12 +1,3 @@
-"""lines = open("sentences_string.txt", "r").readlines()
-print(len(lines))
-
-
-for line in lines:
-	splitted = line.split("|")
-	if splitted[0].strip() == "225" and splitted[-1].strip() == "1":
-		print(line)"""
-
 # !/usr/bin/ python2
 # print("aaa" == None)
 import cPickle as pickle
@@ -32,7 +23,7 @@ for sentence in sentences:
 
 question_ids = np.array(positive_counter.keys())
 
-train_ids = question_ids[np.random.choice(664, 465, replace=False)]
+train_ids = question_ids[np.random.choice(664, 531, replace=False)]
 print len(train_ids)
 """test_ids = []
 for q_id in question_ids:
@@ -59,5 +50,5 @@ print "Test count: " + str(test_count)
 print 'a'
 print len(set(train_ids)&set(test_ids))
 
-np.save(open("data/train_indexes.npy", "wb"), train_ids)
-np.save(open("data/test_indexes.npy", "wb"), test_ids)
+#np.save(open("data/train_indexes.npy", "wb"), train_ids)
+#np.save(open("data/test_indexes.npy", "wb"), test_ids)
