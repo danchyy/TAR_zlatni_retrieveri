@@ -8,15 +8,14 @@ from implementations.baseline.sentence import Sentence
 from implementations.baseline.word import Word
 
 WORD_2_VEC_PATH = '../../googleWord2Vec.bin'
-SENTENCES_PATH = '../../pickles/labeled_sentences.pickle'
+SENTENCES_PATH = '../../pickles/sentences_regression.pickle'
 QUESTIONS_PATH = '../../pickles/questions.pickle'
 
-
-class Encoder():
+class RegressionEncoder():
 
     def __init__(self, word2vec_path=WORD_2_VEC_PATH, sent_path=SENTENCES_PATH, q_path=QUESTIONS_PATH):
         self.word_vectors = KeyedVectors.load_word2vec_format(word2vec_path, binary=True)
-        self.labeled_sentences = pickle.load(open(sent_path, "rb"))
+        self.regression_sentences = pickle.load(open(sent_path, "rb"))
         self.questions = pickle.load(open(q_path, "rb"))
         self.preprocessing = Preprocessing()
         self.preprocessing.loadParser()
@@ -70,7 +69,6 @@ class Encoder():
         }
 
 
-
     def classifyQuestion(self, question):
         for i, word in enumerate(question.wordList):
             if word.posTag not in self.questionPosTags:
@@ -104,6 +102,16 @@ class Encoder():
                 neTypeSet.add(word.neType)
 
         return neTypeSet
+
+    def sentence2vector(self, sentence):
+        vector = np.zeros(300, )
+        for word in sentence.getWords():
+            try:
+                wordvec = self.word_vectors[word.wordText]
+            except KeyError:
+                wordvec = np.zeros(300, )
+            vector += wordvec
+        return vector
 
     def encode(self, q_id, sent_index):
         question_data = self.parsed_questions[q_id]
@@ -146,17 +154,6 @@ class Encoder():
 
         return np.concatenate([word2vec_q, word2vec_sent, np.array([similarity]), question_type, sentence_type, np.array([overlap])])
 
-
-    def sentence2vector(self, sentence):
-        vector = np.zeros(300, )
-        for word in sentence.getWords():
-            try:
-                wordvec = self.word_vectors[word.wordText]
-            except KeyError:
-                wordvec = np.zeros(300, )
-            vector += wordvec
-        return vector
-
     def create_structures(self):
         print 'Starting with questions'
         for key in self.questions:
@@ -172,8 +169,8 @@ class Encoder():
             self.parsed_questions[str(key)] = (parsed_question, question_vector, question_class_vector)
 
         print 'Starting with sentences'
-        for i in range(len(self.labeled_sentences)):
-            parsed_sents = self.preprocessing.rawTextToSentences(self.labeled_sentences[i][1])
+        for i in range(len(self.regression_sentences)):
+            parsed_sents = self.preprocessing.rawTextToSentences(self.regression_sentences[i][1])
             parsed_sentence = parsed_sents[0]
             sentence_vector = self.sentence2vector(parsed_sentence)
             classified_sentence = self.classifySentence(parsed_sentence)
@@ -193,36 +190,33 @@ class Encoder():
         self.test_labels = []
         self.map_test_index_to_real = {}
         counter = 0
-        for i in range(len(self.labeled_sentences)):
-            curr_input = self.labeled_sentences[i]
-            article_id, text, questions_labels = curr_input[0], curr_input[1], curr_input[2]
-            for q, l in questions_labels:
+        for i in range(len(self.regression_sentences)):
+            curr_input = self.regression_sentences[i]
+            article_id, text, questions_ranks_scores_labels = curr_input[0], curr_input[1], curr_input[2]
+            for q, rank, score, l in questions_ranks_scores_labels:
                 if q in self.test_ids:
                     self.test_set.append(self.encode(q, i))
-                    self.test_labels.append(float(l))
+                    self.test_labels.append(score)
                     self.map_test_index_to_real[counter] = (q, i)
                     counter += 1
                 if q in self.train_ids:
                     self.train_set.append(self.encode(q, i))
-                    self.train_labels.append(float(l))
+                    self.train_labels.append(score)
             if i % 5000 == 0:
                 print "Encoded sentence ad index " + str(i)
 
-        np.save(open("../../data/train_data.npy", "wb"), np.array(self.train_set))
-        np.save(open("../../data/train_labels.npy", "wb"), np.array(self.train_labels))
-        np.save(open("../../data/test_data.npy", "wb"), np.array(self.test_set))
-        np.save(open("../../data/test_labels.npy", "wb"), np.array(self.test_labels))
-        pickle.dump(self.map_test_index_to_real, open("../../pickles/mrr_help_map.pickle", "wb"), protocol=2)
-
+        np.save(open("../../data/regression_train_data.npy", "wb"), np.array(self.train_set))
+        np.save(open("../../data/regression_train_labels.npy", "wb"), np.array(self.train_labels))
+        np.save(open("../../data/regression_test_data.npy", "wb"), np.array(self.test_set))
+        np.save(open("../../data/regression_test_labels.npy", "wb"), np.array(self.test_labels))
+        pickle.dump(self.map_test_index_to_real, open("../../pickles/regression_mrr_help_map.pickle", "wb"), protocol=2)
 
     def encode_all(self):
         self.create_structures()
         self.create_encoded_vectors()
 
-
-encoder = Encoder()
+encoder = RegressionEncoder()
 print "Created encoder"
 #print "Starting to create sentences and questions structures"
 #encoder.create_structures()
 encoder.encode_all()
-#pickle.dump(feature_vectors, open("pickles/data_pairs.pickle", "wb"), protocol=2)
