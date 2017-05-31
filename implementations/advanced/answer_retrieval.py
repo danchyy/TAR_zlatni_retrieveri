@@ -81,10 +81,10 @@ def method():
 
 from sklearn.metrics import mean_squared_error
 
-train_data = np.load("../../data/train_data.npy")
-train_labels = np.load("../../data/train_labels.npy")
-test_labels = np.load("../../data/test_labels.npy")
-test_data = np.load("../../data/test_data.npy")
+train_data = np.load("../../data/regression_train_data.npy")
+train_labels = np.load("../../data/regression_train_labels.npy")
+test_labels = np.load("../../data/regression_test_labels.npy")
+test_data = np.load("../../data/regression_test_data.npy")
 regression_map = pickle.load(open("../../pickles/regression_mrr_help_map.pickle", "rb"))
 regression_sentences = pickle.load(open("../../pickles/sentences_regression.pickle", "rb"))
 questions = pickle.load(open("../../pickles/questions.pickle", "rb"))
@@ -92,20 +92,19 @@ questions = pickle.load(open("../../pickles/questions.pickle", "rb"))
 print len(train_labels)
 print len(train_data)
 
-
+print train_labels
 
 models = []
 min_error, min_index = None, None
 index = 0
-for c in range(-15, 1):
+for c in range(-18, -10):
     svr = svm.LinearSVR(C=2**c)
-    print train_labels
     print 'start fit'
     svr.fit(train_data, train_labels)
 
     print 'end fit'
     y = svr.predict(test_data)
-
+    print mean_squared_error(y, test_labels)
     #from sklearn.metrics import zero_one_loss
     #print zero_one_loss(test_labels, y)
 
