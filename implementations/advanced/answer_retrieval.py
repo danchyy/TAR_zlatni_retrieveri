@@ -78,3 +78,34 @@ def method():
     for sentence, score in model.retrieve(question, sentences):
         print sentence, score
 
+
+test_data = np.load("../../data/test_data.npy")
+test_labels = np.load("../../data/test_labels.npy")
+mrr_map = pickle.load(open("../../pickles/mrr_help_map.pickle", "rb"))
+#sentences = pickle.load(open())
+
+score_dict = {}
+
+for i in range(len(test_data)):
+    q, index = mrr_map[i]
+    l = test_labels[i]
+    score = test_data[i][600]
+    if q not in score_dict:
+        score_dict[q] = [(score, l)]
+    else:
+        score_dict[q].append((score, l))
+
+mrr_sum = 0
+
+for q in score_dict:
+    lista = score_dict[q]
+
+    lista = sorted(lista, key = lambda x : x[0], reverse=True)
+
+    for i in range(min(len(lista), 20)):
+        if lista[i][1] == 1:
+            mrr_sum += 1.0 / (i+1)
+            break
+
+
+print "MRR: " + str(mrr_sum / len(score_dict.keys()))

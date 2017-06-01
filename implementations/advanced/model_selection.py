@@ -2,11 +2,15 @@ import cPickle as pickle
 import numpy as np
 from sklearn import svm
 from sklearn.metrics import mean_squared_error
+from sklearn.preprocessing import PolynomialFeatures
+poly = PolynomialFeatures(1)
 
 train_data = np.load("../../data/regression_train_data.npy")
+train_data = poly.fit_transform(train_data)
 train_labels = np.load("../../data/regression_train_labels.npy")
 test_labels = np.load("../../data/regression_test_labels.npy")
 test_data = np.load("../../data/regression_test_data.npy")
+test_data = poly.fit_transform(test_data)
 regression_map = pickle.load(open("../../pickles/regression_mrr_help_map.pickle", "rb"))
 regression_sentences = pickle.load(open("../../pickles/sentences_regression.pickle", "rb"))
 questions = pickle.load(open("../../pickles/questions.pickle", "rb"))
@@ -19,7 +23,7 @@ print train_labels
 models = []
 min_error, min_index = None, None
 index = 0
-for c in range(-10, -6):
+for c in range(-30, -2):
     svr = svm.LinearSVR(C=2**c)
     print 'start fit'
     svr.fit(train_data, train_labels)

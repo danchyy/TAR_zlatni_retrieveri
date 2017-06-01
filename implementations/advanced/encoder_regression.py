@@ -3,13 +3,17 @@ import cPickle as pickle
 import numpy as np
 from implementations.baseline.preprocessing import Preprocessing
 from scipy import spatial
-
+from nltk.corpus import stopwords
 from implementations.baseline.sentence import Sentence
 from implementations.baseline.word import Word
 
 WORD_2_VEC_PATH = '../../googleWord2Vec.bin'
 SENTENCES_PATH = '../../pickles/sentences_regression.pickle'
 QUESTIONS_PATH = '../../pickles/questions.pickle'
+
+
+OBJECT_STRING = "obj"
+SUBJECT_STRING = "subj"
 
 class RegressionEncoder():
 
@@ -18,9 +22,11 @@ class RegressionEncoder():
         self.regression_sentences = pickle.load(open(sent_path, "rb"))
         self.questions = pickle.load(open(q_path, "rb"))
         self.preprocessing = Preprocessing()
+        self.idf_map = pickle.load(open("../../pickles/stem_idf_scores.pickle", "rb"))
         self.preprocessing.loadParser()
         self.parsed_questions = {}
         self.parsed_sentences = {}
+        self.stop_words = set(stopwords.words('english'))
 
         self.train_ids = np.load("../../data/train_ids.npy")
         self.test_ids = np.load("../../data/test_ids.npy")
@@ -113,6 +119,20 @@ class RegressionEncoder():
             vector += wordvec
         return vector
 
+    def encode_lenth(self, sentence):
+        length = 0
+        for word in sentence.wordList:
+            if word.wordText not in self.stop_words and word.rel != "punct":
+                length += 1
+
+        if length <= 5:
+            return np.array([1.0, 0.0, 0.0, 0.0])
+        elif length <= 20:
+            return np.array([0.0, 1.0, 0.0, 0.0])
+        elif length <= 35:
+            return np.array([0.0, 0.0, 1.0, 0.0])
+        return np.array([0.0, 0.0, 0.0, 1.0])
+
     def encode(self, q_id, sent_index):
         question_data = self.parsed_questions[q_id]
         sentence_data = self.parsed_sentences[sent_index]
@@ -135,11 +155,24 @@ class RegressionEncoder():
 
         overlap = 0
 
+        OBJECT_INDEX = 0
+        SUBJECT_INDEX = 1
+        appears_vector = np.zeros(shape=(2,))
+
         question_stems, sentence_stems = set(), set()
         for q_word in question_words:
             assert isinstance(q_word, Word)
             if q_word.rel == "punct":
                 continue
+            is_obj = OBJECT_STRING in q_word.rel
+            is_subj = SUBJECT_STRING in q_word.rel
+            if is_obj or is_subj:
+                for sent_word in sentence_words:
+                    if sent_word.stem == q_word.stem:
+                        if is_obj:
+                            appears_vector[OBJECT_INDEX] = 1.0
+                        elif is_subj:
+                            appears_vector[SUBJECT_INDEX] = 1.0
             question_stems.add(q_word.stem)
 
         for sent_word in sentence_words:
@@ -150,9 +183,12 @@ class RegressionEncoder():
 
         for q_stem in question_stems:
             if q_stem in sentence_stems:
-                overlap += 1
+                overlap += self.idf_map.get(q_stem, 0)
 
-        return np.concatenate([word2vec_q, word2vec_sent, np.array([similarity]), question_type, sentence_type, np.array([overlap])])
+        sentence_length = self.encode_lenth(parsed_sent)
+
+        #return np.concatenate([word2vec_q, word2vec_sent, np.array([similarity]), question_type, sentence_type, np.array([overlap])])
+        return np.concatenate([np.array([similarity]), question_type, sentence_type, np.array([overlap])])
 
     def create_structures(self):
         print 'Starting with questions'
