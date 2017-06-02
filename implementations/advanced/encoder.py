@@ -11,9 +11,13 @@ from nltk.metrics.distance import jaccard_distance
 from implementations.baseline.sentence import Sentence
 from implementations.baseline.word import Word
 
-WORD_2_VEC_PATH = '../../googleWord2Vec.bin'
-SENTENCES_PATH = '../../pickles/labeled_sentences.pickle'
-QUESTIONS_PATH = '../../pickles/questions.pickle'
+import ROOT_SCRIPT
+
+ROOT_PATH = ROOT_SCRIPT.get_root_path()
+
+WORD_2_VEC_PATH = ROOT_PATH + 'googleWord2Vec.bin'
+SENTENCES_PATH = ROOT_PATH + 'pickles/labeled_sentences.pickle'
+QUESTIONS_PATH = ROOT_PATH + 'pickles/questions.pickle'
 
 OBJECT_STRING = "obj"
 SUBJECT_STRING = "subj"
@@ -26,15 +30,15 @@ class Encoder():
         self.word_vectors = KeyedVectors.load_word2vec_format(word2vec_path, binary=True)
         self.labeled_sentences = pickle.load(open(sent_path, "rb"))
         self.questions = pickle.load(open(q_path, "rb"))
-        self.idf_map = pickle.load(open("../../pickles/stem_idf_scores.pickle", "rb"))
+        self.idf_map = pickle.load(open(ROOT_PATH + "pickles/stem_idf_scores.pickle", "rb"))
         self.preprocessing = Preprocessing()
         self.preprocessing.loadParser()
         self.parsed_questions = {}
         self.parsed_sentences = {}
         self.stop_words = set(stopwords.words('english'))
 
-        self.train_ids = np.load("../../data/train_ids.npy")
-        self.test_ids = np.load("../../data/test_ids.npy")
+        self.train_ids = np.load(ROOT_PATH + "data/train_ids.npy")
+        self.test_ids = np.load(ROOT_PATH + "data/test_ids.npy")
         print len(self.test_ids)
 
         self.questionPosTags = { "WDT", "WP", "WP$", "WRB" }
@@ -265,11 +269,11 @@ class Encoder():
             if i % 5000 == 0:
                 print "Encoded sentence ad index " + str(i)
 
-        np.save(open("../../data/train_data_no_w2v.npy", "wb"), np.array(self.train_set))
-        np.save(open("../../data/train_labels_no_w2v.npy", "wb"), np.array(self.train_labels))
-        np.save(open("../../data/test_data_no_w2v.npy", "wb"), np.array(self.test_set))
-        np.save(open("../../data/test_labels_no_w2v.npy", "wb"), np.array(self.test_labels))
-        pickle.dump(self.map_test_index_to_real, open("../../pickles/mrr_help_map_no_w2v.pickle", "wb"), protocol=2)
+        np.save(open(ROOT_PATH + "data/train_data_no_w2v.npy", "wb"), np.array(self.train_set))
+        np.save(open(ROOT_PATH + "data/train_labels_no_w2v.npy", "wb"), np.array(self.train_labels))
+        np.save(open(ROOT_PATH + "data/test_data_no_w2v.npy", "wb"), np.array(self.test_set))
+        np.save(open(ROOT_PATH + "data/test_labels_no_w2v.npy", "wb"), np.array(self.test_labels))
+        pickle.dump(self.map_test_index_to_real, open(ROOT_PATH + "pickles/mrr_help_map_no_w2v.pickle", "wb"), protocol=2)
 
 
     def encode_all(self):

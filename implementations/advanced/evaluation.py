@@ -7,6 +7,9 @@ import re
 from implementations.advanced.answer_retrieval import AnswerRetrieval
 from implementations.baseline.preprocessing import Preprocessing
 from implementations.advanced.anwer_extraction import BaselineAnswerExtraction
+import ROOT_SCRIPT
+
+ROOT_PATH = ROOT_SCRIPT.get_root_path()
 
 def calculateRR(questionIndex, retrievedSentences):
     rank = 1
@@ -34,16 +37,16 @@ def calculateMatch(answer, patterns):
     return 0.0
 
 t0 = time()
-with open("../../pickles/labeled_sentences.pickle", "rb") as f:
+with open(ROOT_PATH + "pickles/labeled_sentences.pickle", "rb") as f:
     uberDict = cPickle.load(f)
 t1 = time()
 
 print "elapsed: %.3f" % (t1 - t0)
 
-with open("../../pickles/questions.pickle", "rb") as f:
+with open(ROOT_PATH + "pickles/questions.pickle", "rb") as f:
     questionDict = cPickle.load(f)
 
-with open("../../pickles/patterns.pickle", "rb") as f:
+with open(ROOT_PATH + "pickles/patterns.pickle", "rb") as f:
     patternDict = cPickle.load(f)
 
 

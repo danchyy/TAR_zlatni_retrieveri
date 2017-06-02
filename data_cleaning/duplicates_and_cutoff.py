@@ -4,6 +4,10 @@ import itertools
 
 from implementations.baseline.preprocessing import Preprocessing
 
+import ROOT_SCRIPT
+
+ROOT_PATH = ROOT_SCRIPT.get_root_path()
+
 """
 ---------------------------------
 ---------------------------------
@@ -25,7 +29,7 @@ CUTOFF_END = 6000
 ### Expanding huge blocks of sentences to individual sentences
 ### using the parser
 
-with open("data/trec9_sents_no_dups.txt", "r") as f:
+with open(ROOT_PATH  +"data/trec9_sents_no_dups.txt", "r") as f:
     lines = [l.strip() for l in f.readlines()]
 
 print "load parser"

@@ -7,9 +7,13 @@ from nltk.corpus import stopwords
 from implementations.baseline.sentence import Sentence
 from implementations.baseline.word import Word
 
-WORD_2_VEC_PATH = '../../googleWord2Vec.bin'
-SENTENCES_PATH = '../../pickles/sentences_regression.pickle'
-QUESTIONS_PATH = '../../pickles/questions.pickle'
+import ROOT_SCRIPT
+
+ROOT_PATH = ROOT_SCRIPT.get_root_path()
+
+WORD_2_VEC_PATH = ROOT_PATH + 'googleWord2Vec.bin'
+SENTENCES_PATH = ROOT_PATH + 'pickles/sentences_regression.pickle'
+QUESTIONS_PATH = ROOT_PATH + 'pickles/questions.pickle'
 
 
 OBJECT_STRING = "obj"
@@ -22,14 +26,14 @@ class RegressionEncoder():
         self.regression_sentences = pickle.load(open(sent_path, "rb"))
         self.questions = pickle.load(open(q_path, "rb"))
         self.preprocessing = Preprocessing()
-        self.idf_map = pickle.load(open("../../pickles/stem_idf_scores.pickle", "rb"))
+        self.idf_map = pickle.load(open(ROOT_PATH + "pickles/stem_idf_scores.pickle", "rb"))
         self.preprocessing.loadParser()
         self.parsed_questions = {}
         self.parsed_sentences = {}
         self.stop_words = set(stopwords.words('english'))
 
-        self.train_ids = np.load("../../data/train_ids.npy")
-        self.test_ids = np.load("../../data/test_ids.npy")
+        self.train_ids = np.load(ROOT_PATH + "data/train_ids.npy")
+        self.test_ids = np.load(ROOT_PATH + "data/test_ids.npy")
 
         self.questionPosTags = { "WDT", "WP", "WP$", "WRB" }
         self.questionPosTagToClass = {
@@ -246,11 +250,11 @@ class RegressionEncoder():
             if i % 5000 == 0:
                 print "Encoded sentence ad index " + str(i)
 
-        np.save(open("../../data/regression_train_data.npy", "wb"), np.array(self.train_set))
-        np.save(open("../../data/regression_train_labels.npy", "wb"), np.array(self.train_labels))
-        np.save(open("../../data/regression_test_data.npy", "wb"), np.array(self.test_set))
-        np.save(open("../../data/regression_test_labels.npy", "wb"), np.array(self.test_labels))
-        pickle.dump(self.map_test_index_to_real, open("../../pickles/regression_mrr_help_map.pickle", "wb"), protocol=2)
+        np.save(open(ROOT_PATH + "data/regression_train_data.npy", "wb"), np.array(self.train_set))
+        np.save(open(ROOT_PATH + "data/regression_train_labels.npy", "wb"), np.array(self.train_labels))
+        np.save(open(ROOT_PATH + "data/regression_test_data.npy", "wb"), np.array(self.test_set))
+        np.save(open(ROOT_PATH + "data/regression_test_labels.npy", "wb"), np.array(self.test_labels))
+        pickle.dump(self.map_test_index_to_real, open(ROOT_PATH + "pickles/regression_mrr_help_map.pickle", "wb"), protocol=2)
 
     def encode_all(self):
         self.create_structures()

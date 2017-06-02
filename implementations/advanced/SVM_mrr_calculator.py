@@ -4,19 +4,23 @@ from sklearn.metrics import f1_score
 import cPickle as pickle
 from sklearn.preprocessing import PolynomialFeatures
 from sklearn.linear_model import LogisticRegression
+import ROOT_SCRIPT
+
+ROOT_PATH = ROOT_SCRIPT.get_root_path()
+
 poly = PolynomialFeatures(1)
 
-train_data = np.load("../../data/train_data_no_w2v.npy")
+train_data = np.load(ROOT_PATH + "data/train_data_no_w2v.npy")
 train_data = poly.fit_transform(train_data)
-train_labels = np.load("../../data/train_labels_no_w2v.npy")
-test_labels = np.load("../../data/test_labels_no_w2v.npy")
-test_data = np.load("../../data/test_data_no_w2v.npy")
+train_labels = np.load(ROOT_PATH + "data/train_labels_no_w2v.npy")
+test_labels = np.load(ROOT_PATH + "data/test_labels_no_w2v.npy")
+test_data = np.load(ROOT_PATH + "data/test_data_no_w2v.npy")
 test_data = poly.fit_transform(test_data)
-questions = pickle.load(open("../../pickles/questions.pickle", "rb"))
+questions = pickle.load(open(ROOT_PATH + "pickles/questions.pickle", "rb"))
 
-mrr_help_map = pickle.load(open("../../pickles/mrr_help_map_no_w2v.pickle", "rb"))
+mrr_help_map = pickle.load(open(ROOT_PATH + "pickles/mrr_help_map_no_w2v.pickle", "rb"))
 
-labeled_sentences = pickle.load(open("../../pickles/labeled_sentences.pickle", "rb"))
+labeled_sentences = pickle.load(open(ROOT_PATH + "pickles/labeled_sentences.pickle", "rb"))
 print "Fitting SVM"
 
 questions_mrr = set()

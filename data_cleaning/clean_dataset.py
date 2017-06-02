@@ -1,11 +1,14 @@
 from collections import OrderedDict
-CLEANED_SENTENCES_PATH = "../data/trec9_sents_no_dups.txt"
-ORIGINAL_SENTENCES_PATH = "../data/trec9_sents"
+import ROOT_SCRIPT
+
+ROOT_PATH = ROOT_SCRIPT.get_root_path()
+CLEANED_SENTENCES_PATH = ROOT_PATH + "data/trec9_sents_no_dups.txt"
+ORIGINAL_SENTENCES_PATH = ROOT_PATH + "data/trec9_sents"
 MISSING_DOCUMENT_STR = "MISSING DOCUMENT"
 NO_MATCHING_LINE_STR = "NO MATCHING LINE IN DOCUMENT"
-DOCUMENT_MAP_PATH = "../data/document_map.txt" # this is sorted by left part of AP890227-0267 tag.
-QUESTION_MAP_PATH = "../data/question_map.txt" # this is sorted by question number
-FULL_DOC_TAG_MAP_PATH = "../data/document_full_tag_map.txt" # this is sorted by full doc tag
+DOCUMENT_MAP_PATH = ROOT_PATH + "data/document_map.txt" # this is sorted by left part of AP890227-0267 tag.
+QUESTION_MAP_PATH = ROOT_PATH + "data/question_map.txt" # this is sorted by question number
+FULL_DOC_TAG_MAP_PATH = ROOT_PATH + "data/document_full_tag_map.txt" # this is sorted by full doc tag
 
 def open_file_read_lines(file):
     """
@@ -213,3 +216,5 @@ def extract_documents_per_whole_doc_tag():
 
 #clean() # for cleaning the dataset with redundant sentences
 #extract_documents() # for extracting data to document_map.txt
+
+print ROOT_PATH

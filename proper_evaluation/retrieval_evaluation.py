@@ -2,6 +2,9 @@ import cPickle
 
 from implementations.advanced.encoder import Encoder
 import numpy as np
+import ROOT_SCRIPT
+
+ROOT_PATH = ROOT_SCRIPT.get_root_path()
 
 
 def getRowIndexes(qIdList, start, end, questionSentenceDict):
@@ -67,7 +70,7 @@ def makeSplits(questionSentenceDict, encoder, n_splits, randomState):
 
     return splitList
 
-with open("../pickles/question_labeled_sentence_dict.pickle", "rb") as f:
+with open(ROOT_PATH + "pickles/question_labeled_sentence_dict.pickle", "rb") as f:
     qsDict = cPickle.load(f)
 
 enc = Encoder()

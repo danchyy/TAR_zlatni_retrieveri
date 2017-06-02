@@ -9,13 +9,16 @@ from sklearn import svm
 import cPickle as pickle
 from time import time
 
+import ROOT_SCRIPT
+
+ROOT_PATH = ROOT_SCRIPT.get_root_path()
 
 
 class AnswerRetrieval(IAnswerRetrieval):
 
 
     def __init__(self):
-        self.word_vectors = KeyedVectors.load_word2vec_format('../../googleWord2Vec.bin', binary=True)
+        self.word_vectors = KeyedVectors.load_word2vec_format(ROOT_PATH + 'googleWord2Vec.bin', binary=True)
         self.returnK  = 20
 
     def retrieve(self, question, sentences):
@@ -79,9 +82,9 @@ def method():
         print sentence, score
 
 
-test_data = np.load("../../data/test_data.npy")
-test_labels = np.load("../../data/test_labels.npy")
-mrr_map = pickle.load(open("../../pickles/mrr_help_map.pickle", "rb"))
+test_data = np.load(ROOT_PATH + "data/test_data.npy")
+test_labels = np.load(ROOT_PATH + "data/test_labels.npy")
+mrr_map = pickle.load(open(ROOT_PATH + "pickles/mrr_help_map.pickle", "rb"))
 #sentences = pickle.load(open())
 
 score_dict = {}

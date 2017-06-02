@@ -8,14 +8,16 @@ from sentence import Sentence
 from word import Word
 from preprocessing import Preprocessing
 from time import time
+import ROOT_SCRIPT
 
+ROOT_PATH = ROOT_SCRIPT.get_root_path()
 
 
 class AnswerRetrieval(IAnswerRetrieval):
 
 
     def __init__(self):
-        self.word_vectors = KeyedVectors.load_word2vec_format('../../googleWord2Vec.bin', binary=True)
+        self.word_vectors = KeyedVectors.load_word2vec_format(ROOT_PATH + 'googleWord2Vec.bin', binary=True)
         self.returnK  = 20
 
     def retrieve(self, question, sentences):

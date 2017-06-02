@@ -1,5 +1,9 @@
 import cPickle as pickle
-labeled_sentences = pickle.load(open("../pickles/labeled_sentences.pickle", "rb"))
+import ROOT_SCRIPT
+
+ROOT_PATH = ROOT_SCRIPT.get_root_path()
+
+labeled_sentences = pickle.load(open(ROOT_PATH +"pickles/labeled_sentences.pickle", "rb"))
 qdict = {}
 has_one_dict = {}
 for i in range(len(labeled_sentences)):
@@ -18,7 +22,7 @@ for key in qdict.keys():
 
 print qdict.__len__()
 
-pickle.dump(qdict, open("../pickles/question_labeled_sentence_dict.pickle", "wb"), protocol=2)
+pickle.dump(qdict, open(ROOT_PATH + "pickles/question_labeled_sentence_dict.pickle", "wb"), protocol=2)
 
 #qdict = pickle.load(open("../pickles/question_labeled_sentence_dict.pickle", "rb"))
 for i in range(201, 206):
