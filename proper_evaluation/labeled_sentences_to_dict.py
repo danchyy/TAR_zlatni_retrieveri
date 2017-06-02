@@ -21,3 +21,6 @@ print qdict.__len__()
 pickle.dump(qdict, open("../pickles/question_labeled_sentence_dict.pickle", "wb"), protocol=2)
 
 #qdict = pickle.load(open("../pickles/question_labeled_sentence_dict.pickle", "rb"))
+for i in range(201, 206):
+    print len(qdict[str(i)])
+
