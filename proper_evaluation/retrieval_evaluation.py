@@ -30,7 +30,7 @@ def transform(questionIdList, questionSentenceDict, encoder):
             transformedList.append(encoded)
             labelList.append(label)
 
-    return np.array(transformedList), np.array(labelList)
+    return transformedList, labelList
 
 
 def makeSplits(questionSentenceDict, encoder, n_splits, randomState):
