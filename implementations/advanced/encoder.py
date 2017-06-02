@@ -277,9 +277,9 @@ class Encoder():
         self.create_encoded_vectors()
 
 
-encoder = Encoder()
-print "Created encoder"
+#encoder = Encoder()
+#print "Created encoder"
 #print "Starting to create sentences and questions structures"
 #encoder.create_structures()
-encoder.encode_all()
+#encoder.encode_all()
 #pickle.dump(feature_vectors, open("pickles/data_pairs.pickle", "wb"), protocol=2)
