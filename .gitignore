@@ -8,3 +8,4 @@ paths.txt
 pickles/
 junk_pickles/
 googleWord2Vec.bin
+data/
