@@ -23,7 +23,7 @@ print train_labels
 models = []
 min_error, min_index = None, None
 index = 0
-for c in range(-30, -2):
+for c in range(-20, -2):
     svr = svm.LinearSVR(C=2**c)
     print 'start fit'
     svr.fit(train_data, train_labels)

@@ -50,5 +50,8 @@ print "Test count: " + str(test_count)
 print 'a'
 print len(set(train_ids)&set(test_ids))
 
-#np.save(open("data/train_indexes.npy", "wb"), train_ids)
-#np.save(open("data/test_indexes.npy", "wb"), test_ids)
+print len(train_ids)
+print len(test_ids)
+
+#np.save(open("data/train_ids.npy", "wb"), train_ids)
+#np.save(open("data/test_ids.npy", "wb"), test_ids)

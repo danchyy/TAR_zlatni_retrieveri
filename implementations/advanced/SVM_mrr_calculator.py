@@ -3,6 +3,7 @@ from sklearn import svm
 from sklearn.metrics import f1_score
 import cPickle as pickle
 from sklearn.preprocessing import PolynomialFeatures
+from sklearn.linear_model import LogisticRegression
 poly = PolynomialFeatures(1)
 
 train_data = np.load("../../data/train_data_no_w2v.npy")
@@ -18,18 +19,23 @@ mrr_help_map = pickle.load(open("../../pickles/mrr_help_map_no_w2v.pickle", "rb"
 labeled_sentences = pickle.load(open("../../pickles/labeled_sentences.pickle", "rb"))
 print "Fitting SVM"
 
-for c in range(-18, -3):
+questions_mrr = set()
+for key in mrr_help_map:
+    questions_mrr.add(key)
+
+print len(questions_mrr)
+lines = []
+for c in range(-18, -2):
 
     print 'MRR for C = ' + str(c) + ' and: '
-    for j in [3, 5]:
+    for j in [3, 5, 7]:
 
-        clf = svm.LinearSVC(C=2**(c), class_weight={1: j})
+        clf = svm.LinearSVC(C=2**(c), class_weight={1:j})
+        #clf = LogisticRegression(C=2**(c), class_weight={1: j})
         clf.fit(train_data, train_labels)
         #print "Fitted"
         y = clf.decision_function(test_data)
         mrr_map = {}
-
-        #print len(y)
 
         for i in range(len(y)):
             q, index = mrr_help_map[i]
@@ -46,22 +52,40 @@ for c in range(-18, -3):
             else:
                 mrr_map[q].append((article_id, text, y[i], target_label))
 
+        #print len(mrr_map.keys())
+        lines.append(str(len(mrr_map.keys())) + "\n")
         mrr_sum = 0
+        number_of_zeros = 0
         for key in mrr_map:
             results = mrr_map[key]
             results = sorted(results, key=lambda x: x[2], reverse=True)
             #print " "
+            lines.append("\n")
+            lines.append(key + " " +  questions[int(key)] + "\n")
             #print key, questions[int(key)]
             curr_mrr = 0
+            found = False
             for i in range(min(len(results), 20)):
                 #print results[i][1], results[i][3], results[i][2]
-                if str(results[i][3]) == "1":
+                lines.append(str(results[i][1]) + " " + str(results[i][3]) + " " + str(results[i][2]) + "\n")
+                if str(results[i][3]) == "1" and not found:
                     curr_mrr = 1.0 / (i + 1)
-                    break
+                    found = True
+            if curr_mrr == 0:
+                number_of_zeros += 1
             #print "Mrr: " + str(curr_mrr)
+            lines.append("Mrr: " + str(curr_mrr) + "\n")
             mrr_sum += curr_mrr
             #print "====================="
+            lines.append("=====================\n")
         mrr = mrr_sum / len(mrr_map.keys())
 
-        print '\tclass_weight = ' + str(j) + ' is: ' + str(mrr)
+        print '\tclass_weight = ' + str(j) + ' is: ' + str(mrr),
+        lines.append("For c = -5 and class weight = 3, mrr is " + str(mrr))
+        print 'Number of mrr:0 = ' + str(number_of_zeros)
         #print "Mrr for c = " + str(c) + " is: " + str(mrr)
+
+        #TOP KEK = -5, 3
+
+
+#open("../../mrr_temp_file.txt", "w").writelines(lines)

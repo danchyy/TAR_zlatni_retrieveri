@@ -3,7 +3,10 @@ import cPickle as pickle
 import numpy as np
 from implementations.baseline.preprocessing import Preprocessing
 from scipy import spatial
+
+from nltk import ngrams
 from nltk.corpus import stopwords
+from nltk.metrics.distance import jaccard_distance
 
 from implementations.baseline.sentence import Sentence
 from implementations.baseline.word import Word
@@ -14,6 +17,7 @@ QUESTIONS_PATH = '../../pickles/questions.pickle'
 
 OBJECT_STRING = "obj"
 SUBJECT_STRING = "subj"
+
 
 
 class Encoder():
@@ -31,6 +35,7 @@ class Encoder():
 
         self.train_ids = np.load("../../data/train_ids.npy")
         self.test_ids = np.load("../../data/test_ids.npy")
+        print len(self.test_ids)
 
         self.questionPosTags = { "WDT", "WP", "WP$", "WRB" }
         self.questionPosTagToClass = {
@@ -125,6 +130,11 @@ class Encoder():
             return np.array([0.0, 0.0, 1.0, 0.0])
         return np.array([0.0, 0.0, 0.0, 1.0])
 
+    def my_dist(self, string1, string2):
+        first_grams = set(ngrams(string1, 3))
+        second_grams = set(ngrams(string2, 3))
+        return jaccard_distance(first_grams, second_grams)
+
 
     def encode(self, q_id, sent_index):
         question_data = self.parsed_questions[q_id]
@@ -154,7 +164,7 @@ class Encoder():
 
         OBJECT_INDEX = 0
         SUBJECT_INDEX = 1
-        appears_vector = np.zeros(shape=(2,))
+        obj_sub_similarity = np.zeros(shape=(2,))
         for q_word in question_words:
             assert isinstance(q_word, Word)
             if q_word.rel == "punct":
@@ -163,11 +173,16 @@ class Encoder():
             is_subj = SUBJECT_STRING in q_word.rel
             if is_obj or is_subj:
                 for sent_word in sentence_words:
-                    if sent_word.stem == q_word.stem:
-                        if is_obj:
-                            appears_vector[OBJECT_INDEX] = 1.0
-                        elif is_subj:
-                            appears_vector[SUBJECT_INDEX] = 1.0
+                    #if sent_word.stem == q_word.stem:
+                    if OBJECT_STRING in sent_word.rel or SUBJECT_STRING in sent_word.rel:
+                        try:
+                            jacc_similarity = 1.0 - self.my_dist(sent_word.wordText, q_word.wordText)
+                        except Exception:
+                            jacc_similarity = 0.0
+                        if is_obj and jacc_similarity > obj_sub_similarity[OBJECT_INDEX]:
+                            obj_sub_similarity[OBJECT_INDEX] = jacc_similarity
+                        elif is_subj and jacc_similarity > obj_sub_similarity[SUBJECT_INDEX]:
+                            obj_sub_similarity[SUBJECT_INDEX] = 1.0
 
             question_stems.add(q_word.stem)
 
@@ -184,7 +199,8 @@ class Encoder():
         sentence_length = self.encode_lenth(parsed_sent)
 
         #return np.concatenate([word2vec_q, word2vec_sent, np.array([similarity]), question_type, sentence_type, np.array([overlap])])
-        return np.concatenate([np.array([similarity]), question_type, sentence_type, np.array([overlap])])
+        return np.concatenate([np.array([similarity]), question_type, sentence_type, obj_sub_similarity, np.array([overlap])]) # BEST SO FAR
+        #return np.concatenate([np.array([similarity]), question_type, sentence_type, np.array([overlap])])
         #return np.concatenate([np.array([similarity]), np.array([overlap])])
 
 
