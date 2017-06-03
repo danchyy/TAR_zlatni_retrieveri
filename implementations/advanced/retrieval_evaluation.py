@@ -6,6 +6,7 @@ import numpy as np
 from itertools import product
 import ROOT_SCRIPT
 import copy
+from sklearn.preprocessing import PolynomialFeatures
 
 ROOT_PATH = ROOT_SCRIPT.get_root_path()
 
@@ -204,7 +205,13 @@ def getInputRows(X, y, qIdList, qIdTrain, qIdTest, qsDict, questionIdsMatchingXR
     Xtest = X[testIndexStart:testIndexEnd]
     yTest = y[testIndexStart:testIndexEnd]
 
+    # return np.concatenate([np.array([similarity, jaccard_similarity, overlap, bigram_overlap]), sentence_length, question_length, question_type, sentence_type])
+    poly = PolynomialFeatures(1)
     qIdsForXRows = questionIdsMatchingXRows[testIndexStart:testIndexEnd]  # question ids for each row in test set
+
+    Xtrain = poly.fit_transform(Xtrain)
+    Xtest = poly.fit_transform(Xtest)
+
 
     return Xtrain, yTrain, Xtest, yTest, qIdsForXRows
 
@@ -288,7 +295,7 @@ def temporaryLoop(qIdList, qsDict, paramCombinations, shuffle=True, outer_splits
     for qIdTrain, qIdTest in generateSplits(qIdList, outer_splits):    # outer loop
 
         Xtrain, yTrain, Xtest, yTest, qIdsForXRows = getInputRows(X, y, qIdList, qIdTrain, qIdTest, qsDict, questionIdsMatchingXRows)
-        clf = svm.LinearSVC(C=2**-6, class_weight={1: 5})
+        clf = svm.LinearSVC(C=2**-8, class_weight={1: 10})
         clf.fit(Xtrain, yTrain)  # train
         yPredict = clf.decision_function(Xtest)
 
@@ -310,8 +317,8 @@ with open(ROOT_PATH +"pickles/question_labeled_sentence_dict.pickle", "rb") as f
 qIdList = cPickle.load(open(ROOT_PATH+"data/shuffled_IDs.pickle", "rb"))
 
 params = []
-clist = range(-7, -3)
-classweights = [3, 5]
+clist = range(-9, -4)
+classweights = [6, 8]
 #
 for c, w in product(clist, classweights):
     params.append({"C":2**c, "class_weight":{1:w}})
@@ -322,4 +329,9 @@ print "Final Results: "
 print mrr_scores
 print best_params_list
 
-#print baselineEvaluationLoop(qIdList, qsDict, [])
+#create_data(58)
+#
+#result = temporaryLoop(qIdList, qsDict, [])
+#
+#print result
+#print np.mean(result)

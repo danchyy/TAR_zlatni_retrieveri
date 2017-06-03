@@ -30,7 +30,9 @@ class Encoder():
         self.word_vectors = KeyedVectors.load_word2vec_format(word2vec_path, binary=True)
         self.labeled_sentences = pickle.load(open(sent_path, "rb"))
         self.questions = pickle.load(open(q_path, "rb"))
-        self.idf_map = pickle.load(open(ROOT_PATH + "pickles/stem_idf_scores.pickle", "rb"))
+        self.token_idf_map = pickle.load(open(ROOT_PATH + "pickles/token_idf_scores.pickle", "rb"))
+        self.lemma_idf_map = pickle.load(open(ROOT_PATH + "pickles/lemma_idf_scores.pickle", "rb"))
+        self.bigram_idf_map = pickle.load(open(ROOT_PATH + "pickles/bigram_idf_scores.pickle", "rb"))
         self.preprocessing = Preprocessing()
         self.preprocessing.loadParser()
         self.parsed_questions = {}
@@ -135,7 +137,7 @@ class Encoder():
 
         return neTypeSet
 
-    def encode_lenth(self, sentence):
+    def encode_length(self, sentence):
         length = 0
         for word in sentence.wordList:
             if word.wordText not in self.stop_words and word.rel != "punct":
@@ -149,6 +151,20 @@ class Encoder():
             return np.array([0.0, 0.0, 1.0, 0.0])
         return np.array([0.0, 0.0, 0.0, 1.0])
 
+    def encode_question_length(self, question):
+        length = 0
+        for word in question.wordList:
+            if word.wordText not in self.stop_words and word.rel != "punct":
+                length += 1
+
+        if length <= 4:
+            return np.array([1.0, 0.0, 0.0, 0.0])
+        elif length <= 8:
+            return np.array([0.0, 1.0, 0.0, 0.0])
+        elif length <= 14:
+            return np.array([0.0, 0.0, 1.0, 0.0])
+        return np.array([0.0, 0.0, 0.0, 1.0])
+
     def my_dist(self, string1, string2):
         first_grams = set(ngrams(string1, 3))
         second_grams = set(ngrams(string2, 3))
@@ -158,6 +174,8 @@ class Encoder():
     def encode(self, q_id, sent_index):
         question_data = self.parsed_questions[q_id]
         sentence_data = self.parsed_sentences[sent_index]
+        question_text = self.questions[int(q_id)]
+        sentence_text = self.labeled_sentences[sent_index][1]
         parsed_q = question_data[0]
         parsed_sent = sentence_data[0]
         word2vec_q = question_data[1]
@@ -170,56 +188,58 @@ class Encoder():
         if np.isnan(similarity):
             similarity = 0.0
         else:
-            similarity = 1 - similarity
+            similarity = 1.0 - similarity
 
         assert isinstance(parsed_q, Sentence)
         assert isinstance(parsed_sent, Sentence)
         question_words = parsed_q.wordList
         sentence_words = parsed_sent.wordList
 
+        jaccard_similarity = 1.0 - self.my_dist(question_text, sentence_text)
+
         overlap = 0
+        bigram_overlap = 0
+        question_lemmas, sentence_lemmas = set(), set()
+        bigram_question_lemmas = set()
+        bigram_sentence_lemmas = set()
 
-        question_stems, sentence_stems = set(), set()
+        for i in range(1, len(question_words)):
+            curr_word, previous_word = question_words[i], question_words[i-1]
+            assert isinstance(curr_word, Word)
+            assert isinstance(previous_word, Word)
+            if i == 1:
+                question_lemmas.add(previous_word.lemma)
 
-        OBJECT_INDEX = 0
-        SUBJECT_INDEX = 1
-        obj_sub_similarity = np.zeros(shape=(2,))
-        for q_word in question_words:
-            assert isinstance(q_word, Word)
-            if q_word.rel == "punct":
-                continue
-            is_obj = OBJECT_STRING in q_word.rel
-            is_subj = SUBJECT_STRING in q_word.rel
-            if is_obj or is_subj:
-                for sent_word in sentence_words:
-                    #if sent_word.stem == q_word.stem:
-                    if OBJECT_STRING in sent_word.rel or SUBJECT_STRING in sent_word.rel:
-                        try:
-                            jacc_similarity = 1.0 - self.my_dist(sent_word.wordText, q_word.wordText)
-                        except Exception:
-                            jacc_similarity = 0.0
-                        if is_obj and jacc_similarity > obj_sub_similarity[OBJECT_INDEX]:
-                            obj_sub_similarity[OBJECT_INDEX] = jacc_similarity
-                        elif is_subj and jacc_similarity > obj_sub_similarity[SUBJECT_INDEX]:
-                            obj_sub_similarity[SUBJECT_INDEX] = 1.0
+            question_lemmas.add(curr_word.lemma)
+            bigram_question_lemmas.add((previous_word.lemma, curr_word.lemma))
 
-            question_stems.add(q_word.stem)
+        for i in range(1, len(sentence_words)):
+            curr_word, previous_word = sentence_words[i], sentence_words[i-1]
+            assert isinstance(curr_word, Word)
+            assert isinstance(previous_word, Word)
+            if i == 1:
+                sentence_lemmas.add(previous_word.lemma)
 
-        for sent_word in sentence_words:
-            assert isinstance(sent_word, Word)
-            if sent_word.rel == "punct":
-                continue
-            sentence_stems.add(sent_word.stem)
+            sentence_lemmas.add(curr_word.lemma)
+            bigram_sentence_lemmas.add((previous_word.lemma, curr_word.lemma))
 
-        for q_stem in question_stems:
-            if q_stem in sentence_stems:
-                overlap += self.idf_map.get(q_stem, 0)
 
-        sentence_length = self.encode_lenth(parsed_sent)
+        for q_lemma in question_lemmas:
+            if q_lemma in sentence_lemmas:
+                overlap += self.token_idf_map.get(q_lemma, 0)
+
+        for q_bigram in bigram_question_lemmas:
+            if q_bigram in bigram_sentence_lemmas:
+                bigram_overlap += self.bigram_idf_map.get(q_bigram, 0)
+
+        sentence_length = self.encode_length(parsed_sent)
+        question_length = self.encode_question_length(parsed_q)
 
         #return np.concatenate([word2vec_q, word2vec_sent, np.array([similarity]), question_type, sentence_type, np.array([overlap])])
-        return np.concatenate([np.array([similarity]), question_type, sentence_type, obj_sub_similarity, np.array([overlap])]) # BEST SO FAR
-        #return np.concatenate([np.array([similarity]), question_type, sentence_type, np.array([overlap])])
+        #return np.concatenate([np.array([similarity]), question_type, sentence_type, np.array([overlap])]) # BEST SO FAR
+
+        return np.concatenate([np.array([similarity, jaccard_similarity, overlap, bigram_overlap]), sentence_length, question_length, question_type, sentence_type])
+
         #return np.concatenate([np.array([similarity]), np.array([overlap])])
 
 
@@ -227,7 +247,7 @@ class Encoder():
         vector = np.zeros(300, )
         for word in sentence.getWords():
             try:
-                wordvec = self.word_vectors[word.wordText]
+                wordvec = self.word_vectors[word.wordText] * self.token_idf_map[word.wordText]
             except KeyError:
                 wordvec = np.zeros(300, )
             vector += wordvec
@@ -296,9 +316,9 @@ class Encoder():
         self.create_encoded_vectors()
 
 
-#encoder = Encoder()
+encoder = Encoder()
 #print "Created encoder"
 #print "Starting to create sentences and questions structures"
 #encoder.create_structures()
-#encoder.encode_all()
+encoder.encode_all()
 #pickle.dump(feature_vectors, open("pickles/data_pairs.pickle", "wb"), protocol=2)

@@ -32,8 +32,8 @@ class RegressionEncoder():
         self.parsed_sentences = {}
         self.stop_words = set(stopwords.words('english'))
 
-        self.train_ids = np.load(ROOT_PATH + "data/train_ids.npy")
-        self.test_ids = np.load(ROOT_PATH + "data/test_ids.npy")
+        self.train_ids = np.load(ROOT_PATH + "data/train_ids2.npy")
+        self.test_ids = np.load(ROOT_PATH + "data/test_ids2.npy")
 
         self.questionPosTags = { "WDT", "WP", "WP$", "WRB" }
         self.questionPosTagToClass = {
