@@ -37,8 +37,8 @@ class Encoder():
         self.parsed_sentences = {}
         self.stop_words = set(stopwords.words('english'))
 
-        self.train_ids = np.load(ROOT_PATH + "data/train_ids.npy")
-        self.test_ids = np.load(ROOT_PATH + "data/test_ids.npy")
+        self.train_ids = np.load(ROOT_PATH + "data/train_ids2.npy")
+        self.test_ids = np.load(ROOT_PATH + "data/test_ids2.npy")
         print len(self.test_ids)
 
         self.questionPosTags = { "WDT", "WP", "WP$", "WRB" }
@@ -47,13 +47,17 @@ class Encoder():
             "where": "LOCATION",
             "who": "AGENT",
             "which": "THING",
-            "what": "THING"
+
         }
         self.howDict = {
             "much": "QUANTITY",
             "many": "QUANTITY",
             "long": "TIME",
             "old": "TIME"
+        }
+
+        self.whatDict = {
+            "name": "AGENT",
         }
 
         self.namedEntityTypeToQuestionClass = {
@@ -108,6 +112,17 @@ class Encoder():
                     wordClass = None
                 if wordClass is not None:
                     return wordClass
+
+            if word.wordText.lower() == "what" and i < (len(question.wordList) - 1):
+                nextWord = question.wordList[i+1].wordText.lower()
+
+                wordClass = None
+                for w in question.wordList[i + 1:]:
+                    if w in self.whatDict:
+                        wordClass = self.whatDict[nextWord]
+                        return wordClass
+
+                return "THING"
 
         return None
 

@@ -1,25 +1,28 @@
 import cPickle
 
-from patsy.util import a
 from sklearn import svm
 from implementations.advanced.encoder import Encoder
 import numpy as np
+from itertools import product
+import ROOT_SCRIPT
+import copy
 
+ROOT_PATH = ROOT_SCRIPT.get_root_path()
 
 def getRowIndexes(qIdListOriginal, qIdList, questionSentenceDict):
     index = 0
     start = qIdListOriginal.index(qIdList[0])
     end = qIdListOriginal.index(qIdList[-1])+1
 
-    for qId in qIdList[:start]:
+    for qId in qIdListOriginal[:start]:
         index += len(questionSentenceDict[qId])
 
-    startIndex = index
+    startIndex = int(index)
 
-    for qId in qIdList[start:end]:
+    for qId in qIdListOriginal[start:end]:
         index += len(questionSentenceDict[qId])
 
-    endIndex = index
+    endIndex = int(index)
 
     return startIndex, endIndex
 
@@ -110,11 +113,8 @@ def customCompFunc(a, b):
     return qCMP
 
 def evaluationLoop(qIdList, qsDict, paramCombinations, shuffle=True, outer_splits=5, inner_splits=3):
-    enc = Encoder()
-    if shuffle:
-        np.random.shuffle(qIdList)
 
-    X, y, questionIdsMatchingXRows = transform(qIdList, qsDict, enc)
+    X, y, questionIdsMatchingXRows = np.load(ROOT_PATH + "data/X_data.npy"), np.load(ROOT_PATH + "data/y_targets.npy"), cPickle.load(open(ROOT_PATH+"data/q_id_list.pickle", "rb"))
 
     mrr_list = []
     best_params_list = []
@@ -125,8 +125,8 @@ def evaluationLoop(qIdList, qsDict, paramCombinations, shuffle=True, outer_split
         bestParams = None
 
         for params in paramCombinations:
-            clf = svm.LinearSVC(verbose=1)
-            clf.set_params(params)
+            clf = svm.LinearSVC()
+            clf.set_params(**params)
 
             current_param_scores = list()
             for qIdInnerTrain, qIdValidate in generateSplits(qIdTrain, inner_splits):
@@ -139,7 +139,10 @@ def evaluationLoop(qIdList, qsDict, paramCombinations, shuffle=True, outer_split
                 current_param_scores.append(mrr)
 
             meanScore = np.mean(current_param_scores)
-
+            print "+++++++++++++++++++++++++++++++++"
+            print "Current params %s" % str(params)
+            print "Mean MRR %f" % meanScore
+            print "++++++++++++++++++++++++++++++++"
             if maxResult < meanScore:
                 maxResult = meanScore
                 bestParams = params
@@ -157,8 +160,8 @@ def evaluationLoop(qIdList, qsDict, paramCombinations, shuffle=True, outer_split
 
         Xtrain, yTrain, Xtest, yTest, qIdsForXRows = getInputRows(X, y, qIdList, qIdTrain, qIdTest, qsDict, questionIdsMatchingXRows)
 
-        clf = svm.LinearSVC(verbose=1)
-        clf.set_params(bestParams)
+        clf = svm.LinearSVC()
+        clf.set_params(**bestParams)
         clf.fit(Xtrain, yTrain)  # train
 
         yPredict = clf.decision_function(Xtest)  # scores on test set
@@ -167,6 +170,10 @@ def evaluationLoop(qIdList, qsDict, paramCombinations, shuffle=True, outer_split
 
         mrr = calculateMRR(yPredict, qIdsForXRows, yTest)  # calculate mrr
 
+        print "========================================"
+        print "For best params: %s " % str(bestParams)
+        print "MRR score: %f" % mrr
+        print "========================================"
         # take found max params
         # train on qIdTrain with max params
         # test on qIdTest
@@ -181,6 +188,10 @@ def evaluationLoop(qIdList, qsDict, paramCombinations, shuffle=True, outer_split
 
 def getInputRows(X, y, qIdList, qIdTrain, qIdTest, qsDict, questionIdsMatchingXRows):
     testIndexStart, testIndexEnd = getRowIndexes(qIdList, qIdTest, qsDict)
+
+    if testIndexStart >= testIndexEnd:
+        print "Fucking mistake"
+        print testIndexStart, testIndexEnd
 
     firstX = X[0:testIndexStart]
     secondX = X[testIndexEnd:]
@@ -217,16 +228,98 @@ def calculateMRR(yPredict, qIdsForXRows, yTestLabels):
         for i in range(min(len(sortedList), 20)):
             score, label = sortedList[i]
 
-            if label == "1":
+            if label == "1" or label == 1:
                 mrrSum += (1 / float(i+1))
                 break
 
     return mrrSum / float(len(qScoreDict.keys()))
 
+def create_data(seed=27):
+    with open(ROOT_PATH + "pickles/question_labeled_sentence_dict.pickle", "rb") as f:
+        qsDict = cPickle.load(f)
+    keys = qsDict.keys()
+    np.random.seed(seed)
+    np.random.shuffle(keys)
+    encoder = Encoder()
+    encoder.create_structures()
+    X_data, y_targets, q_id_list = [], [], []
+    shuffled_IDs = []
+    for key in keys:
+        shuffled_IDs.append(key)
+        for index, text, label in qsDict[key]:
+            feature_vector = encoder.encode(str(key), int(index))
+            X_data.append(feature_vector)
+            y_targets.append(int(label))
+            q_id_list.append(key)
 
-with open("../../pickles/question_labeled_sentence_dict.pickle", "rb") as f:
-    qsDict = cPickle.load(f)
+    X_data, y_targets = np.array(X_data), np.array(y_targets)
+    np.save(open(ROOT_PATH + "data/X_data.npy", "wb"), X_data)
+    np.save(open(ROOT_PATH + "data/y_targets.npy", "wb"), y_targets)
+    cPickle.dump(shuffled_IDs, open(ROOT_PATH+"data/shuffled_IDs.pickle", "wb"))
+    cPickle.dump(q_id_list, open(ROOT_PATH+"data/q_id_list.pickle", "wb"))
+
+def baselineEvaluationLoop(qIdList, qsDict, paramCombinations, shuffle=True, outer_splits=5, inner_splits=3):
+
+    X, y, questionIdsMatchingXRows = np.load(ROOT_PATH + "data/X_data.npy"), np.load(ROOT_PATH + "data/y_targets.npy"), cPickle.load(open(ROOT_PATH+"data/q_id_list.pickle", "rb"))
+
+    mrr_list = []
+
+    for qIdTrain, qIdTest in generateSplits(qIdList, outer_splits):    # outer loop
+
+        Xtrain, yTrain, Xtest, yTest, qIdsForXRows = getInputRows(X, y, qIdList, qIdTrain, qIdTest, qsDict, questionIdsMatchingXRows)
+
+        yPredict = Xtest[:, 0] # scores on test set
+        print Xtrain.shape, Xtest.shape
+
+#        qIdsForXRows = questionIdsMatchingXRows[testIndexStart:testIndexEnd]  # question ids for each row in test set
+
+        mrr = calculateMRR(yPredict, qIdsForXRows, yTest)  # calculate mrr
+
+        mrr_list.append(mrr)
+
+    return mrr_list
+
+def temporaryLoop(qIdList, qsDict, paramCombinations, shuffle=True, outer_splits=5, inner_splits=3):
+
+    X, y, questionIdsMatchingXRows = np.load(ROOT_PATH + "data/X_data.npy"), np.load(ROOT_PATH + "data/y_targets.npy"), cPickle.load(open(ROOT_PATH+"data/q_id_list.pickle", "rb"))
+
+    mrr_list = []
+
+    for qIdTrain, qIdTest in generateSplits(qIdList, outer_splits):    # outer loop
+
+        Xtrain, yTrain, Xtest, yTest, qIdsForXRows = getInputRows(X, y, qIdList, qIdTrain, qIdTest, qsDict, questionIdsMatchingXRows)
+        clf = svm.LinearSVC(C=2**-6, class_weight={1: 5})
+        clf.fit(Xtrain, yTrain)  # train
+        yPredict = clf.decision_function(Xtest)
+
+#        qIdsForXRows = questionIdsMatchingXRows[testIndexStart:testIndexEnd]  # question ids for each row in test set
+
+        mrr = calculateMRR(yPredict, qIdsForXRows, yTest)  # calculate mrr
+
+        mrr_list.append(mrr)
+
+    return mrr_list
+
 
 #enc = Encoder()
-enc = None
-makeSplits(qsDict, enc, 5, 42)
+#enc = None
+#makeSplits(qsDict, enc, 5, 42)
+
+with open(ROOT_PATH +"pickles/question_labeled_sentence_dict.pickle", "rb") as f:
+    qsDict = cPickle.load(f)
+qIdList = cPickle.load(open(ROOT_PATH+"data/shuffled_IDs.pickle", "rb"))
+
+params = []
+clist = range(-7, -3)
+classweights = [3, 5]
+#
+for c, w in product(clist, classweights):
+    params.append({"C":2**c, "class_weight":{1:w}})
+
+mrr_scores, best_params_list = evaluationLoop(qIdList, qsDict, params, inner_splits=3, outer_splits=5)
+#
+print "Final Results: "
+print mrr_scores
+print best_params_list
+
+#print baselineEvaluationLoop(qIdList, qsDict, [])
