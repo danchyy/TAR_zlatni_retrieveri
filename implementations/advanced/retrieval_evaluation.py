@@ -1,4 +1,6 @@
 import cPickle
+
+from patsy.util import a
 from sklearn import svm
 from implementations.advanced.encoder import Encoder
 import numpy as np
@@ -107,8 +109,7 @@ def customCompFunc(a, b):
 
     return qCMP
 
-def evaluationLoop(qIdList, qsDict, shuffle=True, outer_splits=5, inner_splits=3):
-    paramCombinations = list()
+def evaluationLoop(qIdList, qsDict, paramCombinations, shuffle=True, outer_splits=5, inner_splits=3):
     enc = Encoder()
     if shuffle:
         np.random.shuffle(qIdList)
@@ -117,47 +118,44 @@ def evaluationLoop(qIdList, qsDict, shuffle=True, outer_splits=5, inner_splits=3
 
     mrr_list = []
     best_params_list = []
+
     for qIdTrain, qIdTest in generateSplits(qIdList, outer_splits):    # outer loop
 
-        maxResult = None
+        maxResult = -1.0
         bestParams = None
+
         for params in paramCombinations:
             clf = svm.LinearSVC(verbose=1)
             clf.set_params(params)
+
             current_param_scores = list()
             for qIdInnerTrain, qIdValidate in generateSplits(qIdTrain, inner_splits):
-                trainIndexStart, trainIndexEnd = getRowIndexes(qIdList, qIdInnerTrain, qsDict)
-                testIndexStart, testIndexEnd = getRowIndexes(qIdList, qIdValidate, qsDict)
-
-                Xtrain = X[trainIndexStart:trainIndexEnd]
-                yTrain = y[trainIndexStart:trainIndexEnd]
-
-                Xtest = X[testIndexStart:testIndexEnd]
-                yTest = y[testIndexStart:testIndexEnd]
+                Xtrain, yTrain, Xtest, yTest, qIdsForXRows = getInputRows(X, y, qIdList, qIdInnerTrain, qIdValidate, qsDict, questionIdsMatchingXRows)
 
                 clf.fit(Xtrain, yTrain) #train
                 yPredict = clf.decision_function(Xtest) #scores on test set
 
-                qIdsForXRows = questionIdsMatchingXRows[testIndexStart:testIndexEnd] #question ids for each row in test set
-
                 mrr = calculateMRR(yPredict, qIdsForXRows, yTest) #calculate mrr
                 current_param_scores.append(mrr)
+
             meanScore = np.mean(current_param_scores)
-            if maxResult != max(maxResult, meanScore):
-                maxResult = max(maxResult, meanScore)
+
+            if maxResult < meanScore:
+                maxResult = meanScore
                 bestParams = params
 
             # average results
             # if max, remember
 
-        trainIndexStart, trainIndexEnd = getRowIndexes(qIdList, qIdTrain, qsDict)
-        testIndexStart, testIndexEnd = getRowIndexes(qIdList, qIdTest, qsDict)
 
-        Xtrain = X[trainIndexStart:trainIndexEnd]
-        yTrain = y[trainIndexStart:trainIndexEnd]
+        #trainIndexStart, trainIndexEnd = getRowIndexes(qIdList, qIdTrain, qsDict)
+        #testIndexStart, testIndexEnd = getRowIndexes(qIdList, qIdTest, qsDict)
+        #Xtrain = X[trainIndexStart:trainIndexEnd]
+        #yTrain = y[trainIndexStart:trainIndexEnd]
+        #Xtest = X[testIndexStart:testIndexEnd]
+        #yTest = y[testIndexStart:testIndexEnd]
 
-        Xtest = X[testIndexStart:testIndexEnd]
-        yTest = y[testIndexStart:testIndexEnd]
+        Xtrain, yTrain, Xtest, yTest, qIdsForXRows = getInputRows(X, y, qIdList, qIdTrain, qIdTest, qsDict, questionIdsMatchingXRows)
 
         clf = svm.LinearSVC(verbose=1)
         clf.set_params(bestParams)
@@ -165,7 +163,7 @@ def evaluationLoop(qIdList, qsDict, shuffle=True, outer_splits=5, inner_splits=3
 
         yPredict = clf.decision_function(Xtest)  # scores on test set
 
-        qIdsForXRows = questionIdsMatchingXRows[testIndexStart:testIndexEnd]  # question ids for each row in test set
+#        qIdsForXRows = questionIdsMatchingXRows[testIndexStart:testIndexEnd]  # question ids for each row in test set
 
         mrr = calculateMRR(yPredict, qIdsForXRows, yTest)  # calculate mrr
 
@@ -180,23 +178,50 @@ def evaluationLoop(qIdList, qsDict, shuffle=True, outer_splits=5, inner_splits=3
     ## return list of results and found params list
     return mrr_list, best_params_list
 
+
+def getInputRows(X, y, qIdList, qIdTrain, qIdTest, qsDict, questionIdsMatchingXRows):
+    testIndexStart, testIndexEnd = getRowIndexes(qIdList, qIdTest, qsDict)
+
+    firstX = X[0:testIndexStart]
+    secondX = X[testIndexEnd:]
+    firstY = y[0:testIndexStart]
+    secondY = y[testIndexEnd:]
+
+    Xtrain = np.vstack((firstX, secondX))
+    yTrain = np.hstack((firstY, secondY))
+
+    Xtest = X[testIndexStart:testIndexEnd]
+    yTest = y[testIndexStart:testIndexEnd]
+
+    qIdsForXRows = questionIdsMatchingXRows[testIndexStart:testIndexEnd]  # question ids for each row in test set
+
+    return Xtrain, yTrain, Xtest, yTest, qIdsForXRows
+
+
 def calculateMRR(yPredict, qIdsForXRows, yTestLabels):
     qScoreDict = {}
     for i in range(len(yPredict)):
         qId, score, label = qIdsForXRows[i], yPredict[i], yTestLabels[i]
+
         if qId not in qScoreDict:
             qScoreDict[qId] = [(score, label)]
+
         else:
             qScoreDict[qId].append((score, label))
+
     mrrSum = 0.0
+
     for qId in qScoreDict.keys():
-        sortedList = sorted(qScoreDict[qId], key=lambda x:x[0], reverse=True)
+        sortedList = sorted(qScoreDict[qId], key=lambda x: x[0], reverse=True)
+
         for i in range(min(len(sortedList), 20)):
             score, label = sortedList[i]
+
             if label == "1":
-                mrrSum += (1/(i+1))
+                mrrSum += (1 / float(i+1))
                 break
-    return mrrSum/len(qScoreDict.keys())
+
+    return mrrSum / float(len(qScoreDict.keys()))
 
 
 with open("../../pickles/question_labeled_sentence_dict.pickle", "rb") as f:
