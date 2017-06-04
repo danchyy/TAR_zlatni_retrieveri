@@ -124,7 +124,7 @@ class ExtractionFeaturizer():
         for pos in posPath:
             coarsePosVector[self.coarseToIndexDict[self.detailedPOStoCoarse[pos]]] = 1.0
 
-
+        return np.concatenate((depRelVector, coarsePosVector, lenVec))
 
     def _findDepAndPosPath(self, anchor, word):
         if word.index < anchor.index:
