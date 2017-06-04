@@ -1,13 +1,13 @@
 import cPickle
 
-from sklearn import svm
-from implementations.advanced.encoder import Encoder
 import numpy as np
-from itertools import product
-import ROOT_SCRIPT
-import copy
+from sklearn import svm
 from sklearn.preprocessing import PolynomialFeatures
 
+import ROOT_SCRIPT
+from implementations.advanced.encoder import Encoder
+from implementations.advanced.anwer_extraction import BaselineAnswerExtraction
+import re
 ROOT_PATH = ROOT_SCRIPT.get_root_path()
 
 def getRowIndexes(qIdListOriginal, qIdList, questionSentenceDict):
@@ -131,7 +131,7 @@ def evaluationLoop(qIdList, qsDict, paramCombinations, shuffle=True, outer_split
 
             current_param_scores = list()
             for qIdInnerTrain, qIdValidate in generateSplits(qIdTrain, inner_splits):
-                Xtrain, yTrain, Xtest, yTest, qIdsForXRows = getInputRows(X, y, qIdList, qIdInnerTrain, qIdValidate, qsDict, questionIdsMatchingXRows)
+                Xtrain, yTrain, Xtest, yTest, qIdsForXRows, sentencesForXRows = getInputRows(X, y, qIdList, qIdInnerTrain, qIdValidate, qsDict, questionIdsMatchingXRows, None)
 
                 clf.fit(Xtrain, yTrain) #train
                 yPredict = clf.decision_function(Xtest) #scores on test set
@@ -159,7 +159,7 @@ def evaluationLoop(qIdList, qsDict, paramCombinations, shuffle=True, outer_split
         #Xtest = X[testIndexStart:testIndexEnd]
         #yTest = y[testIndexStart:testIndexEnd]
 
-        Xtrain, yTrain, Xtest, yTest, qIdsForXRows = getInputRows(X, y, qIdList, qIdTrain, qIdTest, qsDict, questionIdsMatchingXRows)
+        Xtrain, yTrain, Xtest, yTest, qIdsForXRows, sentencesForXRows = getInputRows(X, y, qIdList, qIdTrain, qIdTest, qsDict, questionIdsMatchingXRows, None)
 
         clf = svm.LinearSVC()
         clf.set_params(**bestParams)
@@ -187,7 +187,7 @@ def evaluationLoop(qIdList, qsDict, paramCombinations, shuffle=True, outer_split
     return mrr_list, best_params_list
 
 
-def getInputRows(X, y, qIdList, qIdTrain, qIdTest, qsDict, questionIdsMatchingXRows):
+def getInputRows(X, y, qIdList, qIdTrain, qIdTest, qsDict, questionIdsMatchingXRows, shuffledSentences):
     testIndexStart, testIndexEnd = getRowIndexes(qIdList, qIdTest, qsDict)
 
     if testIndexStart >= testIndexEnd:
@@ -208,21 +208,23 @@ def getInputRows(X, y, qIdList, qIdTrain, qIdTest, qsDict, questionIdsMatchingXR
     # return np.concatenate([np.array([similarity, jaccard_similarity, overlap, bigram_overlap]), sentence_length, question_length, question_type, sentence_type])
     poly = PolynomialFeatures(1)
     qIdsForXRows = questionIdsMatchingXRows[testIndexStart:testIndexEnd]  # question ids for each row in test set
-
+    if shuffledSentences is not None:
+        sentencesForXRows = shuffledSentences[testIndexStart:testIndexEnd]
+    else:
+        sentencesForXRows = []
 
     #print Xtrain.shape, Xtest.shape
     Xtrain = poly.fit_transform(Xtrain)
     Xtest = poly.fit_transform(Xtest)
 
 
-    return Xtrain, yTrain, Xtest, yTest, qIdsForXRows
+    return Xtrain, yTrain, Xtest, yTest, qIdsForXRows, sentencesForXRows
 
 
 def calculateMRR(yPredict, qIdsForXRows, yTestLabels):
     qScoreDict = {}
     for i in range(len(yPredict)):
         qId, score, label = qIdsForXRows[i], yPredict[i], yTestLabels[i]
-
         if qId not in qScoreDict:
             qScoreDict[qId] = [(score, label)]
 
@@ -233,15 +235,39 @@ def calculateMRR(yPredict, qIdsForXRows, yTestLabels):
 
     for qId in qScoreDict.keys():
         sortedList = sorted(qScoreDict[qId], key=lambda x: x[0], reverse=True)
-
         for i in range(min(len(sortedList), 20)):
-            score, label = sortedList[i]
-
+            score, label= sortedList[i]
             if label == "1" or label == 1:
                 mrrSum += (1 / float(i+1))
                 break
 
     return mrrSum / float(len(qScoreDict.keys()))
+
+
+def retrieve_sentences(yPredict, qIdsForXRows, yTestLabels, sentencesForXRows):
+    qScoreDict = {}
+    for i in range(len(yPredict)):
+        qId, score, label = qIdsForXRows[i], yPredict[i], yTestLabels[i]
+        sentence_text = sentencesForXRows[i]
+        if qId not in qScoreDict:
+            qScoreDict[qId] = [(score, label, sentence_text)]
+        else:
+            qScoreDict[qId].append((score, label, sentence_text))
+
+    dictionary_extraction = {}
+    for qId in qScoreDict.keys():
+        sortedList = sorted(qScoreDict[qId], key=lambda x: x[0], reverse=True)
+        found = False
+        curr_extraction = []
+        for i in range(min(len(sortedList), 20)):
+            score, label, text = sortedList[i]
+            curr_extraction.append(text)
+
+        dictionary_extraction[qId] = curr_extraction
+
+    return dictionary_extraction
+
+
 
 def create_data(seed=27):
     with open(ROOT_PATH + "pickles/question_labeled_sentence_dict.pickle", "rb") as f:
@@ -253,6 +279,7 @@ def create_data(seed=27):
     encoder.create_structures()
     X_data, y_targets, q_id_list = [], [], []
     shuffled_IDs = []
+    sentences_list = []
     for key in keys:
         shuffled_IDs.append(key)
         for index, text, label in qsDict[key]:
@@ -260,22 +287,27 @@ def create_data(seed=27):
             X_data.append(feature_vector)
             y_targets.append(int(label))
             q_id_list.append(key)
+            sentences_list.append(text)
 
     X_data, y_targets = np.array(X_data), np.array(y_targets)
     np.save(open(ROOT_PATH + "data/X_data.npy", "wb"), X_data)
     np.save(open(ROOT_PATH + "data/y_targets.npy", "wb"), y_targets)
     cPickle.dump(shuffled_IDs, open(ROOT_PATH+"data/shuffled_IDs.pickle", "wb"))
     cPickle.dump(q_id_list, open(ROOT_PATH+"data/q_id_list.pickle", "wb"))
+    cPickle.dump(sentences_list, open(ROOT_PATH+"data/sentences_order_extraction.pickle", "wb"))
 
 def baselineEvaluationLoop(qIdList, qsDict, paramCombinations, shuffle=True, outer_splits=5, inner_splits=3):
 
     X, y, questionIdsMatchingXRows = np.load(ROOT_PATH + "data/X_data.npy"), np.load(ROOT_PATH + "data/y_targets.npy"), cPickle.load(open(ROOT_PATH+"data/q_id_list.pickle", "rb"))
-
+    sentencesMatchingRows = cPickle.load(open(ROOT_PATH + "data/sentences_order_extraction.pickle", "rb"))
     mrr_list = []
-
+    answer_extractor = BaselineAnswerExtraction()
+    question_dict = cPickle.load(open(ROOT_PATH + "pickles/questions.pickle"))
+    patterns = cPickle.load(open(ROOT_PATH + "pickles/patterns.pickle"))
+    accuracies = []
     for qIdTrain, qIdTest in generateSplits(qIdList, outer_splits):    # outer loop
 
-        Xtrain, yTrain, Xtest, yTest, qIdsForXRows = getInputRows(X, y, qIdList, qIdTrain, qIdTest, qsDict, questionIdsMatchingXRows)
+        Xtrain, yTrain, Xtest, yTest, qIdsForXRows, sentencesForXRows = getInputRows(X, y, qIdList, qIdTrain, qIdTest, qsDict, questionIdsMatchingXRows, sentencesMatchingRows)
 
         yPredict = Xtest[:, 0] # scores on test set
         print Xtrain.shape, Xtest.shape
@@ -284,20 +316,46 @@ def baselineEvaluationLoop(qIdList, qsDict, paramCombinations, shuffle=True, out
 
         mrr = calculateMRR(yPredict, qIdsForXRows, yTest)  # calculate mrr
 
+        dictionary_extraction = retrieve_sentences(yPredict, qIdsForXRows, yTest, sentencesForXRows)
+        dictionary_extraction = retrieve_sentences(yPredict, qIdsForXRows, yTest, sentencesForXRows)
+        zero_one_list = []
+        for key in dictionary_extraction:
+            answer = answer_extractor.extract(question_dict[int(key)], dictionary_extraction[key])
+            pattern = patterns[int(key)]
+            zero_one_list.append(calculateMatch(answer + "\n", pattern))
+            # print key, question_dict[int(key)]
+            # print answer.__str__()
+        mrr_list.append(mrr)
+        accuracies.append(np.mean(zero_one_list))
+        print "Accuracy: " + str(np.mean(zero_one_list))
+
         mrr_list.append(mrr)
 
     return mrr_list
 
+def matches(answer, pattern):
+    prog = re.compile(pattern)
+    return prog.match(answer) is not None
+
+def calculateMatch(answer, patterns):
+    for pattern in patterns:
+        if matches(answer, pattern):
+            return 1.0
+    return 0.0
+
 def temporaryLoop(qIdList, qsDict, paramCombinations, shuffle=True, outer_splits=5, inner_splits=3):
 
     X, y, questionIdsMatchingXRows = np.load(ROOT_PATH + "data/X_data.npy"), np.load(ROOT_PATH + "data/y_targets.npy"), cPickle.load(open(ROOT_PATH+"data/q_id_list.pickle", "rb"))
-
+    sentencesMatchingRows = cPickle.load(open(ROOT_PATH+"data/sentences_order_extraction.pickle", "rb"))
     mrr_list = []
-
+    answer_extractor = BaselineAnswerExtraction()
+    question_dict = cPickle.load(open(ROOT_PATH + "pickles/questions.pickle"))
+    patterns = cPickle.load(open(ROOT_PATH + "pickles/patterns.pickle"))
+    accuracies = []
     for qIdTrain, qIdTest in generateSplits(qIdList, outer_splits):    # outer loop
 
-        Xtrain, yTrain, Xtest, yTest, qIdsForXRows = getInputRows(X, y, qIdList, qIdTrain, qIdTest, qsDict, questionIdsMatchingXRows)
-        clf = svm.LinearSVC(C=2**-3, class_weight={1: 6})
+        Xtrain, yTrain, Xtest, yTest, qIdsForXRows, sentencesForXRows = getInputRows(X, y, qIdList, qIdTrain, qIdTest, qsDict, questionIdsMatchingXRows,sentencesMatchingRows)
+        clf = svm.LinearSVC(C=2**-13, class_weight={1: 300})
         clf.fit(Xtrain, yTrain)  # train
         yPredict = clf.decision_function(Xtest)
 
@@ -305,8 +363,18 @@ def temporaryLoop(qIdList, qsDict, paramCombinations, shuffle=True, outer_splits
 
         mrr = calculateMRR(yPredict, qIdsForXRows, yTest)  # calculate mrr
 
+        dictionary_extraction = retrieve_sentences(yPredict, qIdsForXRows, yTest, sentencesForXRows)
+        zero_one_list = []
+        for key in dictionary_extraction:
+            answer = answer_extractor.extract(question_dict[int(key)], dictionary_extraction[key])
+            pattern = patterns[int(key)]
+            zero_one_list.append(calculateMatch(answer + "\n", pattern))
+            print key, question_dict[int(key)]
+            print answer.__str__()
         mrr_list.append(mrr)
-
+        accuracies.append(np.mean(zero_one_list))
+        print "Accuracy: " + str(np.mean(zero_one_list))
+    print "Average accuracy per fold: " + str(np.mean(accuracies))
     return mrr_list
 
 
@@ -318,24 +386,24 @@ with open(ROOT_PATH +"pickles/question_labeled_sentence_dict.pickle", "rb") as f
     qsDict = cPickle.load(f)
 qIdList = cPickle.load(open(ROOT_PATH+"data/shuffled_IDs.pickle", "rb"))
 
-params = []
-clist = range(-10, -1)
-classweights = [5, 9, 13]
-#
+"""params = []
+clist = range(-15, -9)
+classweights = [100, 200, 300]
+
 for c, w in product(clist, classweights):
-    params.append({"C":2**c, "class_weight":{1:w}})
+    params.append({"C":2**c, "class_weight":{1: w}})
 
 mrr_scores, best_params_list = evaluationLoop(qIdList, qsDict, params, inner_splits=3, outer_splits=5)
 #
 print "Final Results: "
 print mrr_scores
 print np.mean(mrr_scores)
-print best_params_list
+print best_params_list"""
 
 #create_data(23)
 
 #
-#result = temporaryLoop(qIdList, qsDict, [])
+result = temporaryLoop(qIdList, qsDict, [])
 #
-#print result
-#print np.mean(result)
+print result
+print np.mean(result)

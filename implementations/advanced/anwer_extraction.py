@@ -6,6 +6,8 @@ from interfaces.i_answer_extraction import IAnswerExtraction
 class BaselineAnswerExtraction(IAnswerExtraction):
 
     def __init__(self):
+        self.preprocessing = Preprocessing()
+        self.preprocessing.loadParser()
         self.questionPosTags = { "WDT", "WP", "WP$", "WRB" }
         self.questionPosTagToClass = {
             "when": "TIME",
@@ -43,17 +45,21 @@ class BaselineAnswerExtraction(IAnswerExtraction):
 
 
     def extract(self, question, rankedRelevantSentences):
+        question = self.preprocessing.rawTextToSentences(question)[0]
+        sentences = []
+        for sentence in rankedRelevantSentences:
+            sentences.append(self.preprocessing.rawTextToSentences(sentence)[0])
         questionClass = self.classifyQuestion(question)
 
         if questionClass is None:
-            return self.toString(rankedRelevantSentences[0][1])
+            return self.toString(sentences[0])
 
-        sameClassSentences = filter(lambda sent: self.classMatch(questionClass, self.classifySentence(sent)), rankedRelevantSentences)
+        sameClassSentences = filter(lambda sent: self.classMatch(questionClass, self.classifySentence(sent)), sentences)
 
         if len(sameClassSentences) == 0:
-            return self.toString(rankedRelevantSentences[0][1])
+            return self.toString(sentences[0])
 
-        return self.extractForClass(questionClass, sameClassSentences[0][1])
+        return self.extractForClass(questionClass, sameClassSentences[0])
 
 
     def classifyQuestion(self, question):
@@ -84,7 +90,7 @@ class BaselineAnswerExtraction(IAnswerExtraction):
     def classifySentence(self, tup):
         neTypeSet = set()
 
-        sentence = tup[1]
+        sentence = tup
         for word in sentence.wordList:
             if word.neType != "":
                 neTypeSet.add(word.neType)
@@ -137,7 +143,7 @@ class BaselineAnswerExtraction(IAnswerExtraction):
                 extracted.append(word)
 
         return " ".join([word.wordText for word in extracted])
-
+"""
 preproc = Preprocessing()
 preproc.loadParser()
 
@@ -152,4 +158,4 @@ sentence = preproc.rawTextToSentences(sentenceString)[0]
 print [(word.wordText, word.neType) for word in sentence.wordList]
 
 bae = BaselineAnswerExtraction()
-print bae.extract(question, [(1.0, sentence)])
+print bae.extract(question, [(1.0, sentence)])"""
