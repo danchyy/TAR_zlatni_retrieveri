@@ -23,7 +23,8 @@ with open(ROOT_PATH + "pickles/EXTRACTION_question_labeled_sentence_dict.pickle"
 
 
 def gen(itemlist):
-    featureLabels = [str(i) for i in xrange(len(itemlist[0]))]
+    featureLabels = map(lambda x: str(x[0]), enumerate(itemlist[0]))
+    #featureLabels = [str(i) for i in xrange(len(itemlist[0]))]
 
     while len(itemlist) > 0:
         yield map(lambda wf: dict(zip(featureLabels, wf)), itemlist.popleft())
@@ -39,3 +40,4 @@ def adjustDatasetForCRF(X, y):
     y_generator = GeneratorLen(genLabel(y), len(y))
 
     return X_generator, y_generator
+
