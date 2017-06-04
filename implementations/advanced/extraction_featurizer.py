@@ -1,9 +1,12 @@
 import itertools
 import cPickle as pickle
+from collections import deque
+
 import ROOT_SCRIPT
+from implementations.baseline.preprocessing import Preprocessing
 from implementations.baseline.sentence import Sentence
 import numpy as np
-
+from NE_encoder import NEEncoder
 from implementations.baseline.word import Word
 
 ROOT_PATH = ROOT_SCRIPT.get_root_path()
@@ -21,9 +24,12 @@ def getPosToCoarseDict():
         "VBN": "VERB",
         "VBP": "VERB",
         "VBZ": "VERB",
+        "BES": "VERB",
+        "HVS": "VERB",
         "JJ": "ADJECTIVE",
         "JJR": "ADJECTIVE",
         "JJS": "ADJECTIVE",
+        "AFX": "ADJECTIVE",
         "WDT": "WH-WORD",
         "WP": "WH-WORD",
         "WP$": "WH-WORD",
@@ -46,7 +52,24 @@ def getPosToCoarseDict():
         "RP": "OTHER",
         "SYM": "OTHER",
         "TO": "OTHER",
-        "UH": "OTHER"
+        "UH": "OTHER",
+        "-LRB-": "OTHER",
+        "-PRB-": "OTHER",
+        ",": "OTHER",
+        ":": "OTHER",
+        ".": "OTHER",
+        "''": "OTHER",
+        '""': "OTHER",
+        "#": "OTHER",
+        "``": "OTHER",
+        "$": "OTHER",
+        "ADD": "OTHER",
+        "GW": "OTHER",
+        "HYPH": "OTHER",
+        "NFP": "OTHER",
+        "NIL": "OTHER",
+        "SP": "OTHER",
+        "XX": "OTHER"
     }
 
 
@@ -55,6 +78,7 @@ class ExtractionFeaturizer():
     def __init__(self):
 
         self.idf_map = pickle.load(open(ROOT_PATH + "pickles/lemma_idf_scores.pickle", "rb"))
+        self.NEEncoder = NEEncoder()
 
 
         posToCoarseDict = getPosToCoarseDict()
@@ -72,6 +96,22 @@ class ExtractionFeaturizer():
 
         self.dependencyIndexDict = self.getDependencyIndexDict()
 
+    def encode(self, sentence, question):
+        """VRATI DEQ"""
+        questionType = self.NEEncoder.classifyQuestion(question)
+        questionType = self.NEEncoder.questionTypeToInt[questionType]
+        keyWord = self.getKeyWord(sentence, question)
+        wordDependencyVectors = self.encodeDependencies(sentence, keyWord)
+        sequenceFeatures = deque()
+        for word, dependencyVector in zip(sentence.wordList, wordDependencyVectors):
+            detailedPOS = self.encodeDetailedPOS(word.getPOS())
+            coarsePOS = self.encodeCoarsePOS(word.getPOS())
+            detailedNE = self.NEEncoder.encodeNEDetailVector(word.getNEType())
+            coarseNE = self.NEEncoder.encodeNECoarseVector(word.getNEType())
+            sequenceFeatures.append(np.concatenate((questionType, detailedPOS, coarsePOS, detailedNE, coarseNE, dependencyVector)))
+
+        return sequenceFeatures
+
     def encodeDetailedPOS(self, pos):
         vec = np.zeros(len(self.posToIndexDict))
         vec[self.posToIndexDict[pos]] = 1
@@ -82,10 +122,6 @@ class ExtractionFeaturizer():
         vec[self.coarseToIndexDict[self.detailedPOStoCoarse[pos]]] = 1
         return vec
 
-    def encode(self, sentence, question):
-        """VRATI DEQ"""
-        #return deque[["word_features"], ["word_features"]]
-        pass
 
 
     def encodeDependencies(self, sentence, importantWord):
@@ -108,14 +144,19 @@ class ExtractionFeaturizer():
         for govWord in governedWordsList[word.address]:
             govVec[self.dependencyIndexDict[govWord.rel]] = 1.0
 
-        pathVec = self.getDependencyPath(word, importantWord, sentence)
+        if importantWord is None:
+            depRelVector = np.zeros(len(self.dependencyIndexDict.keys()))
+            coarsePosVector = np.zeros(len(self.coarseToIndexDict.keys()))
+            np.concatenate((depRelVector, coarsePosVector, self.encodePathLength(None)))
+        else:
+            pathVec = self.getDependencyPath(word, importantWord, sentence)
 
         return np.concatenate((depVec, govVec, pathVec))
 
     def getDependencyPath(self, word, importantWord, sentence):
-        depPath, posPath = self._findDepAndPosPath(word, importantWord)
+        depPath, posPath = self._findDepAndPosPath(word, importantWord, sentence.wordList)
 
-        lenVec = [len(depPath)]
+        lenVec = self.encodePathLength(len(depPath))
 
         depRelVector = np.zeros(len(self.dependencyIndexDict.keys()))
         coarsePosVector = np.zeros(len(self.coarseToIndexDict.keys()))
@@ -128,16 +169,15 @@ class ExtractionFeaturizer():
 
         return np.concatenate((depRelVector, coarsePosVector, lenVec))
 
-    def _findDepAndPosPath(self, anchor, word):
-        if word.index < anchor.index:
+    def _findDepAndPosPath(self, anchor, word, wordList):
+        if word.address < anchor.address:
             temp1 = word
             temp2 = anchor
         else:
             temp1 = anchor
             temp2 = word
 
-        wordList = word.parentSentence.wordList
-        commonAncestor = self._findCommonAncestor(temp1, temp2)
+        commonAncestor = self._findCommonAncestor(temp1, temp2, wordList)
 
         if commonAncestor is None:
             return list(), list()
@@ -147,13 +187,15 @@ class ExtractionFeaturizer():
         path2 = list()
         path2pos = list()
 
-        while not temp1.__eq__(commonAncestor):
-            path1.append(temp1.dependencyRelation)
+        #while not temp1.__eq__(commonAncestor):
+        while temp1.address != commonAncestor.address:
+            path1.append(temp1.rel)
             path1pos.append(temp1.posTag)
             temp1 = wordList[temp1.headIndex]
 
-        while not temp2.__eq__(commonAncestor):
-            path2.append(temp2.dependencyRelation)
+        #while not temp2.__eq__(commonAncestor):
+        while temp2.address != commonAncestor.address:
+            path2.append(temp2.rel)
             path2pos.append(temp2.posTag)
             temp2 = wordList[temp2.headIndex]
 
@@ -170,15 +212,14 @@ class ExtractionFeaturizer():
 
         return dependencyPath, posPath
 
-    def _findCommonAncestor(self, w1, w2):
+    def _findCommonAncestor(self, w1, w2, wordList):
         s1 = set()
 
-        wordList = w1.parentSentence.wordList
         s1.add(w1)
         t1 = w1
         while True:
-            s1.add(t1)
-            if t1.headIndex is not None:
+            s1.add(t1.address)
+            if t1.headIndex != t1.address:
                 t1 = wordList[t1.headIndex]
             else:
                 break
@@ -186,7 +227,7 @@ class ExtractionFeaturizer():
 
         t2 = w2
         while True:
-            if t2 in s1:
+            if t2.address in s1:
                 return t2
             try:
                 t2 = wordList[t2.headIndex]
@@ -202,12 +243,14 @@ class ExtractionFeaturizer():
 
     def getDependencyIndexDict(self):
         depList = [
+            "ROOT",
             "acl",
             "advcl",
             "advmod",
             "amod",
             "appos",
             "aux",
+            "attr",
             "case",
             "cc",
             "ccomp",
@@ -249,14 +292,14 @@ class ExtractionFeaturizer():
 
 
     def getKeyWord(self, sentence, question):
-        sentenceLemmas = set()
-        for word in sentence.getWords():
-            sentenceLemmas.add(word.getLemma())
+        questionLemmas = set()
+        for word in question.wordList:
+            questionLemmas.add(word.getLemma())
         maxIDF = None
         keyWord = None
-        for word in question.getWords():
+        for word in sentence.wordList:
             lemma = word.getLemma()
-            if lemma in sentenceLemmas:
+            if lemma in questionLemmas:
                 idf = self.idf_map.get(lemma, -1)
                 if idf > maxIDF:
                     keyWord = word
@@ -265,3 +308,29 @@ class ExtractionFeaturizer():
         if maxIDF == -1 or maxIDF is None:
             return None
         return keyWord
+
+    def encodePathLength(self, length):
+        vec = np.zeros(5)
+        if length is None:
+            vec[0] = 1
+        elif length == 0:
+            vec[1] = 1
+        elif length < 3:
+            vec[2] = 1
+        elif length < 6:
+            vec[3] = 1
+        else:
+            vec[4] = 1
+        return vec
+
+
+prepro = Preprocessing()
+prepro.loadParser()
+
+sentence = prepro.rawTextToSentences("I am Archbishop Desmond Tutu.")[0]
+question = prepro.rawTextToSentences("Who is Desmond Tutu?")[0]
+
+ef = ExtractionFeaturizer()
+print ef.getKeyWord(sentence, question)
+encoding = ef.encode(sentence, question)
+print len(encoding[0])
