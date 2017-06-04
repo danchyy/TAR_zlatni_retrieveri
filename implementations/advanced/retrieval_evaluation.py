@@ -124,7 +124,7 @@ def evaluationLoop(qIdList, qsDict, paramCombinations, shuffle=True, outer_split
 
         maxResult = -1.0
         bestParams = None
-
+        print "STARTED OUTER SPLIT"
         for params in paramCombinations:
             clf = svm.LinearSVC()
             clf.set_params(**params)
@@ -209,6 +209,8 @@ def getInputRows(X, y, qIdList, qIdTrain, qIdTest, qsDict, questionIdsMatchingXR
     poly = PolynomialFeatures(1)
     qIdsForXRows = questionIdsMatchingXRows[testIndexStart:testIndexEnd]  # question ids for each row in test set
 
+
+    #print Xtrain.shape, Xtest.shape
     Xtrain = poly.fit_transform(Xtrain)
     Xtest = poly.fit_transform(Xtest)
 
@@ -295,7 +297,7 @@ def temporaryLoop(qIdList, qsDict, paramCombinations, shuffle=True, outer_splits
     for qIdTrain, qIdTest in generateSplits(qIdList, outer_splits):    # outer loop
 
         Xtrain, yTrain, Xtest, yTest, qIdsForXRows = getInputRows(X, y, qIdList, qIdTrain, qIdTest, qsDict, questionIdsMatchingXRows)
-        clf = svm.LinearSVC(C=2**-8, class_weight={1: 10})
+        clf = svm.LinearSVC(C=2**-3, class_weight={1: 6})
         clf.fit(Xtrain, yTrain)  # train
         yPredict = clf.decision_function(Xtest)
 
@@ -308,17 +310,17 @@ def temporaryLoop(qIdList, qsDict, paramCombinations, shuffle=True, outer_splits
     return mrr_list
 
 
-#enc = Encoder()
-#enc = None
-#makeSplits(qsDict, enc, 5, 42)
+# enc = Encoder()
+# enc = None
+# makeSplits(qsDict, enc, 5, 42)
 
 with open(ROOT_PATH +"pickles/question_labeled_sentence_dict.pickle", "rb") as f:
     qsDict = cPickle.load(f)
 qIdList = cPickle.load(open(ROOT_PATH+"data/shuffled_IDs.pickle", "rb"))
 
 params = []
-clist = range(-9, -4)
-classweights = [6, 8]
+clist = range(-10, -1)
+classweights = [5, 9, 13]
 #
 for c, w in product(clist, classweights):
     params.append({"C":2**c, "class_weight":{1:w}})
@@ -327,9 +329,11 @@ mrr_scores, best_params_list = evaluationLoop(qIdList, qsDict, params, inner_spl
 #
 print "Final Results: "
 print mrr_scores
+print np.mean(mrr_scores)
 print best_params_list
 
-#create_data(58)
+#create_data(23)
+
 #
 #result = temporaryLoop(qIdList, qsDict, [])
 #

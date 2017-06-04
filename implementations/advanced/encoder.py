@@ -41,7 +41,6 @@ class Encoder():
 
         self.train_ids = np.load(ROOT_PATH + "data/train_ids2.npy")
         self.test_ids = np.load(ROOT_PATH + "data/test_ids2.npy")
-        print len(self.test_ids)
 
         self.questionPosTags = { "WDT", "WP", "WP$", "WRB" }
         self.questionPosTagToClass = {
@@ -116,12 +115,9 @@ class Encoder():
                     return wordClass
 
             if word.wordText.lower() == "what" and i < (len(question.wordList) - 1):
-                nextWord = question.wordList[i+1].wordText.lower()
-
-                wordClass = None
                 for w in question.wordList[i + 1:]:
-                    if w in self.whatDict:
-                        wordClass = self.whatDict[nextWord]
+                    if w.wordText.lower() in self.whatDict:
+                        wordClass = self.whatDict[w.wordText.lower()]
                         return wordClass
 
                 return "THING"
@@ -140,7 +136,7 @@ class Encoder():
     def encode_length(self, sentence):
         length = 0
         for word in sentence.wordList:
-            if word.wordText not in self.stop_words and word.rel != "punct":
+            if word.rel != "punct":
                 length += 1
 
         if length <= 5:
@@ -154,7 +150,7 @@ class Encoder():
     def encode_question_length(self, question):
         length = 0
         for word in question.wordList:
-            if word.wordText not in self.stop_words and word.rel != "punct":
+            if word.rel != "punct":
                 length += 1
 
         if length <= 4:
@@ -169,7 +165,6 @@ class Encoder():
         first_grams = set(ngrams(string1, 3))
         second_grams = set(ngrams(string2, 3))
         return jaccard_distance(first_grams, second_grams)
-
 
     def encode(self, q_id, sent_index):
         question_data = self.parsed_questions[q_id]
@@ -223,22 +218,31 @@ class Encoder():
             sentence_lemmas.add(curr_word.lemma)
             bigram_sentence_lemmas.add((previous_word.lemma, curr_word.lemma))
 
-
+        overlap_count, bigram_overlap_count = 0, 0
         for q_lemma in question_lemmas:
             if q_lemma in sentence_lemmas:
-                overlap += self.token_idf_map.get(q_lemma, 0)
+                overlap += self.lemma_idf_map.get(q_lemma, 0)
+                overlap_count += 1
 
         for q_bigram in bigram_question_lemmas:
             if q_bigram in bigram_sentence_lemmas:
                 bigram_overlap += self.bigram_idf_map.get(q_bigram, 0)
+                bigram_overlap_count += 1
 
         sentence_length = self.encode_length(parsed_sent)
         question_length = self.encode_question_length(parsed_q)
 
+        if bigram_overlap_count > 0:
+            bigram_overlap = bigram_overlap / bigram_overlap_count
+        if overlap_count > 0:
+            overlap = overlap / overlap_count
+
+
         #return np.concatenate([word2vec_q, word2vec_sent, np.array([similarity]), question_type, sentence_type, np.array([overlap])])
         #return np.concatenate([np.array([similarity]), question_type, sentence_type, np.array([overlap])]) # BEST SO FAR
 
-        return np.concatenate([np.array([similarity, jaccard_similarity, overlap, bigram_overlap]), sentence_length, question_length, question_type, sentence_type])
+        return np.concatenate([np.array([similarity, jaccard_similarity, overlap, bigram_overlap]), sentence_length,
+                               question_length, question_type, sentence_type])
 
         #return np.concatenate([np.array([similarity]), np.array([overlap])])
 
@@ -316,9 +320,11 @@ class Encoder():
         self.create_encoded_vectors()
 
 
-encoder = Encoder()
+#encoder = Encoder()
+
 #print "Created encoder"
 #print "Starting to create sentences and questions structures"
 #encoder.create_structures()
-encoder.encode_all()
+#encoder.encode_all()
 #pickle.dump(feature_vectors, open("pickles/data_pairs.pickle", "wb"), protocol=2)
+#encoder.classifyQuestion(encoder.preprocessing.rawTextToSentences("What is the name he is carrying?")[0])
