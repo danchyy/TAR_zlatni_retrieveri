@@ -8,13 +8,13 @@ import ROOT_SCRIPT
 ROOT_PATH = ROOT_SCRIPT.get_root_path()
 poly = PolynomialFeatures(1)
 
-train_data = np.load(ROOT_PATH + "data/regression_train_data.npy")
+train_data = np.load(ROOT_PATH + "data/regression_train_data2.npy")
 train_data = poly.fit_transform(train_data)
-train_labels = np.load(ROOT_PATH + "data/regression_train_labels.npy")
-test_labels = np.load(ROOT_PATH + "data/regression_test_labels.npy")
-test_data = np.load(ROOT_PATH + "data/regression_test_data.npy")
+train_labels = np.load(ROOT_PATH + "data/regression_train_labels2.npy")
+test_labels = np.load(ROOT_PATH + "data/regression_test_labels2.npy")
+test_data = np.load(ROOT_PATH + "data/regression_test_data2.npy")
 test_data = poly.fit_transform(test_data)
-regression_map = pickle.load(open(ROOT_PATH + "pickles/regression_mrr_help_map.pickle", "rb"))
+regression_map = pickle.load(open(ROOT_PATH + "pickles/regression_mrr_help_map2.pickle", "rb"))
 regression_sentences = pickle.load(open(ROOT_PATH + "pickles/sentences_regression.pickle", "rb"))
 questions = pickle.load(open(ROOT_PATH + "pickles/questions.pickle", "rb"))
 
@@ -26,6 +26,10 @@ print train_labels
 models = []
 min_error, min_index = None, None
 index = 0
+
+print train_data.shape
+#return np.concatenate([np.array([similarity, jaccard_similarity, overlap, bigram_overlap]), sentence_length, question_length, question_type, sentence_type])
+
 for c in range(-20, -2):
     svr = svm.LinearSVR(C=2**c)
     print 'start fit'
