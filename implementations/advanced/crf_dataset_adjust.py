@@ -24,10 +24,13 @@ with open(ROOT_PATH + "pickles/EXTRACTION_question_labeled_sentence_dict.pickle"
 
 def gen(itemlist):
     featureLabels = map(lambda x: str(x[0]), enumerate(itemlist[0]))
-    #featureLabels = [str(i) for i in xrange(len(itemlist[0]))]
 
+    #counter = 0
     while len(itemlist) > 0:
-        yield map(lambda wf: dict(zip(featureLabels, wf)), itemlist.popleft())
+        returnedList = itemlist.popleft()
+        #print counter
+        #counter += 1
+        yield map(lambda wf: dict(zip(featureLabels, wf)), returnedList)
 
 def genLabel(itemlist):
     while len(itemlist) > 0:

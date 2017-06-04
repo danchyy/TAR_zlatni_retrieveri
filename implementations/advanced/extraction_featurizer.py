@@ -97,8 +97,6 @@ class ExtractionFeaturizer():
 
         depIndexDict = self.getDependencyIndexDict()
         self.dependencyIndexDict = depIndexDict
-        print sorted(map(lambda x: depIndexDict[x], sorted(depIndexDict.keys())))
-        print range(0, 67)
 
 
     def encode(self, sentence, question):
@@ -113,7 +111,11 @@ class ExtractionFeaturizer():
             coarsePOS = self.encodeCoarsePOS(word.getPOS())
             detailedNE = self.NEEncoder.encodeNEDetailVector(word.getNEType())
             coarseNE = self.NEEncoder.encodeNECoarseVector(word.getNEType())
+
+
             sequenceFeatures.append(np.concatenate((questionType, detailedPOS, coarsePOS, detailedNE, coarseNE, dependencyVector)))
+            #sequenceFeatures.append(np.concatenate((questionType, coarsePOS, coarseNE)))
+            #sequenceFeatures.append(np.concatenate((questionType, coarsePOS, coarseNE, dependencyVector)))
 
         return np.array(sequenceFeatures).astype('float32')
 
@@ -401,17 +403,46 @@ class ExtractionFeaturizer():
 
         preprocessing = Preprocessing()
         preprocessing.loadParser()
-        X = deque()
-        y = deque()
+        X = list()
+        y = list()
         questionIdsMatchinXrow = []
+
+        cnt = 0
         for qId in labeled_sentences_dict.keys():
             question = preprocessing.rawTextToSentences(questionsDict[int(qId)])[0]
+
             for i in range(len(labeled_sentences_dict[qId])):
                 index, text, sequence_labels = labeled_sentences_dict[qId][i]
-                sentence = preprocessing.rawTextToSentences(text)[0]
-                X.append(self.encode(sentence, question))
+                parsedList = preprocessing.rawTextToSentences(text)
+                sentence = parsedList[0]
+
+                if len(parsedList) > 1:
+                    continue
+                    #cnt += 1
+                    #for ind, part in enumerate(parsedList):
+                    #    print ind
+                    #    print part
+                    #    print " - ----- -- - - - "
+
+                encoded = self.encode(sentence, question)
+                #sequence_labels
+
+                if len(encoded) != len(sequence_labels):
+                #    pass
+                    cnt += 1
+                    print "WRONG LENS"
+                    print sentence
+                    print text
+                    print sequence_labels
+                    print " ___________________ "
+                    continue
+
+                X.append(encoded)
                 y.append(sequence_labels)
+
                 questionIdsMatchinXrow.append((qId, i))
+
+        print "COUNTER :::: " + str(cnt)
         pickle.dump(X, open(ROOT_PATH+"pickles/extraction_X.pickle", "wb"), protocol=2)
         pickle.dump(y, open(ROOT_PATH+"pickles/extraction_y.pickle", "wb"), protocol=2)
         pickle.dump(questionIdsMatchinXrow, open(ROOT_PATH+"pickles/extraction_question_ids.pickle", "wb"), protocol=2)
