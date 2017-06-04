@@ -36,6 +36,8 @@ class NEEncoder():
             "PRODUCT": "THING",
             "WORK_OF_ART": "THING",
             "LANGUAGE": "THING",
+            "LAW": "THING",
+            "": "None"
         }
 
         namedEntityDict = {}
@@ -46,11 +48,13 @@ class NEEncoder():
 
 
         self.questionTypeToInt = {
-            "AGENT": np.array([1, 0, 0, 0, 0]),
-            "TIME": np.array([0, 1, 0, 0, 0]),
-            "LOCATION": np.array([0, 0, 1, 0, 0]),
-            "QUANTITY": np.array([0, 0, 0, 1, 0]),
-            "THING": np.array([0, 0, 0, 0, 1])
+            "AGENT": np.array([1, 0, 0, 0, 0, 0]),
+            "TIME": np.array([0, 1, 0, 0, 0, 0]),
+            "LOCATION": np.array([0, 0, 1, 0, 0, 0]),
+            "QUANTITY": np.array([0, 0, 0, 1, 0, 0]),
+            "THING": np.array([0, 0, 0, 0, 1, 0]),
+            "None": np.array([0, 0, 0, 0, 0, 1]),
+            None: np.array([0, 0, 0, 0, 0, 1])
         }
 
     def classifyQuestion(self, question):
@@ -88,7 +92,7 @@ class NEEncoder():
         return neTypeSet
 
     def encodeNECoarseVector(self, ne):
-        return self.questionTypeToInt(self.namedEntityTypeToQuestionClass[ne])
+        return self.questionTypeToInt[self.namedEntityTypeToQuestionClass[ne]]
 
     def encodeNEDetailVector(self, ne):
         vec = np.zeros(len(self.NEToDetailIndex))

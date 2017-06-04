@@ -55,6 +55,7 @@ def getPosToCoarseDict():
         "UH": "OTHER",
         "-LRB-": "OTHER",
         "-PRB-": "OTHER",
+        "-RRB-": "OTHER",
         ",": "OTHER",
         ":": "OTHER",
         ".": "OTHER",
@@ -94,7 +95,11 @@ class ExtractionFeaturizer():
             coarseToIndexDict[key] = i
         self.coarseToIndexDict = coarseToIndexDict
 
-        self.dependencyIndexDict = self.getDependencyIndexDict()
+        depIndexDict = self.getDependencyIndexDict()
+        self.dependencyIndexDict = depIndexDict
+        print sorted(map(lambda x: depIndexDict[x], sorted(depIndexDict.keys())))
+        print range(0, 67)
+
 
     def encode(self, sentence, question):
         """VRATI DEQ"""
@@ -102,7 +107,7 @@ class ExtractionFeaturizer():
         questionType = self.NEEncoder.questionTypeToInt[questionType]
         keyWord = self.getKeyWord(sentence, question)
         wordDependencyVectors = self.encodeDependencies(sentence, keyWord)
-        sequenceFeatures = deque()
+        sequenceFeatures = list()
         for word, dependencyVector in zip(sentence.wordList, wordDependencyVectors):
             detailedPOS = self.encodeDetailedPOS(word.getPOS())
             coarsePOS = self.encodeCoarsePOS(word.getPOS())
@@ -110,7 +115,7 @@ class ExtractionFeaturizer():
             coarseNE = self.NEEncoder.encodeNECoarseVector(word.getNEType())
             sequenceFeatures.append(np.concatenate((questionType, detailedPOS, coarsePOS, detailedNE, coarseNE, dependencyVector)))
 
-        return sequenceFeatures
+        return np.array(sequenceFeatures).astype('float32')
 
     def encodeDetailedPOS(self, pos):
         vec = np.zeros(len(self.posToIndexDict))
@@ -138,16 +143,21 @@ class ExtractionFeaturizer():
         N_dep = len(self.dependencyIndexDict.keys())
 
         depVec = np.zeros(N_dep)
-        depVec[self.dependencyIndexDict[word.rel]] = 1.0
-
+        try:
+            depVec[self.dependencyIndexDict[word.rel]] = 1.0
+        except KeyError, e:
+            print e.message
         govVec = np.zeros(N_dep)
         for govWord in governedWordsList[word.address]:
-            govVec[self.dependencyIndexDict[govWord.rel]] = 1.0
+            try:
+                govVec[self.dependencyIndexDict[govWord.rel]] = 1.0
+            except KeyError, e:
+                print e.message
 
         if importantWord is None:
             depRelVector = np.zeros(len(self.dependencyIndexDict.keys()))
             coarsePosVector = np.zeros(len(self.coarseToIndexDict.keys()))
-            np.concatenate((depRelVector, coarsePosVector, self.encodePathLength(None)))
+            pathVec = np.concatenate((depRelVector, coarsePosVector, self.encodePathLength(None)))
         else:
             pathVec = self.getDependencyPath(word, importantWord, sentence)
 
@@ -162,7 +172,10 @@ class ExtractionFeaturizer():
         coarsePosVector = np.zeros(len(self.coarseToIndexDict.keys()))
 
         for depRel in depPath:
-            depRelVector[self.dependencyIndexDict[depRel]] = 1.0
+            try:
+                depRelVector[self.dependencyIndexDict[depRel]] = 1.0
+            except KeyError, e:
+                print e.message
 
         for pos in posPath:
             coarsePosVector[self.coarseToIndexDict[self.detailedPOStoCoarse[pos]]] = 1.0
@@ -245,11 +258,14 @@ class ExtractionFeaturizer():
         depList = [
             "ROOT",
             "acl",
+            "acomp",
             "advcl",
             "advmod",
+            "agent",
             "amod",
             "appos",
             "aux",
+            "auxpass",
             "attr",
             "case",
             "cc",
@@ -257,10 +273,16 @@ class ExtractionFeaturizer():
             "clf",
             "compound",
             "conj",
+            "complm",
             "cop",
             "csubj",
+            "csubjpass",
+            "dative",
             "dep",
             "det",
+            "dobj",
+            "hmod",
+            "hyph",
             "discourse",
             "dislocated",
             "expl",
@@ -268,24 +290,74 @@ class ExtractionFeaturizer():
             "flat",
             "goeswith",
             "iobj",
+            "infmod",
+            "intj",
             "list",
             "mark",
+            "meta",
+            "neg",
             "nmod",
+            "nn",
+            "npadvmod",
             "nsubj",
+            "nsubjpass",
+            "num",
+            "number",
             "nummod",
             "obj",
             "obl",
+            "oprd",
             "orphan",
             "parataxis",
+            "partmod",
+            "pcomp",
             "punct",
+            "pobj",
+            "poss",
+            "possessive",
+            "preconj",
+            "predet",
+            "prep",
+            "prt",
+            "punct",
+            "quantmod",
+            "relcl",
             "reparandum",
             "root",
             "vocative",
-            "xcomp"
+            "xcomp",
+            "advmod||xcomp",
+            "advmod||conj",
+            "dobj||xcomp",
+            "pobj||prep",
+            "prep||nsubj",
+            "nsubj||ccomp",
+            "dobj||conj",
+            "relcl||nsubj",
+            "appos||nsubj",
+            "acl||nsubj",
+            "acl||dobj",
+            "appos||dobj",
+            "prep||dobj",
+            "prep||conj",
+            "prep||dobj",
+            "acl||dobj",
+            "prep||advmod",
+            "acl||dobj",
+            "prep||advmod",
+            "appos||dobj",
+            "acl||dobj",
+            "prep||dobj",
+            "relcl||dobj",
+            "prep||dobj",
+            "acl||dobj",
+            "prep||dobj",
+            "appos||dobj",
+            "prep||advmod"
         ]
 
         depIndexDict = dict()
-        for i, key in enumerate(depList):
+        for i, key in enumerate(set(depList)):
             depIndexDict[key] = i
 
         return depIndexDict
@@ -323,14 +395,37 @@ class ExtractionFeaturizer():
             vec[4] = 1
         return vec
 
+    def createExtractionDataset(self):
+        labeled_sentences_dict = pickle.load(open(ROOT_PATH+"pickles/EXTRACTION_question_labeled_sentence_dict.pickle"))
+        questionsDict = pickle.load(open(ROOT_PATH +"pickles/questions.pickle"))
 
-prepro = Preprocessing()
-prepro.loadParser()
+        preprocessing = Preprocessing()
+        preprocessing.loadParser()
+        X = deque()
+        y = deque()
+        questionIdsMatchinXrow = []
+        for qId in labeled_sentences_dict.keys():
+            question = preprocessing.rawTextToSentences(questionsDict[int(qId)])[0]
+            for i in range(len(labeled_sentences_dict[qId])):
+                index, text, sequence_labels = labeled_sentences_dict[qId][i]
+                sentence = preprocessing.rawTextToSentences(text)[0]
+                X.append(self.encode(sentence, question))
+                y.append(sequence_labels)
+                questionIdsMatchinXrow.append((qId, i))
+        pickle.dump(X, open(ROOT_PATH+"pickles/extraction_X.pickle", "wb"), protocol=2)
+        pickle.dump(y, open(ROOT_PATH+"pickles/extraction_y.pickle", "wb"), protocol=2)
+        pickle.dump(questionIdsMatchinXrow, open(ROOT_PATH+"pickles/extraction_question_ids.pickle", "wb"), protocol=2)
 
-sentence = prepro.rawTextToSentences("I am Archbishop Desmond Tutu.")[0]
-question = prepro.rawTextToSentences("Who is Desmond Tutu?")[0]
+
+# prepro = Preprocessing()
+# prepro.loadParser()
+#
+# sentence = prepro.rawTextToSentences("I am Archbishop Desmond Tutu.")[0]
+# question = prepro.rawTextToSentences("Who is Desmond Tutu?")[0]
 
 ef = ExtractionFeaturizer()
-print ef.getKeyWord(sentence, question)
-encoding = ef.encode(sentence, question)
-print len(encoding[0])
+# print ef.getKeyWord(sentence, question)
+# encoding = ef.encode(0, 0)
+# print len(encoding[0])
+
+ef.createExtractionDataset()
