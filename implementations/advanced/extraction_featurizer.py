@@ -1,3 +1,5 @@
+import itertools
+
 import ROOT_SCRIPT
 from implementations.baseline.sentence import Sentence
 import numpy as np
@@ -47,7 +49,6 @@ def getPosToCoarseDict():
         "UH": "OTHER"
     }
 
-        self.dependencyIndexDict = self.getDependencyIndexDict()
 
 class ExtractionFeaturizer():
 
@@ -65,6 +66,8 @@ class ExtractionFeaturizer():
             coarseToIndexDict[key] = i
         self.coarseToIndexDict = coarseToIndexDict
 
+        self.dependencyIndexDict = self.getDependencyIndexDict()
+
     def encodeDetailedPOS(self, pos):
         vec = np.zeros(len(self.posToIndexDict))
         vec[self.posToIndexDict[pos]] = 1
@@ -81,11 +84,8 @@ class ExtractionFeaturizer():
         pass
 
     def getKeyWord(self, sentence, question):
+        pass
 
-ef = ExtractionFeaturizer()
-
-print ef.encodeCoarsePOS("JJ")
-print ef.encodeDetailedPOS("JJ")
     def encodeDependencies(self, sentence, importantWord):
         governedWordsList = self.getGovernedWordsList(sentence)
 
@@ -116,13 +116,13 @@ print ef.encodeDetailedPOS("JJ")
         lenVec = [len(depPath)]
 
         depRelVector = np.zeros(len(self.dependencyIndexDict.keys()))
-        coarsePosVector = np.zeros(len(self.coarseToIndexDict.keys())
+        coarsePosVector = np.zeros(len(self.coarseToIndexDict.keys()))
 
         for depRel in depPath:
             depRelVector[self.dependencyIndexDict[depRel]] = 1.0
 
         for pos in posPath:
-            coarsePosVector[self.coarseToIndexDict[self.posToCoarseDict[pos]]] = 1.0
+            coarsePosVector[self.coarseToIndexDict[self.detailedPOStoCoarse[pos]]] = 1.0
 
 
 
@@ -244,3 +244,4 @@ print ef.encodeDetailedPOS("JJ")
             depIndexDict[key] = i
 
         return depIndexDict
+
