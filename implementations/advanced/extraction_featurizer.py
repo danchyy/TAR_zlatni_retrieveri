@@ -1,5 +1,5 @@
 import itertools
-
+import cPickle as pickle
 import ROOT_SCRIPT
 from implementations.baseline.sentence import Sentence
 import numpy as np
@@ -53,6 +53,10 @@ def getPosToCoarseDict():
 class ExtractionFeaturizer():
 
     def __init__(self):
+
+        self.idf_map = pickle.load(open(ROOT_PATH + "pickles/lemma_idf_scores.pickle", "rb"))
+
+
         posToCoarseDict = getPosToCoarseDict()
         self.detailedPOStoCoarse = posToCoarseDict
 
@@ -83,8 +87,6 @@ class ExtractionFeaturizer():
         #return deque[["word_features"], ["word_features"]]
         pass
 
-    def getKeyWord(self, sentence, question):
-        pass
 
     def encodeDependencies(self, sentence, importantWord):
         governedWordsList = self.getGovernedWordsList(sentence)
@@ -245,3 +247,21 @@ class ExtractionFeaturizer():
 
         return depIndexDict
 
+
+    def getKeyWord(self, sentence, question):
+        sentenceLemmas = set()
+        for word in sentence.getWords():
+            sentenceLemmas.add(word.getLemma())
+        maxIDF = None
+        keyWord = None
+        for word in question.getWords():
+            lemma = word.getLemma()
+            if lemma in sentenceLemmas:
+                idf = self.idf_map.get(lemma, -1)
+                if idf > maxIDF:
+                    keyWord = word
+                    maxIDF = idf
+
+        if maxIDF == -1 or maxIDF is None:
+            return None
+        return keyWord
