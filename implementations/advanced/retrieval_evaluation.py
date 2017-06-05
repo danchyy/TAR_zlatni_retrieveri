@@ -7,6 +7,7 @@ from sklearn.preprocessing import PolynomialFeatures
 import ROOT_SCRIPT
 from implementations.advanced.encoder import Encoder
 from implementations.advanced.anwer_extraction import BaselineAnswerExtraction
+from implementations.advanced.advanced_answer_extraction import AdvancedAnswerExtraction
 import re
 ROOT_PATH = ROOT_SCRIPT.get_root_path()
 
@@ -301,7 +302,7 @@ def baselineEvaluationLoop(qIdList, qsDict, paramCombinations, shuffle=True, out
     X, y, questionIdsMatchingXRows = np.load(ROOT_PATH + "data/X_data.npy"), np.load(ROOT_PATH + "data/y_targets.npy"), cPickle.load(open(ROOT_PATH+"data/q_id_list.pickle", "rb"))
     sentencesMatchingRows = cPickle.load(open(ROOT_PATH + "data/sentences_order_extraction.pickle", "rb"))
     mrr_list = []
-    answer_extractor = BaselineAnswerExtraction()
+    answer_extractor = AdvancedAnswerExtraction()
     question_dict = cPickle.load(open(ROOT_PATH + "pickles/questions.pickle"))
     patterns = cPickle.load(open(ROOT_PATH + "pickles/patterns.pickle"))
     accuracies = []
@@ -348,7 +349,7 @@ def temporaryLoop(qIdList, qsDict, paramCombinations, shuffle=True, outer_splits
     X, y, questionIdsMatchingXRows = np.load(ROOT_PATH + "data/X_data.npy"), np.load(ROOT_PATH + "data/y_targets.npy"), cPickle.load(open(ROOT_PATH+"data/q_id_list.pickle", "rb"))
     sentencesMatchingRows = cPickle.load(open(ROOT_PATH+"data/sentences_order_extraction.pickle", "rb"))
     mrr_list = []
-    answer_extractor = BaselineAnswerExtraction()
+    answer_extractor = AdvancedAnswerExtraction()
     question_dict = cPickle.load(open(ROOT_PATH + "pickles/questions.pickle"))
     patterns = cPickle.load(open(ROOT_PATH + "pickles/patterns.pickle"))
     accuracies = []
@@ -366,11 +367,11 @@ def temporaryLoop(qIdList, qsDict, paramCombinations, shuffle=True, outer_splits
         dictionary_extraction = retrieve_sentences(yPredict, qIdsForXRows, yTest, sentencesForXRows)
         zero_one_list = []
         for key in dictionary_extraction:
+            print key, question_dict[int(key)]
             answer = answer_extractor.extract(question_dict[int(key)], dictionary_extraction[key])
             pattern = patterns[int(key)]
-            zero_one_list.append(calculateMatch(answer + "\n", pattern))
-            print key, question_dict[int(key)]
             print answer.__str__()
+            zero_one_list.append(calculateMatch(answer + "\n", pattern))
         mrr_list.append(mrr)
         accuracies.append(np.mean(zero_one_list))
         print "Accuracy: " + str(np.mean(zero_one_list))
