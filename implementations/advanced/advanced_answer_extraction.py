@@ -72,6 +72,8 @@ class AdvancedAnswerExtraction(IAnswerExtraction):
             "LAW": "THING"
         }
 
+        self.create_representative_vectors()
+
     def get_name_entities(self, wanted_type, sentence):
         named_entities = []
         current_entity = None
@@ -204,6 +206,7 @@ class AdvancedAnswerExtraction(IAnswerExtraction):
         return self.expand_environment(overall_max[2], overall_max[1])
 
     def extract(self, question, rankedRelevantSentences):
+
         parsed_question = self.preprocessing.rawTextToSentences(question)[0]
         sentences = []
         filtered_sentences = []
@@ -214,7 +217,7 @@ class AdvancedAnswerExtraction(IAnswerExtraction):
         for word in parsed_question.wordList:
             if word.wordText not in self.stopWords:
                 question_words.add(word.stem)
-        for sentence in rankedRelevantSentences:
+        for sentence, score in rankedRelevantSentences:
             sentence = self.preprocessing.rawTextToSentences(sentence)[0]
             sentence_set = set(word.stem for word in sentence.wordList)
             for q_word in question_set:
@@ -241,13 +244,36 @@ class AdvancedAnswerExtraction(IAnswerExtraction):
 
         list_word_objects = self.extractForClass(questionClass, sameClassSentences[0])
         return " ".join([x.wordText for x in list_word_objects])"""
-        if questionClass is None:
-            return self.toString(sentences[0])
+        #if questionClass is None:
+            #return self.toString(sentences[0])
 
         #sameClassSentences = filter(lambda sent: self.classMatch(questionClass, self.classifySentence(sent)), sentences)
 
         #if len(sameClassSentences) == 0:
             #return self.toString(sentences[0])
+
+        if questionClass == "QUANTITY":
+            score = 1.0
+            dictionary_expressions = {}
+            for sentence in sentences[:10]:
+                #print sentence.__str__()
+                name_entities = self.get_name_entities("QUANTITY", sentence)
+                for entity in name_entities:
+                    expression = ""
+                    for word in entity:
+                        if word.stem in question_words:
+                            continue
+                        expression = expression + word.wordText + " "
+                    expression = expression.strip()
+                    if expression == "":
+                        continue
+                    curr_score = dictionary_expressions.get(expression, 0)
+                    dictionary_expressions[expression] = score + curr_score
+                score *= 0.8
+            dictionary_expressions = sorted(dictionary_expressions.items(), key=lambda x : x[1], reverse=True)
+            if len(dictionary_expressions) > 0:
+                return dictionary_expressions[0][0]
+            return sentences[0]
 
         for sentence in sentences:
             extracted = self.extractForClass(questionClass, sentence)
@@ -256,11 +282,12 @@ class AdvancedAnswerExtraction(IAnswerExtraction):
                 if word.stem in question_words:
                     should_continue = True
                     break
-            if not should_continue:
+            if not should_continue and extracted:
                 return " ".join([x.wordText for x in extracted])
 
-        extracted = self.extractForClass(questionClass, sentences[0])
-        return " ".join([x.wordText for x in extracted])
+        #extracted = self.extractForClass(questionClass, sentences[0])
+        #return " ".join([x.wordText for x in extracted])
+        return self.toString(sentences[0])
 
 
     def create_representative_vectors(self):
@@ -297,7 +324,7 @@ class AdvancedAnswerExtraction(IAnswerExtraction):
                 if wordClass is not None:
                     return wordClass
 
-            if word.wordText.lower() == "what" or wordClass is None:
+            if word.wordText.lower() == "what":
                 question_vector = self.sentence2vector(question)
                 similarities = []
                 for key in self.representatives_vectors:
@@ -305,6 +332,7 @@ class AdvancedAnswerExtraction(IAnswerExtraction):
                     similarities.append((key, 1.0 - spatial.distance.cosine(vector, question_vector)))
 
                 similarities = sorted(similarities, key=lambda x : x[1], reverse=True)
+                print question.__str__(), similarities[0][0]
                 return similarities[0][0]
 
         question_vector = self.sentence2vector(question)
@@ -315,6 +343,7 @@ class AdvancedAnswerExtraction(IAnswerExtraction):
 
         similarities = sorted(similarities, key=lambda x: x[1], reverse=True)
         return similarities[0][0]
+
 
     def sentence2vector(self, sentence):
         vector = np.zeros(300, )

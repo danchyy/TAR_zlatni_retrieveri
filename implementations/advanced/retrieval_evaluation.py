@@ -8,6 +8,8 @@ import ROOT_SCRIPT
 from implementations.advanced.encoder import Encoder
 from implementations.advanced.anwer_extraction import BaselineAnswerExtraction
 from implementations.advanced.advanced_answer_extraction import AdvancedAnswerExtraction
+from sklearn.ensemble import GradientBoostingClassifier
+from itertools import product
 import re
 ROOT_PATH = ROOT_SCRIPT.get_root_path()
 
@@ -262,7 +264,7 @@ def retrieve_sentences(yPredict, qIdsForXRows, yTestLabels, sentencesForXRows):
         curr_extraction = []
         for i in range(min(len(sortedList), 20)):
             score, label, text = sortedList[i]
-            curr_extraction.append(text)
+            curr_extraction.append((text, score))
 
         dictionary_extraction[qId] = curr_extraction
 
@@ -388,8 +390,8 @@ with open(ROOT_PATH +"pickles/question_labeled_sentence_dict.pickle", "rb") as f
 qIdList = cPickle.load(open(ROOT_PATH+"data/shuffled_IDs.pickle", "rb"))
 
 """params = []
-clist = range(-15, -9)
-classweights = [100, 200, 300]
+clist = range(-16, -6)
+classweights = [50, 100, 200, 300, 400]
 
 for c, w in product(clist, classweights):
     params.append({"C":2**c, "class_weight":{1: w}})
