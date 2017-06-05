@@ -1,9 +1,19 @@
 from interfaces.i_answer_extraction import IAnswerExtraction
 from nltk.corpus import stopwords
 from implementations.baseline.preprocessing import Preprocessing
+from gensim.models import KeyedVectors
+import ROOT_SCRIPT
+
+from scipy import spatial
+import numpy as np
+
+ROOT_PATH = ROOT_SCRIPT.get_root_path()
+WORD_2_VEC_PATH = ROOT_PATH + 'googleWord2Vec.bin'
 
 class AdvancedAnswerExtraction(IAnswerExtraction):
     def __init__(self):
+
+        self.word_vectors = KeyedVectors.load_word2vec_format(WORD_2_VEC_PATH, binary=True)
         self.preprocessing = Preprocessing()
         self.preprocessing.loadParser()
         self.stopWords = set(stopwords.words('english'))
@@ -26,6 +36,20 @@ class AdvancedAnswerExtraction(IAnswerExtraction):
         self.whatDict = {
             "name": "AGENT",
         }
+
+        self.representatives_dict = {
+            "LOCATION": ["location", "where", "city", "state", "place", "country", "located", "found",
+                         "region", "village", "continent"],
+            "TIME": ["year", "day", "when", "time", "hour", "second", "month", "ago", "period", "moment", "old", "week",
+                     "decade", "century"],
+            "AGENT": ["man", "woman", "person", "occupation", "agent", "profession", "sportsperson", "politican", "celebrity",
+                      "who", "name", "nickname", "surname"],
+            "QUANTITY" : ["how", "much", "many", "weight", "currency", "money", "ton", "height", "count", "amount", "lenght", "large", "small",
+                          "few", "little"],
+            "THING" : ["event", "entity", "reason", "situation", "explanation", "description", "cause", "definition", "term"]
+        }
+
+        self.representatives_vectors = {}
 
         self.namedEntityTypeToQuestionClass = {
             "PERSON": "AGENT",
@@ -186,6 +210,10 @@ class AdvancedAnswerExtraction(IAnswerExtraction):
 
         # filtering sentences where no words from questions appear in sentence
         question_set = set(word for word in parsed_question.wordList)
+        question_words = set()
+        for word in parsed_question.wordList:
+            if word.wordText not in self.stopWords:
+                question_words.add(word.stem)
         for sentence in rankedRelevantSentences:
             sentence = self.preprocessing.rawTextToSentences(sentence)[0]
             sentence_set = set(word.stem for word in sentence.wordList)
@@ -199,7 +227,7 @@ class AdvancedAnswerExtraction(IAnswerExtraction):
         sentences = filtered_sentences
 
         questionClass = self.classifyQuestion(parsed_question)
-        if questionClass == "AGENT":
+        """if questionClass == "AGENT":
             list_word_objects = self.do_agent(parsed_question, sentences)
             return " ".join([x.wordText for x in list_word_objects])
         if questionClass is None:
@@ -212,7 +240,39 @@ class AdvancedAnswerExtraction(IAnswerExtraction):
             return self.toString(sentences[0])
 
         list_word_objects = self.extractForClass(questionClass, sameClassSentences[0])
-        return " ".join([x.wordText for x in list_word_objects])
+        return " ".join([x.wordText for x in list_word_objects])"""
+        if questionClass is None:
+            return self.toString(sentences[0])
+
+        #sameClassSentences = filter(lambda sent: self.classMatch(questionClass, self.classifySentence(sent)), sentences)
+
+        #if len(sameClassSentences) == 0:
+            #return self.toString(sentences[0])
+
+        for sentence in sentences:
+            extracted = self.extractForClass(questionClass, sentence)
+            should_continue = False
+            for word in extracted:
+                if word.stem in question_words:
+                    should_continue = True
+                    break
+            if not should_continue:
+                return " ".join([x.wordText for x in extracted])
+
+        extracted = self.extractForClass(questionClass, sentences[0])
+        return " ".join([x.wordText for x in extracted])
+
+
+    def create_representative_vectors(self):
+        for key in self.representatives_dict:
+            representative = np.zeros(300, )
+            for word in self.representatives_dict[key]:
+                try:
+                    wordvec = self.word_vectors[word]
+                except KeyError:
+                    wordvec = np.zeros(300, )
+                representative += wordvec
+            self.representatives_vectors[key] = representative
 
     def classifyQuestion(self, question):
         for i, word in enumerate(question.wordList):
@@ -229,23 +289,42 @@ class AdvancedAnswerExtraction(IAnswerExtraction):
                 return wordClass
 
             if word.wordText.lower() == "how" and i < (len(question.wordList) - 1):
-                nextWord = question.wordList[i + 1].wordText.lower()
+                nextWord = question.wordList[i+1].wordText.lower()
                 try:
-                    wordClass = self.howDict[nextWord]
+                    wordClass= self.howDict[nextWord]
                 except:
                     wordClass = None
                 if wordClass is not None:
                     return wordClass
 
-            if word.wordText.lower() == "what" and i < (len(question.wordList) - 1):
-                for w in question.wordList[i + 1:]:
-                    if w.wordText.lower() in self.whatDict:
-                        wordClass = self.whatDict[w.wordText.lower()]
-                        return wordClass
+            if word.wordText.lower() == "what" or wordClass is None:
+                question_vector = self.sentence2vector(question)
+                similarities = []
+                for key in self.representatives_vectors:
+                    vector = self.representatives_vectors[key]
+                    similarities.append((key, 1.0 - spatial.distance.cosine(vector, question_vector)))
 
-                return "THING"
+                similarities = sorted(similarities, key=lambda x : x[1], reverse=True)
+                return similarities[0][0]
 
-        return None
+        question_vector = self.sentence2vector(question)
+        similarities = []
+        for key in self.representatives_vectors:
+            vector = self.representatives_vectors[key]
+            similarities.append((key, 1.0 - spatial.distance.cosine(vector, question_vector)))
+
+        similarities = sorted(similarities, key=lambda x: x[1], reverse=True)
+        return similarities[0][0]
+
+    def sentence2vector(self, sentence):
+        vector = np.zeros(300, )
+        for word in sentence.getWords():
+            try:
+                wordvec = self.word_vectors[word.wordText]
+            except KeyError:
+                wordvec = np.zeros(300, )
+            vector += wordvec
+        return vector
 
     def classifySentence(self, tup):
         neTypeSet = set()

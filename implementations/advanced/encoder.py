@@ -61,6 +61,20 @@ class Encoder():
             "name": "AGENT",
         }
 
+        self.representatives_dict = {
+            "LOCATION": ["location", "where", "city", "state", "place", "country", "located", "found",
+                         "region", "village", "continent"],
+            "TIME": ["year", "day", "when", "time", "hour", "second", "month", "ago", "period", "moment", "old", "week",
+                     "decade", "century"],
+            "AGENT": ["man", "woman", "person", "occupation", "agent", "profession", "sportsperson", "politican", "celebrity",
+                      "who", "name"],
+            "QUANTITY" : ["how", "much", "many", "weight", "currency", "money", "ton", "height", "count", "amount", "lenght", "large", "small",
+                          "few", "little"],
+            "THING" : ["event", "entity", "reason", "situation", "explanation", "description", "cause", "definition", "term"]
+        }
+
+        self.representatives_vectors = {}
+
         self.namedEntityTypeToQuestionClass = {
             "PERSON": "AGENT",
             "ORG": "AGENT",
@@ -89,7 +103,18 @@ class Encoder():
             "THING" : np.array([0, 0, 0, 0, 1])
         }
 
+        self.create_representative_vectors()
 
+    def create_representative_vectors(self):
+        for key in self.representatives_dict:
+            representative = np.zeros(300, )
+            for word in self.representatives_dict[key]:
+                try:
+                    wordvec = self.word_vectors[word]
+                except KeyError:
+                    wordvec = np.zeros(300, )
+                representative += wordvec
+            self.representatives_vectors[key] = representative
 
     def classifyQuestion(self, question):
         for i, word in enumerate(question.wordList):
@@ -114,15 +139,24 @@ class Encoder():
                 if wordClass is not None:
                     return wordClass
 
-            if word.wordText.lower() == "what" and i < (len(question.wordList) - 1):
-                for w in question.wordList[i + 1:]:
-                    if w.wordText.lower() in self.whatDict:
-                        wordClass = self.whatDict[w.wordText.lower()]
-                        return wordClass
+            if word.wordText.lower() == "what":
+                question_vector = self.sentence2vector(question)
+                similarities = []
+                for key in self.representatives_vectors:
+                    vector = self.representatives_vectors[key]
+                    similarities.append((key, 1.0 - spatial.distance.cosine(vector, question_vector)))
 
-                return "THING"
+                similarities = sorted(similarities, key=lambda x : x[1], reverse=True)
+                return similarities[0][0]
 
-        return None
+        question_vector = self.sentence2vector(question)
+        similarities = []
+        for key in self.representatives_vectors:
+            vector = self.representatives_vectors[key]
+            similarities.append((key, 1.0 - spatial.distance.cosine(vector, question_vector)))
+
+        similarities = sorted(similarities, key=lambda x: x[1], reverse=True)
+        return similarities[0][0]
 
     def classifySentence(self, sentence):
         neTypeSet = set()
