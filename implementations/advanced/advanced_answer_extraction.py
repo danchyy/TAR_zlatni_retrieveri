@@ -23,8 +23,7 @@ class AdvancedAnswerExtraction(IAnswerExtraction):
             "when": "TIME",
             "where": "LOCATION",
             "who": "AGENT",
-            "which": "THING",
-            "what": "THING"
+            "which": "THING"
         }
         self.howDict = {
             "much": "QUANTITY",
@@ -214,7 +213,10 @@ class AdvancedAnswerExtraction(IAnswerExtraction):
         # filtering sentences where no words from questions appear in sentence
         question_set = set(word for word in parsed_question.wordList)
         question_words = set()
+        question_named_entities = set()
         for word in parsed_question.wordList:
+            if word.neType != "":
+                question_named_entities.add(word.neType)
             if word.wordText not in self.stopWords:
                 question_words.add(word.stem)
         for sentence, score in rankedRelevantSentences:
@@ -222,7 +224,7 @@ class AdvancedAnswerExtraction(IAnswerExtraction):
             sentence_set = set(word.stem for word in sentence.wordList)
             for q_word in question_set:
                 if q_word.wordText not in self.stopWords and q_word.stem in sentence_set:
-                    filtered_sentences.append(sentence)
+                    filtered_sentences.append((sentence, score))
                     break
 
         #for sentence in filtered_sentences:
@@ -253,29 +255,83 @@ class AdvancedAnswerExtraction(IAnswerExtraction):
             #return self.toString(sentences[0])
 
         if questionClass == "QUANTITY":
-            score = 1.0
             dictionary_expressions = {}
-            for sentence in sentences[:10]:
+            for sentence, score in sentences[:10]:
                 #print sentence.__str__()
                 name_entities = self.get_name_entities("QUANTITY", sentence)
                 for entity in name_entities:
                     expression = ""
+                    should_continue = False
                     for word in entity:
                         if word.stem in question_words:
-                            continue
+                            should_continue = True
+                            break
                         expression = expression + word.wordText + " "
+                    if should_continue:
+                        continue
                     expression = expression.strip()
                     if expression == "":
                         continue
                     curr_score = dictionary_expressions.get(expression, 0)
                     dictionary_expressions[expression] = score + curr_score
-                score *= 0.8
+            dictionary_expressions = sorted(dictionary_expressions.items(), key=lambda x: x[1], reverse=True)
+            if len(dictionary_expressions) > 0:
+                return dictionary_expressions[0][0]
+            return sentences[0][0]
+
+        if questionClass == "LOCATION":
+            dictionary_expressions = {}
+            for sentence, score in sentences[:10]:
+                #print sentence.__str__()
+                name_entities = self.get_name_entities("LOCATION", sentence)
+                for entity in name_entities:
+                    expression = ""
+                    should_continue = False
+                    for word in entity:
+                        if word.stem in question_words:
+                            should_continue = True
+                            break
+                        if word.neType in question_named_entities:
+                            continue
+                        expression = expression + word.wordText + " "
+                    if should_continue:
+                        continue
+                    expression = expression.strip()
+                    if expression == "":
+                        continue
+                    curr_score = dictionary_expressions.get(expression, 0)
+                    dictionary_expressions[expression] = score + curr_score
             dictionary_expressions = sorted(dictionary_expressions.items(), key=lambda x : x[1], reverse=True)
             if len(dictionary_expressions) > 0:
                 return dictionary_expressions[0][0]
-            return sentences[0]
+            return sentences[0][0]
 
-        for sentence in sentences:
+        if questionClass == "AGENT":
+            dictionary_expressions = {}
+            for sentence, score in sentences[:10]:
+                #print sentence.__str__()
+                name_entities = self.get_name_entities("AGENT", sentence)
+                for entity in name_entities:
+                    expression = ""
+                    should_continue = False
+                    for word in entity:
+                        if word.stem in question_words:
+                            should_continue = True
+                            break
+                        expression = expression + word.wordText + " "
+                    if should_continue:
+                        continue
+                    expression = expression.strip()
+                    if expression == "":
+                        continue
+                    curr_score = dictionary_expressions.get(expression, 0)
+                    dictionary_expressions[expression] = score + curr_score
+            dictionary_expressions = sorted(dictionary_expressions.items(), key=lambda x : x[1], reverse=True)
+            if len(dictionary_expressions) > 0:
+                return dictionary_expressions[0][0]
+            return sentences[0][0]
+
+        for sentence, score in sentences:
             extracted = self.extractForClass(questionClass, sentence)
             should_continue = False
             for word in extracted:
@@ -287,7 +343,7 @@ class AdvancedAnswerExtraction(IAnswerExtraction):
 
         #extracted = self.extractForClass(questionClass, sentences[0])
         #return " ".join([x.wordText for x in extracted])
-        return self.toString(sentences[0])
+        return self.toString(sentences[0][0])
 
 
     def create_representative_vectors(self):
@@ -332,7 +388,8 @@ class AdvancedAnswerExtraction(IAnswerExtraction):
                     similarities.append((key, 1.0 - spatial.distance.cosine(vector, question_vector)))
 
                 similarities = sorted(similarities, key=lambda x : x[1], reverse=True)
-                print question.__str__(), similarities[0][0]
+
+                #print question.__str__(), similarities[0][0]
                 return similarities[0][0]
 
         question_vector = self.sentence2vector(question)

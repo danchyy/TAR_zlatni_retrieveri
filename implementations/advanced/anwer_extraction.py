@@ -47,7 +47,7 @@ class BaselineAnswerExtraction(IAnswerExtraction):
     def extract(self, question, rankedRelevantSentences):
         question = self.preprocessing.rawTextToSentences(question)[0]
         sentences = []
-        for sentence in rankedRelevantSentences:
+        for sentence, score in rankedRelevantSentences:
             sentences.append(self.preprocessing.rawTextToSentences(sentence)[0])
         questionClass = self.classifyQuestion(question)
 

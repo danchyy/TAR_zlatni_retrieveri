@@ -9,6 +9,7 @@ from implementations.advanced.encoder import Encoder
 from implementations.advanced.anwer_extraction import BaselineAnswerExtraction
 from implementations.advanced.advanced_answer_extraction import AdvancedAnswerExtraction
 from sklearn.ensemble import GradientBoostingClassifier
+from sklearn.ensemble import AdaBoostClassifier
 from itertools import product
 import re
 ROOT_PATH = ROOT_SCRIPT.get_root_path()
@@ -304,7 +305,7 @@ def baselineEvaluationLoop(qIdList, qsDict, paramCombinations, shuffle=True, out
     X, y, questionIdsMatchingXRows = np.load(ROOT_PATH + "data/X_data.npy"), np.load(ROOT_PATH + "data/y_targets.npy"), cPickle.load(open(ROOT_PATH+"data/q_id_list.pickle", "rb"))
     sentencesMatchingRows = cPickle.load(open(ROOT_PATH + "data/sentences_order_extraction.pickle", "rb"))
     mrr_list = []
-    answer_extractor = AdvancedAnswerExtraction()
+    answer_extractor = BaselineAnswerExtraction()
     question_dict = cPickle.load(open(ROOT_PATH + "pickles/questions.pickle"))
     patterns = cPickle.load(open(ROOT_PATH + "pickles/patterns.pickle"))
     accuracies = []
@@ -319,7 +320,7 @@ def baselineEvaluationLoop(qIdList, qsDict, paramCombinations, shuffle=True, out
 
         mrr = calculateMRR(yPredict, qIdsForXRows, yTest)  # calculate mrr
 
-        dictionary_extraction = retrieve_sentences(yPredict, qIdsForXRows, yTest, sentencesForXRows)
+        #dictionary_extraction = retrieve_sentences(yPredict, qIdsForXRows, yTest, sentencesForXRows)
         dictionary_extraction = retrieve_sentences(yPredict, qIdsForXRows, yTest, sentencesForXRows)
         zero_one_list = []
         for key in dictionary_extraction:
@@ -346,12 +347,48 @@ def calculateMatch(answer, patterns):
             return 1.0
     return 0.0
 
+def trainAll(qIdList ,qsDict, paramCombinations):
+    X, y, questionIdsMathincRows = np.load(ROOT_PATH + "data/X_data.npy"), np.load(ROOT_PATH + "data/y_targets.npy"), cPickle.load(open(ROOT_PATH+"data/q_id_list.pickle", "rb"))
+    sentencesMatchingRows = cPickle.load(open(ROOT_PATH + "data/sentences_order_extraction.pickle", "rb"))
+    mrr_list = []
+    answer_extractor = AdvancedAnswerExtraction()
+    question_dict = cPickle.load(open(ROOT_PATH + "pickles/questions.pickle"))
+    patterns = cPickle.load(open(ROOT_PATH + "pickles/patterns.pickle"))
+    #Xtrain, yTrain, Xtest, yTest, qIdsForXRows, sentencesForXRows = getInputRows(X, y, qIdList, qIdTrain, ["201"], qsDict, questionIdsMatchingXRows, sentencesMatchingRows)
+    Xtrain, yTrain = X, y
+
+    qIdTrain = questionIdsMathincRows
+    clf = svm.LinearSVC(C=2 ** -13, class_weight={1: 300})
+    clf.fit(Xtrain, yTrain)  # train
+    yPredict = clf.decision_function(Xtrain)
+    mrr = calculateMRR(yPredict, qIdTrain, yTrain)  # calculate mrr
+    dictionary_extraction = retrieve_sentences(yPredict, qIdTrain, yTrain, sentencesMatchingRows)
+    zero_one_list = []
+    for key in dictionary_extraction:
+        print key, question_dict[int(key)]
+        answer = answer_extractor.extract(question_dict[int(key)], dictionary_extraction[key])
+        pattern = patterns[int(key)]
+        print answer
+        zero_one_list.append(calculateMatch(str(answer) + "\n", pattern))
+    mrr_list.append(mrr)
+
+    print "Accuracy: " + str(np.mean(zero_one_list))
+
+    return mrr_list
+
+def saveDataForIndex(index):
+    X, y, questionIdsMathincRows = np.load(ROOT_PATH + "data/X_data.npy"), np.load(ROOT_PATH + "data/y_targets.npy"), cPickle.load(open(ROOT_PATH + "data/q_id_list.pickle", "rb"))
+    sentencesMatchingRows = cPickle.load(open(ROOT_PATH + "data/sentences_order_extraction.pickle", "rb"))
+    Xtrain, yTrain, Xtest, yTest, qIdsForXRows, sentencesForXRows = getInputRows(X, y, qIdList, [], ["201"], qsDict, questionIdsMathincRows, sentencesMatchingRows)
+
+
 def temporaryLoop(qIdList, qsDict, paramCombinations, shuffle=True, outer_splits=5, inner_splits=3):
 
     X, y, questionIdsMatchingXRows = np.load(ROOT_PATH + "data/X_data.npy"), np.load(ROOT_PATH + "data/y_targets.npy"), cPickle.load(open(ROOT_PATH+"data/q_id_list.pickle", "rb"))
     sentencesMatchingRows = cPickle.load(open(ROOT_PATH+"data/sentences_order_extraction.pickle", "rb"))
     mrr_list = []
     answer_extractor = AdvancedAnswerExtraction()
+    #answer_extractor = BaselineAnswerExtraction()
     question_dict = cPickle.load(open(ROOT_PATH + "pickles/questions.pickle"))
     patterns = cPickle.load(open(ROOT_PATH + "pickles/patterns.pickle"))
     accuracies = []
@@ -372,8 +409,8 @@ def temporaryLoop(qIdList, qsDict, paramCombinations, shuffle=True, outer_splits
             print key, question_dict[int(key)]
             answer = answer_extractor.extract(question_dict[int(key)], dictionary_extraction[key])
             pattern = patterns[int(key)]
-            print answer.__str__()
-            zero_one_list.append(calculateMatch(answer + "\n", pattern))
+            print answer
+            zero_one_list.append(calculateMatch(str(answer) + "\n", pattern))
         mrr_list.append(mrr)
         accuracies.append(np.mean(zero_one_list))
         print "Accuracy: " + str(np.mean(zero_one_list))
@@ -390,13 +427,13 @@ with open(ROOT_PATH +"pickles/question_labeled_sentence_dict.pickle", "rb") as f
 qIdList = cPickle.load(open(ROOT_PATH+"data/shuffled_IDs.pickle", "rb"))
 
 """params = []
-clist = range(-16, -6)
-classweights = [50, 100, 200, 300, 400]
+clist = range(-15, -9)
+classweights = [50, 100, 200, 300]
 
 for c, w in product(clist, classweights):
     params.append({"C":2**c, "class_weight":{1: w}})
 
-mrr_scores, best_params_list = evaluationLoop(qIdList, qsDict, params, inner_splits=3, outer_splits=5)
+mrr_scores, best_params_list = evaluationLoop(qIdList, qsDict, params, inner_splits=4, outer_splits=5)
 #
 print "Final Results: "
 print mrr_scores
@@ -405,8 +442,11 @@ print best_params_list"""
 
 #create_data(23)
 
+
+#saveDataForIndex("833")
 #
 result = temporaryLoop(qIdList, qsDict, [])
+
 #
 print result
 print np.mean(result)
